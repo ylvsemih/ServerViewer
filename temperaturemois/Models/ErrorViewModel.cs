@@ -21,6 +21,7 @@ namespace temperaturemois.Models
         public string CreateTime { get; set; }
         public bool Result { get; set; }
         public string Msg { get; set; }
+        public string surname { get; set; }
 
         
         public string Name { get; set; }

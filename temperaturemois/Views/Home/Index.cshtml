@@ -45,9 +45,9 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
 
-                        <div class="profile_info">
-                            <span>Welcome,</span>
-                            <h2> Customer</h2>
+                        <div class="profile_info" id="welcome">
+
+                            <h2></h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -619,7 +619,7 @@
         var GaugeMois;
         var GaugeTotalData;
         var ids;
-       
+
         $(document).ready(function () {
             //gauges
             if ($('#GaugeTemp').length) {
@@ -823,76 +823,78 @@
 
             }
             //reference macID
-             $.ajax({
-
-                type: 'POST',
-                url: '/Api/DeviceConfig',
-                dataType: 'json',
-                success: function (result) {
-                    ids = result[0].macID;
-            //devices
             $.ajax({
 
                 type: 'POST',
                 url: '/Api/DeviceConfig',
                 dataType: 'json',
-                data: { 'Macid': ids },
                 success: function (result) {
                     ids = result[0].macID;
-                    $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
-                    for (var i = 0; i < result.length; i++) {
-                        $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
+                    //devices
+                    $.ajax({
 
-                    }
-                    $(".deviceitem").on('click', function (event) {
-                        ids = $(this).data('macid');
-                        $('#renamer h3').remove();
-                        $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
-                        $.ajax({
-                            type: 'POST',
-                            url: '/Api/DeviceList_Eject',
-                            data: { 'Macid': ids },
-                            success: function (result) {
-                            }
-                            ,
-                            failure: function (response) {
-                                alert(response.responseText);
-                            },
-                            error: function (response) {
-                                alert(response.responseText);
-                            }
+                        type: 'POST',
+                        url: '/Api/DeviceConfig',
+                        dataType: 'json',
+                        data: { 'Macid': ids },
+                        success: function (result) {
+                            ids = result[0].macID;
+                            $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
+                            for (var i = 0; i < result.length; i++) {
+                                $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
+                            }
+                            $(".deviceitem").on('click', function (event) {
+                                ids = $(this).data('macid');
+                                $('#renamer h3').remove();
+                                $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/Api/DeviceList_Eject',
+                                    data: { 'Macid': ids },
+                                    success: function (result) {
+                                    }
+                                    ,
+                                    failure: function (response) {
+                                        alert(response.responseText);
+                                    },
+                                    error: function (response) {
+                                        alert(response.responseText);
+                                    }
+
+                                }
+                                );
+
+
+                            });
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
                         }
-                        );
-
 
                     });
 
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
 
-            });
 
-            var mydate = moment();
-            var weekDayName = moment(mydate).format('YYYYMMDD');
-            var mySeconddate = moment().subtract(6, 'days');
-            var weekDayName2 = moment(mySeconddate).format('YYYYMMDD');
-            var todaydate = moment().startOf('day').format('YYYYMMDD');
-            gaugeDraw();
-            setInterval(gaugeDraw, 4000);
+                    var mydate = moment();
+                    var weekDayName = moment(mydate).format('YYYYMMDD');
+                    var mySeconddate = moment().subtract(6, 'days');
+                    var weekDayName2 = moment(mySeconddate).format('YYYYMMDD');
+                    var todaydate = moment().startOf('day').format('YYYYMMDD');
+                    gaugeDraw();
+                    setInterval(gaugeDraw, 4000);
 
-            //daterange pickerdaki start ve end parametrelerine gidiyor. Bugünün dışında bir veri var ise formatın hh:mm den başka
-            //birşeye geçmesi gerekiyor. onun ayarlanması muhtemelen #reportrangelerin initinde. 
-            //ve eğer gün 1 den büyük ise xaxis konfigrasyonunun değişmesi gerekiyor. 
-            init_flot_chart(todaydate, weekDayName);
-            init_daterangepicker();
-            init_flot_chart2(todaydate, weekDayName);
-            init_daterangepicker2();
+                    //daterange pickerdaki start ve end parametrelerine gidiyor. Bugünün dışında bir veri var ise formatın hh:mm den başka
+                    //birşeye geçmesi gerekiyor. onun ayarlanması muhtemelen #reportrangelerin initinde.
+                    //ve eğer gün 1 den büyük ise xaxis konfigrasyonunun değişmesi gerekiyor.
+                    init_flot_chart(todaydate, weekDayName);
+                    init_daterangepicker();
+                    init_flot_chart2(todaydate, weekDayName);
+                    init_daterangepicker2();
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -901,7 +903,24 @@
                     alert(response.responseText);
                 }
             });
-            
+            $.ajax({
+                type: 'POST',
+                url: '/Api/Profile_UserData',
+                dataType: 'json',
+                data: { 'Macid': ids },
+                success: function (result) {
+                    $('#welcome h2').append("Hoşgeldin <br> " + result[0].name);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+
+            });
+
         });
 
         function gaugeDraw(IDcustomer) {

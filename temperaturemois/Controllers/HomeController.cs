@@ -948,7 +948,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
 
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-            string UseSQL = "SELECT TOP 1 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID=" + email + "ORDER BY CreateTime DESC";
+            string UseSQL = "SELECT TOP 1 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID='" + email + "' ORDER BY CreateTime DESC";
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -984,7 +984,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
             try
             {
-                string UseSQL = "SELECT [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID=" + email + " AND DeviceMacID='" + Macid + "'";
+                string UseSQL = "SELECT [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
 
                 string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
@@ -1027,9 +1027,9 @@ namespace TempMoisFinal.Controllers
             {
                 using (SqlConnection cn = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.DeviceInfo(CustomerID,DeviceMacID,CreateTime) VALUES(@CustomerID,@DeviceMacID,GETDATE())", cn))
+                    using (SqlCommand cmd = new SqlCommand("spDeviceCreate", cn))
                     {
-                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@DeviceMacID", macId);
                         cmd.Parameters.AddWithValue("@CustomerID", email);
                         dataList.Add(data);
@@ -1057,29 +1057,108 @@ namespace TempMoisFinal.Controllers
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                    string UseSQL = "SELECT TOP 5 [ID],[MacID] FROM [ServerViewer].[dbo].[ServerStatus] Where MacID='" + Macid + "' ORDER BY ID desc";
-                    SqlCommand command = new SqlCommand(UseSQL, connection);
-                    using (SqlDataReader dataReader = command.ExecuteReader())
+                string UseSQL = "Select [Temp],[Mois],[CustomerID],[DeviceMacID] FROM [ServerViewer].[dbo].[ServerStatus] AS t1 INNER JOIN [ServerViewer].[dbo].[DeviceInfo] AS t2 ON t1.Temp = t2.CustomerID WHERE CustomerID='" + email + "'";
+                SqlCommand command = new SqlCommand(UseSQL, connection);
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
                     {
-                        while (dataReader.Read())
-                        {
-                            command.CommandType = CommandType.Text;
-                            ErrorViewModel data = new ErrorViewModel();
-                            data.ID = Convert.ToInt32(dataReader["ID"]);
-                            data.MacID = Convert.ToString(dataReader["MacID"]);
-                            dataList.Add(data);
+                        command.CommandType = CommandType.Text;
+                        ErrorViewModel data = new ErrorViewModel();
+                        data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
+                        data.Temp = float.Parse(dataReader["Temp"].ToString());
+                        data.Mois = float.Parse(dataReader["Mois"].ToString());
+                        data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
+                        dataList.Add(data);
 
-                        }
                     }
-                
+                }
+
                 connection.Close();
             }
             return Json(dataList);
         }
+        //profile (user) info
+        [HttpPost, Route("Api/Profile_UserData")]
+        public JsonResult Profile_UserData(string Macid)
+        {
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string UseSQL = "SELECT [CustomerID],[Name],[Surname],[DeviceMacID],[Company],[Phone],[EMail] FROM [ServerViewer].[dbo].[Customers] WHERE CustomerID='" + email + "'";
+                SqlCommand command = new SqlCommand(UseSQL, connection);
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        command.CommandType = CommandType.Text;
+                        ErrorViewModel data = new ErrorViewModel();
+                        data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
+                        data.Name = Convert.ToString(dataReader["Name"]);
+                        data.surname = Convert.ToString(dataReader["Surname"]);
+                        data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
+                        data.Company = Convert.ToString(dataReader["Company"]);
+                        data.PhoneNumber = Convert.ToString(dataReader["Phone"]);
+                        data.Email = Convert.ToString(dataReader["EMail"]);
+                        dataList.Add(data);
+
+                    }
+                }
+
+                connection.Close();
+            }
+            return Json(dataList);
+        }
+
+        //profile(user) info edit
+        [HttpPost, Route("Api/Profile_Userdata_Update")]
+        public JsonResult Profile_Edit(string name, string surname, string emailaddr, string phone, string company)
+        {
+
+            ErrorViewModel data = new ErrorViewModel();
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
+            try
+            {
+                using (SqlConnection cn = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
+                {
+                    using (SqlCommand cmd = new SqlCommand("UPDATE [ServerViewer].[dbo].[Customers] SET Name=@Name,Surname=@Surname,EMail=@EMail,Phone=@Phone,Company=@Company WHERE CustomerID=@CustomerID", cn))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@CustomerID", email);
+                        cmd.Parameters.AddWithValue("@Name", name);
+                        cmd.Parameters.AddWithValue("@Surname", surname);
+                        cmd.Parameters.AddWithValue("@EMail", emailaddr);
+                        cmd.Parameters.AddWithValue("@Phone", phone);
+                        cmd.Parameters.AddWithValue("@Company", company);
+
+                        dataList.Add(data);
+                        cn.Open();
+                        cmd.ExecuteNonQuery();
+                        cn.Close();
+                    }
+                }
+                data.Msg = "Sunucu log kaydı başarıyla kaydedilmiştir.";
+                data.Result = true;
+            }
+            catch (Exception ex)
+            {
+                data.Msg = ex.Message;
+                data.Result = false;
+            }
+
+
+            return Json(dataList);
+        }
+
 
     }
 }
