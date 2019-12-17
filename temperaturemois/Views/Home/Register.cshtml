@@ -1,0 +1,296 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Gentelella Alela! | </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="login">
+    <div class="top_nav">
+        <div class="nav_menu">
+            <div class="nav toggle">
+                <a id="menu_toggle" href="/home/index"><i class="fa fa-pie-chart"></i></a>
+                <span></span>
+
+
+            </div>
+
+            <nav class="nav navbar-nav">
+                <ul class=" navbar-right">
+                    <li class="nav-item dropdown open" style="padding-left: 15px;">
+                        <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+
+                        </a>
+                        <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+
+                            <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+    <div class="row  justify-content-center">
+        <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+
+
+        </div>
+    </div>
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form>
+                        <h1>Server Viever</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Kullanıcı Adı" required="" id="cr1" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="Parola" required="" id="cr2" />
+                        </div>
+                        <div>
+                            <a type="button" class="btn btn-success" href="#" id="Set">Oturum Aç</a>
+                            <a class="reset_pass" href="/home/Forget_pass" id="reset1">Parolamı Unuttum</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <p class="change_link">
+                                Sitede Yenimisin?
+                                <a href="#signup" class="to_register"> Yeni Hesap Oluştur </a>
+                            </p>
+
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <div>
+                                <h1> Server Viewer!</h1>
+                                <p>Fosoft © 2019 All Rights Reserved.</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <div id="register" class="animate form registration_form">
+                <section class="login_content">
+                    <form>
+                        <h1>Create Account</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Ürün Anahtarı" required="" id="q1" />
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Kullanıcı Adı" required="" id="q2" />
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Telefon Numarası" required="" id="PhoneNumber" />
+                        </div>
+
+                        <div>
+                            <input type="email" class="form-control" placeholder="Email" required="" id="q4" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="Parola" required="" id="q5" />
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="İşletme Adı" required="" id="q6" />
+                        </div>
+                        <div>
+                            <a type="button" class="btn btn-success" href="#" id="Get">Kayıt Ol</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <p class="change_link">
+                                Siteye Üyemisin ?
+                                <a href="#signin" class="to_register"> Giriş Yap </a>
+                            </p>
+
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <div>
+                                <h1> Server Viewer!</h1>
+                                <p>Fosoft © 2019 All Rights Reserved.</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <script>
+        function phoneFormat(input) {
+            // Strip all characters from the input except digits
+            input = input.replace(/\D/g, '');
+
+            // Trim the remaining input to ten characters, to preserve phone number format
+            input = input.substring(0, 10);
+
+            // Based upon the length of the string, we add formatting as necessary
+            var size = input.length;
+            if (size == 0) {
+                input = input;
+            } else if (size < 4) {
+                input = '(' + input;
+            } else if (size < 7) {
+                input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6);
+            } else {
+                input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6) + ' - ' + input.substring(6, 10);
+            }
+            return input;
+        }
+        document.getElementById('PhoneNumber').addEventListener('keyup', function (evt) {
+
+            var PhoneNumber = document.getElementById('PhoneNumber');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            PhoneNumber.value = phoneFormat(PhoneNumber.value);
+        });
+
+    </script>
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap-wysiwyg -->
+    <script src="../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+    <script src="../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+    <script src="../vendors/google-code-prettify/src/prettify.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+    <!-- Switchery -->
+    <script src="../vendors/switchery/dist/switchery.min.js"></script>
+    <!-- Select2 -->
+    <script src="../vendors/select2/dist/js/select2.full.min.js"></script>
+    <!-- Parsley -->
+    <script src="../vendors/parsleyjs/dist/parsley.min.js"></script>
+    <!-- Autosize -->
+    <script src="../vendors/autosize/dist/autosize.min.js"></script>
+    <!-- jQuery autocomplete -->
+    <script src="../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+    <!-- starrr -->
+    <script src="../vendors/starrr/dist/starrr.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+
+    <script type="text/javascript">
+
+        var mac;
+        var phone;
+        var email;
+        var name;
+        var user;
+        var pass;
+        var username;
+        var password;
+        $("#Get").click(function (event) {
+
+
+            mac = $('#q1').val();
+            user = $('#q2').val();
+            phone = $('#PhoneNumber').val();
+            email = $('#q4').val();
+            pass = $('#q5').val();
+            name = $('#q6').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Api/UserData_Create',
+                data: { 'username': user, 'password': pass, 'phoneNumber': phone, 'email': email, 'Name': name, 'macID': mac },
+                success: function (result) {
+                    window.alert("Kayıt Başarılı")
+                }
+                ,
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+            }
+            );
+        });
+
+        $("#Set").click(function (event) {
+
+            username = $('#cr1').val();
+            password = $('#cr2').val();
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/Api/UserData_Manage',
+                data: { 'username': username, 'password': password },
+                success: function (result) {
+                    console.log(result);
+                    if (result.length > 0 && result[0].username == username && result[0].password == password && username != "" && password != "") {
+                        window.location.href = "/home/index";
+                    }
+                    else {
+                        window.alert("Bilgilerinizi Kontrol Ediniz.");
+                    }
+                }
+                ,
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+            }
+            );
+        });
+
+
+    </script>
+</body>
+</html>
+
+
+
+

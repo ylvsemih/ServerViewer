@@ -1,0 +1,642 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Server Viewer| </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <!---- <link href="../vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet"> ------Commented. cause of error--->
+    <!-- Select2 -->
+    <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- starrr -->
+    <link href="../vendors/starrr/dist/starrr.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0">
+                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>Server Viewer</span></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="/home/index"><i class="fa fa-home"></i> Dashboard <span></span></a>
+
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li>
+                                            <a href="/home/Device_List">Cihaz Listesi</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/home/device_logs">Cihaz Bildirimler</a>
+                                        </li>
+                                        <li>
+                                            <a href="/home/New_Device">Yeni Cihaz Kaydet</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="">
+                                    <a><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none;">
+                                        <li><a href="/home/OptionsDashboad">Eşik Ayarları</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification">Bildirim Seçenekleri</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification2">Telefon Konfigrasyonu</a></li>
+
+
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <!-- sidebar menu -->
+                    <!-- menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
+                            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                        </a>
+
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        <span></span>
+
+
+                    </div>
+
+                    <nav class="nav navbar-nav">
+                        <ul class=" navbar-right">
+                            <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+
+                                </a>
+                                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+
+                                    <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                                </div>
+                            </li>
+
+                            <li role="presentation" class="nav-item dropdown open">
+                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
+                                </a>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <div class="text-center">
+                                            <a class="dropdown-item">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+            <div class="row  justify-content-center">
+                <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Cihazlar
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" id="mnav">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left" id="renamer">
+                            <h3></h3>
+                        </div>
+
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+
+                    <div class="row">
+                        <!--solu boş bırakan kod---- <div class="col-md-6 ">
+
+
+                        </div> --->
+
+                        <div class="col-md-6 ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>SMS Yolla <small>Formdaki Telefon Numaralarına</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li>
+                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+
+                                        <li>
+                                            <a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br />
+                                    <form class="form-horizontal form-label-left">
+
+
+                                        <div class="form-group row">
+
+                                        </div>
+                                        <div class="form-group row ">
+
+
+                                            <label class="control-label col-md-3 col-sm-3 ">1. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber0" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">2. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber1" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">3. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber2" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">4. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber3" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">5. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber4" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">6. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber5" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">7. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber6" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">8. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber7" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">9. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber8" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <label class="control-label col-md-3 col-sm-3 ">10. Telefon Numarası</label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" id="textNumber9" value="(___) ___ ____">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9  offset-md-3">
+                                                <button type="button" class="btn btn-success" id="Get">Kaydet</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-----second panel-->
+                        <div class="col-md-6 ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>SMS <small>Bilgilendirmeler</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li>
+                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+
+                                        <li>
+                                            <a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br />
+                                    <form class="form-horizontal form-label-left">
+
+
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-md-3 col-sm-3 ">Kalan Kontör </label>
+                                            <div class="col-md-9 col-sm-9 ">
+                                                <input type="text" class="form-control" disabled="disabled" placeholder="100">
+                                            </div>
+                                        </div>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9  offset-md-3">
+                                                <button type="button" class="btn btn-success">Kontör Yükle</button>
+                                                <button type="reset" class="btn btn-primary">Satın Al</button>
+
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <a href="http://fosoft.com.tr/">Fosoft</a> ServerViewer Application All Rights Reserved 2019
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap-wysiwyg -->
+    <script src="../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+    <script src="../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+    <script src="../vendors/google-code-prettify/src/prettify.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+    <!-- Switchery -->
+    <script src="../vendors/switchery/dist/switchery.min.js"></script>
+    <!-- Select2 -->
+    <script src="../vendors/select2/dist/js/select2.full.min.js"></script>
+    <!-- Parsley -->
+    <script src="../vendors/parsleyjs/dist/parsley.min.js"></script>
+    <!-- Autosize -->
+    <script src="../vendors/autosize/dist/autosize.min.js"></script>
+    <!-- jQuery autocomplete -->
+    <script src="../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+    <!-- starrr -->
+    <script src="../vendors/starrr/dist/starrr.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+
+    <script type="text/javascript">
+        var ids;
+        $(document).ready(function () {
+            $.ajax({
+
+                type: 'POST',
+                url: '/Api/DeviceConfig',
+                dataType: 'json',
+                data: { 'Macid': ids },
+                success: function (result) {
+                    ids = result[0].macID;
+                    $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
+                    for (var i = 0; i < result.length; i++) {
+                        $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
+                    }
+
+                    $('.deviceitem').on('click', function (event) {
+                        ids = $(this).data('macid');
+                        $("#DeviceName").val(ids);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Api/SetText',
+                            data: { 'Macid': ids },
+                            dataType: "json",
+                            success: function (result) {
+                                for (var i = 0; i < 10; i++) {
+                                    $("#textNumber" + i).val('(___) ___ ____');
+
+                                }
+                                $('#renamer h3').remove();
+
+                                $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
+
+
+                                for (var i = 0; i < result.length; i++) {
+
+                                    document.getElementById("textNumber" + i).value = result[i].phoneNumber;
+
+                                }
+                            }
+                            ,
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+
+                        }
+                        );
+
+                    });
+                    $("#mnav :first-child").trigger('click');
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+            });
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/Api/SetText',
+                dataType: 'json',
+                data: { 'Macid': ids },
+                success: function (result) {
+                    for (var i = 0; i < result.length; i++) {
+                        document.getElementById("textNumber" + i).value = result[i].phoneNumber;
+                    }
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+            });
+        });
+        //text mask
+
+
+        //Device Id select
+
+
+
+        //
+
+
+
+        $("#Get").click(function (event) {
+            data = [];
+
+            for (var a = 0; a < 10; a++) {
+                if (document.getElementById("textNumber" + a).value == "(___) ___ ____") {
+                    $('#textNumber' + a).val('');
+                }
+                else {
+                    data[a] = $("#textNumber" + a).val();
+                }
+
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/Api/Phones',
+                data: { 'phonelist': data, 'Macid': ids },
+                success: function (result) {
+                    window.alert("Kayıt Başarılı")
+                }
+                ,
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+            }
+            );
+        });
+        function phoneFormat(input) {
+            // Strip all characters from the input except digits
+            input = input.replace(/\D/g, '');
+
+            // Trim the remaining input to ten characters, to preserve phone number format
+            input = input.substring(0, 10);
+
+            // Based upon the length of the string, we add formatting as necessary
+            var size = input.length;
+            if (size == 0) {
+                input = input;
+            } else if (size < 4) {
+                input = '(' + input;
+            } else if (size < 7) {
+                input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6);
+            } else {
+                input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6) + '  ' + input.substring(6, 10);
+            }
+            return input;
+        }
+        document.getElementById('textNumber0').addEventListener('keyup', function (evt) {
+
+            var textNumber0 = document.getElementById('textNumber0');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber0.value = phoneFormat(textNumber0.value);
+        });
+        document.getElementById('textNumber1').addEventListener('keyup', function (evt) {
+
+            var textNumber1 = document.getElementById('textNumber1');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber1.value = phoneFormat(textNumber1.value);
+        });
+        document.getElementById('textNumber2').addEventListener('keyup', function (evt) {
+
+            var textNumber2 = document.getElementById('textNumber2');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber2.value = phoneFormat(textNumber2.value);
+        });
+        document.getElementById('textNumber3').addEventListener('keyup', function (evt) {
+
+            var textNumber3 = document.getElementById('textNumber3');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber3.value = phoneFormat(textNumber3.value);
+        });
+        document.getElementById('textNumber4').addEventListener('keyup', function (evt) {
+
+            var textNumber4 = document.getElementById('textNumber4');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber4.value = phoneFormat(textNumber4.value);
+        });
+        document.getElementById('textNumber5').addEventListener('keyup', function (evt) {
+
+            var textNumber5 = document.getElementById('textNumber5');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber5.value = phoneFormat(textNumber5.value);
+        });
+        document.getElementById('textNumber6').addEventListener('keyup', function (evt) {
+
+            var textNumber6 = document.getElementById('textNumber6');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber6.value = phoneFormat(textNumber6.value);
+        });
+        document.getElementById('textNumber7').addEventListener('keyup', function (evt) {
+
+            var textNumber7 = document.getElementById('textNumber7');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber7.value = phoneFormat(textNumber7.value);
+        });
+        document.getElementById('textNumber8').addEventListener('keyup', function (evt) {
+
+            var textNumber8 = document.getElementById('textNumber8');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber8.value = phoneFormat(textNumber8.value);
+        });
+        document.getElementById('textNumber9').addEventListener('keyup', function (evt) {
+
+            var textNumber9 = document.getElementById('textNumber9');
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            textNumber9.value = phoneFormat(textNumber9.value);
+        });
+
+
+
+    </script>
+
+</body>
+</html>
