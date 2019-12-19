@@ -56,7 +56,7 @@ namespace temperaturemois.Manager
                 {
                     connection.Open();
 
-                    string sql = "SELECT D.DeviceMacID, S.MacID, C.CustomerID, C.Name,C.Surname,C.Phone,C.EMail,D.MaxTemp,D.MinTemp,D.MaxMois,D.MinMois,D.EmailNotification_TempUp,D.SmsNotification_TempUp,D.IvrNotification_TempUp,D.CallNotification_TempUp,D.EmailNotification_TempDown,D.SmsNotification_TempDown,D.IvrNotification_TempDown,D.CallNotification_TempDown, D.EmailNotification_MoisUp,D.SmsNotification_MoisUp,D.IvrNotification_MoisUp,D.CallNotification_MoisUp, D.EmailNotification_MoisDown,D.SmsNotification_MoisDown,D.IvrNotification_MoisDown,D.CallNotification_MoisDown,D.Code,D.DeviceName,D.DeviceMacID,S.Temp,S.Mois FROM DeviceInfo D INNER JOIN Customers C ON D.CustomerID = C.CustomerID INNER JOIN (SELECT t.DeviceID,t.MacID, t.CreateTime, t.Temp, t.Mois FROM ServerStatus t INNER JOIN (SELECT MacID, MAX(CreateTime) CreateTime FROM ServerStatus GROUP BY MacID) tm ON t.MacID = tm.MacID and t.CreateTime = tm.CreateTime) S ON D.DeviceMacID = S.MacID WHERE S.Temp > D.MaxTemp OR S.Temp < D.MinTemp OR S.Mois > D.MaxMois OR S.Mois < D.MinMois ORDER BY D.DeviceMacID";
+                    string sql = "SELECT D.DeviceMacID, S.MacID, C.CustomerID, C.Name,C.Surname,C.Phone,C.EMail,D.MaxTemp,D.MinTemp,D.MaxMois,D.MinMois,D.EmailNotification_TempUp,D.SmsNotification_TempUp,D.IvrNotification_TempUp,D.CallNotification_TempUp,D.EmailNotification_TempDown,D.SmsNotification_TempDown,D.IvrNotification_TempDown,D.CallNotification_TempDown, D.EmailNotification_MoisUp,D.SmsNotification_MoisUp,D.IvrNotification_MoisUp,D.CallNotification_MoisUp, D.EmailNotification_MoisDown,D.SmsNotification_MoisDown,D.IvrNotification_MoisDown,D.CallNotification_MoisDown,D.Code,D.DeviceName,D.DeviceMacID,S.Temp,S.Mois FROM DeviceInfo D INNER JOIN Customers C ON D.CustomerID = C.CustomerID INNER JOIN (SELECT DISTINCT t.DeviceID,t.MacID, t.CreateTime, t.Temp, t.Mois FROM ServerStatus t INNER JOIN (SELECT MacID, MAX(CreateTime) CreateTime FROM ServerStatus GROUP BY MacID) tm ON t.MacID = tm.MacID and t.CreateTime = tm.CreateTime) S ON D.DeviceMacID = S.MacID WHERE S.Temp > D.MaxTemp OR S.Temp < D.MinTemp OR S.Mois > D.MaxMois OR S.Mois < D.MinMois ORDER BY D.DeviceMacID";
 
 
                     SqlCommand command = new SqlCommand(sql, connection);
@@ -199,10 +199,11 @@ namespace temperaturemois.Manager
                 body.AppendLine("Uyarı: \n Server Sıcaklığınız Normalin Üzerinde \n Anlık Durum: \n Sıcaklık: " + temp + "\n Nem: " + mois);
 
                 var smsIstegi = new SmsIstegi();
-                smsIstegi.username = "908502550066";
-                smsIstegi.password = "Ups@2019";
-                smsIstegi.source_addr = "";
+                smsIstegi.username = "908502551103";
+                smsIstegi.password = "xQBoYRJu";
+                smsIstegi.source_addr = "Vodatech";
                 smsIstegi.messages = new Mesaj[] { new Mesaj(body.ToString(), item.phoneNumbers.ToString()) };
+
                 IstegiGonder(smsIstegi);
             }
 

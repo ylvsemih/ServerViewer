@@ -335,6 +335,7 @@
         var morrisData = [{ 'device': null, 'geekbench': null }];
         var morrisData2 = [{ 'device': null, 'geekbench': null }];
         var ids = '7069692D3032';
+
         $(document).ready(function () {
             init_morris_charts();
             init_morris_charts2();
@@ -343,7 +344,6 @@
             setProfileData();
 
         });
-        
 
         function init_morris_charts() {
 
@@ -356,9 +356,7 @@
                 data: { 'Macid': ids },
                 success: function (result) {
                     console.log(result);
-                    for (var i = 0; i < result.length; i++) {
-                        morrisData.pop();
-                    }
+                    morrisData = [];
                     for (var i = 0; i < result.length; i++) {
                         morrisData.push({ 'geekbench': result[i].temp, 'device': result[i].macID });
 

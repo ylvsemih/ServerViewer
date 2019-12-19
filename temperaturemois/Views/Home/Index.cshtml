@@ -621,6 +621,7 @@
         var ids;
 
         $(document).ready(function () {
+
             //gauges
             if ($('#GaugeTemp').length) {
                 GaugeTemp = echarts.init(document.getElementById('GaugeTemp'), theme);
@@ -853,6 +854,7 @@
                                     url: '/Api/DeviceList_Eject',
                                     data: { 'Macid': ids },
                                     success: function (result) {
+
                                     }
                                     ,
                                     failure: function (response) {
@@ -970,9 +972,10 @@
                 dataType: "json",
                 success: function (result) {
                     if (typeof ($.plot) === 'undefined') { return; }
+                    
+                    console.log(result);
 
                     var chart_plot_03_data = [];
-                    console.log(result);
                     for (var i = 0; i < result.length; i++) {
                         chart_plot_03_data.push([new Date(result[result.length - 1 - i].createTime), result[result.length - 1 - i].temp]);
                     }
@@ -1028,9 +1031,11 @@
                 ,
 
                 failure: function (response) {
+                    console.log(response);
                     alert(response.responseText);
                 },
                 error: function (response) {
+                    console.log(response);
                     alert(response.responseText);
                 }
 
@@ -1043,12 +1048,10 @@
 
 
         function init_daterangepicker(start, end) {
-            console.log("attemp");
             if (typeof ($.fn.daterangepicker) === 'undefined') { return; }
 
             var cb = function (start, end, label) {
                 //2 Line below uncommented. (s)
-                console.log(start.toISOString(), end.toISOString(), label);
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                 init_flot_chart(start.format('YYYYMMDD'), end.format('YYYYMMDD')); //hhmmss //'MM/DD/YYYY'
 

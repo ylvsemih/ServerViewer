@@ -156,7 +156,6 @@ namespace TempMoisFinal.Controllers
         {
             public string startDate { get; set; }
             public string endDate { get; set; }
-
         }
         public class Marker
         {
@@ -168,49 +167,62 @@ namespace TempMoisFinal.Controllers
         public JsonResult Charts_Line(string startDate, string endDate, string Macid)
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+            string sql = null;
 
-            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-            string sql;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                DateTime d1 = DateTime.ParseExact(startDate, "yyyyMMdd", CultureInfo.InvariantCulture);
-                DateTime d2 = DateTime.ParseExact(endDate, "yyyyMMdd", CultureInfo.InvariantCulture);
+                string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
-                if ((d1 - d2).TotalDays == 0)
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    d2 = d2.AddDays(1);
+                    connection.Open();
+                    DateTime d1 = DateTime.ParseExact(startDate, "yyyyMMdd", CultureInfo.InvariantCulture);
+                    DateTime d2 = DateTime.ParseExact(endDate, "yyyyMMdd", CultureInfo.InvariantCulture);
 
-                    //sql = "SELECT FORMAT ([CreateTime], 'hh.') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '"+d1 +"' and '"+ d2 + "' GROUP BY FORMAT([CreateTime], 'hh.') ORDER BY CreateTime DESC";
-                    sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '" + d1 + "' and '" + d2 + "' AND MacID='" + Macid + "' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
-                }
-                else if ((d1 - d2).TotalDays == -1)
-                {
-                    sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois]  FROM[ServerViewer].[dbo].[ServerStatus]   WHERE CreateTime between '" + d1 + "' and '" + d2 + "' AND MacID='" + Macid + "'GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
-                }
-                else
-                {
-                    sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd") + "' and '" + d2.ToString("yyyy-MM-dd") + "' AND MacID='" + Macid + "' GROUP BY FORMAT([CreateTime], 'yyyy-MM-dd') ORDER BY min(CreateTime) asc";
-                }
-
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
-                {
-                    while (dataReader.Read())
+                    if ((d1 - d2).TotalDays == 0)
                     {
-                        command.CommandType = CommandType.Text;
-                        ErrorViewModel data = new ErrorViewModel();
+                        d2 = d2.AddDays(1);
 
-                        data.Temp = float.Parse(dataReader["Temp"].ToString());
-                        data.Mois = float.Parse(dataReader["Mois"].ToString());
-                        data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
-                        dataList.Add(data);
+                        //sql = "SELECT FORMAT ([CreateTime], 'hh.') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '"+d1 +"' and '"+ d2 + "' GROUP BY FORMAT([CreateTime], 'hh.') ORDER BY CreateTime DESC";
+                        sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
                     }
-                }
+                    else if ((d1 - d2).TotalDays == -1)
+                    {
+                        sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois]  FROM[ServerViewer].[dbo].[ServerStatus]   WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "'GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
+                    }
+                    else
+                    {
+                        sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd") + "' and '" + d2.ToString("yyyy-MM-dd") + "' AND MacID='" + Macid + "' GROUP BY FORMAT([CreateTime], 'yyyy-MM-dd') ORDER BY min(CreateTime) asc";
+                    }
 
-                connection.Close();
+                    SqlCommand command = new SqlCommand(sql, connection);
+
+                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            command.CommandType = CommandType.Text;
+                            ErrorViewModel data = new ErrorViewModel();
+
+                            data.Temp = float.Parse(dataReader["Temp"].ToString());
+                            data.Mois = float.Parse(dataReader["Mois"].ToString());
+                            data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
+                            data.Msg = sql;
+                            dataList.Add(data);
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorViewModel data = new ErrorViewModel();
+                data.Temp = 0;
+                data.Mois = 0;
+                data.CreateTime = DateTime.Now.ToString();
+                data.Msg = sql;
+                dataList.Add(data);
             }
             return Json(dataList);
         }
@@ -1061,7 +1073,7 @@ namespace TempMoisFinal.Controllers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string UseSQL = "Select [Temp],[Mois],[CustomerID],[DeviceMacID] FROM [ServerViewer].[dbo].[ServerStatus] AS t1 INNER JOIN [ServerViewer].[dbo].[DeviceInfo] AS t2 ON t1.Temp = t2.CustomerID WHERE CustomerID='" + email + "'";
+                string UseSQL = "Select ISNULL([Temp],0) [Temp],ISNULL([Mois],0) [Mois],[CustomerID],[DeviceMacID] FROM [ServerViewer].[dbo].[DeviceInfo] AS t2 LEFT JOIN (SELECT DISTINCT t.DeviceID,t.MacID, t.CreateTime, t.Temp, t.Mois FROM ServerStatus t INNER JOIN (SELECT MacID, MAX(CreateTime) CreateTime FROM ServerStatus GROUP BY MacID) tm ON t.MacID = tm.MacID and t.CreateTime = tm.CreateTime) AS t1 ON t2.DeviceMacID= t1.MacID  WHERE t2.CustomerID='"+email+"'";
                 SqlCommand command = new SqlCommand(UseSQL, connection);
                 using (SqlDataReader dataReader = command.ExecuteReader())
                 {
