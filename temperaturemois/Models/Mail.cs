@@ -21,6 +21,7 @@ namespace temperaturemois.Models
     {
         public static void MailSender()//string body
         {
+            string text = "";
             try
             {
                 List<BackServiceManager.TEST> objList = BackServiceManager.MailService();
@@ -28,14 +29,17 @@ namespace temperaturemois.Models
                 foreach (BackServiceManager.TEST item in objList)
                 {
                     //mail body
+                    
                     var body = new StringBuilder();
-                    body.AppendLine("Uyarı: <br> Server Sıcaklığınız Normalin Üzerinde <br> Anlık Durum: <br> Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture);
+                    
+
+                    body.AppendLine("Dikkat! <br>"+item.DeviceName+":"+item.DeviceMacID+" Sensörünüzde Sıcaklık Yüksekliği Tespit Edildi! <br> Mevcut Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture+"%");
 
                     //till
                     Generate_Notification gnr = new Generate_Notification();
                     Generate_Notification.Notification_Log(Convert.ToInt32(item.CustomerID), body.ToString(), Convert.ToString(item.DeviceMacID), Convert.ToString(item.DeviceName));
                     BackServiceManager bc = new BackServiceManager();
-                    bc.SendSms(item.DeviceMacID, item.Temperature, item.Moisture);
+                    bc.SendSms(item.DeviceMacID, item.Temperature, item.Moisture,item.DeviceName);
 
                     var fromAddress = new MailAddress("noreply@vodatech.com.tr");
                     var toAddress = new MailAddress(item.email); //bilgi.islem@vodatech.com.tr

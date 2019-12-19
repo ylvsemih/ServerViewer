@@ -72,7 +72,12 @@
                         <div>
                             <input type="text" class="form-control" placeholder="Ürün Anahtarı" required="" id="q1" />
                         </div>
-
+                        <div>
+                            <input type="text" class="form-control" placeholder="Cihaz Adı" required="" id="q2" />
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Email Adresi" required="" id="q3" />
+                        </div>
                         <div>
                             <a type="button" class="btn btn-success" href="#" id="Get">Kaydet</a>
                         </div>
@@ -167,11 +172,12 @@
 
 
             mac = $('#q1').val();
-
+            Dname = $('#q2').val();
+            sEmail = $('#q3').val();
             $.ajax({
                 type: 'POST',
                 url: '/Api/NewDevice_Create',
-                data: { 'macID': mac },
+                data: { 'macID': mac, 'DeviceName': Dname, 'Emailaddr': sEmail },
                 success: function (result) {
                     window.alert("Kayıt Başarılı")
                     window.location.href = "/home/index";

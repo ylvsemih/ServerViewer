@@ -1028,9 +1028,8 @@ namespace TempMoisFinal.Controllers
         }
 
         [HttpPost, Route("Api/NewDevice_Create")]
-        public JsonResult New_Device(string macId)
+        public JsonResult New_Device(string macId, string DeviceName,string Emailaddr)
         {
-
             ErrorViewModel data = new ErrorViewModel();
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
 
@@ -1044,6 +1043,8 @@ namespace TempMoisFinal.Controllers
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@DeviceMacID", macId);
                         cmd.Parameters.AddWithValue("@CustomerID", email);
+                        cmd.Parameters.AddWithValue("@DeviceName", DeviceName);
+                        cmd.Parameters.AddWithValue("@EMail", Emailaddr);
                         dataList.Add(data);
                         cn.Open();
                         cmd.ExecuteNonQuery();
@@ -1058,11 +1059,8 @@ namespace TempMoisFinal.Controllers
                 data.Msg = ex.Message;
                 data.Result = false;
             }
-
-
             return Json(dataList);
         }
-
         //morris
         [HttpPost, Route("Api/Morris_Chart")]
         public JsonResult Morris_Chart(string Macid)

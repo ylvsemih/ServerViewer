@@ -67,7 +67,6 @@ namespace temperaturemois.Manager
                         {
                             command.CommandType = CommandType.Text;
                             TEST _obj = new TEST();
-
                             _obj.MaxTemp = int.Parse(dataReader["MaxTemp"].ToString());
                             _obj.MinTemp = int.Parse(dataReader["MinTemp"].ToString());
                             _obj.MaxMois = int.Parse(dataReader["MaxMois"].ToString());
@@ -83,7 +82,6 @@ namespace temperaturemois.Manager
                             _obj.DeviceName = Convert.ToString(dataReader["DeviceName"]);
                             _obj.Temperature = float.Parse((dataReader["Temp"]).ToString());
                             _obj.Moisture = float.Parse((dataReader["Mois"]).ToString());
-
                             obj.Add(_obj);
                         }
 
@@ -110,13 +108,9 @@ namespace temperaturemois.Manager
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
                     string sql = "SELECT [CustomerID],[Phones] FROM [ServerViewer].[dbo].[PhoneList] WHERE DeviceMacID=@DeviceMacID";
-
-
                     SqlCommand command = new SqlCommand(sql, connection);
                     command.Parameters.AddWithValue("@DeviceMacID", macid);
-
                     using (SqlDataReader dataReader = command.ExecuteReader())
                     {
                         while (dataReader.Read())
@@ -127,7 +121,6 @@ namespace temperaturemois.Manager
                             each.Add(_obj);
                         }
                     }
-
                     connection.Close();
                 }
             }
@@ -190,13 +183,13 @@ namespace temperaturemois.Manager
             }
         }
 
-        public void SendSms(string macid, float temp, float mois)
+        public void SendSms(string macid, float temp, float mois,string devicename)
         {
             List<BackServiceManager.PhoneBring> listview = BackServiceManager.GetNumber(macid);
             foreach (BackServiceManager.PhoneBring item in listview)
             {
                 var body = new StringBuilder();
-                body.AppendLine("Uyarı: \n Server Sıcaklığınız Normalin Üzerinde \n Anlık Durum: \n Sıcaklık: " + temp + "\n Nem: " + mois);
+                body.AppendLine("Dikkat! \n" + devicename + ":" + macid + " Sensörünüzde Sıcaklık Yüksekliği Tespit Edildi! \n Mevcut Sıcaklık: " + temp + " \n Nem: " + mois + "%");
 
                 var smsIstegi = new SmsIstegi();
                 smsIstegi.username = "908502551103";
