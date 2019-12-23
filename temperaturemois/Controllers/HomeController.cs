@@ -691,7 +691,7 @@ namespace TempMoisFinal.Controllers
         }
         //Create Account
         [HttpPost, Route("Api/UserData_Create")]
-        public JsonResult New_User(string username, string password, string phoneNumber, string email, string Name, string macId)
+        public JsonResult New_User(string username, string password, string phoneNumber, string email, string Name, string macId, string devicename)
         {
 
             ErrorViewModel data = new ErrorViewModel();
@@ -713,6 +713,7 @@ namespace TempMoisFinal.Controllers
                         cmd.Parameters.AddWithValue("@EMail", email);
                         cmd.Parameters.AddWithValue("@Company", Name);
                         cmd.Parameters.AddWithValue("@DeviceMacID", macId);
+                        cmd.Parameters.AddWithValue("@DeviceName", devicename);
                         dataList.Add(data);
                         cn.Open();
                         cmd.ExecuteNonQuery();
@@ -960,7 +961,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
 
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-            string UseSQL = "SELECT TOP 1 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID='" + email + "' ORDER BY CreateTime DESC";
+            string UseSQL = "SELECT TOP 3 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID='" + email + "' ORDER BY CreateTime DESC";
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -1163,6 +1164,92 @@ namespace TempMoisFinal.Controllers
             {
                 data.Msg = ex.Message;
                 data.Result = false;
+            }
+
+
+            return Json(dataList);
+        }
+        //SELECT EMAIL LIST
+        [HttpPost, Route("Api/EmailList")]
+        public JsonResult Get_Emails(string Macid)
+        {
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+
+            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                var email = HttpContext.Session.GetInt32("KullaniciEmail");
+                connection.Open();
+
+                string sql = "SELECT [CustomerID],[DeviceMacID],[EMail] FROM [ServerViewer].[dbo].[EmailList] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        command.CommandType = CommandType.Text;
+                        ErrorViewModel data = new ErrorViewModel();
+                        data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
+                        data.Email = Convert.ToString(dataReader["EMail"]);
+                        dataList.Add(data);
+
+                    }
+                }
+
+                connection.Close();
+            }
+            return Json(dataList);
+        }
+
+        //INSERT EMAIL LIST
+        [HttpPost, Route("Api/SetEmailList")]
+        public JsonResult Set_Email_List(string Macid, string[] sEmail)
+        {
+
+            ErrorViewModel data = new ErrorViewModel();
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+            string connectionString = "data source=SQL5;Database=ServerViewer;User ID=semih; Password=semih;";
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
+            using (SqlConnection cn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("Delete From EmailList WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID", cn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                    cn.Close();
+
+                }
+            }
+            foreach (string item in sEmail)
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO dbo.EmailList(CustomerID,DeviceMacID,EMail) VALUES(@CustomerID,@DeviceMacID,@EMail) ", cn))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@CustomerID", email);
+                        cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                        cmd.Parameters.AddWithValue("@EMail", item);
+                        if (item != null)
+                        {
+                            cn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                        if (item == null)
+                        {
+                            cn.Close();
+                        }
+
+
+
+                        cn.Close();
+
+                    }
+                }
             }
 
 

@@ -38,6 +38,7 @@ namespace temperaturemois.Models
         public string Company { get; set; }
         public bool EmailCheck { get; set; }
         public string DeviceCode { get; set; }
+        public string DeviceName { get; set; }
         public string[] AllPhones { get; set; }
 
         public string CihazAD { get; set; }

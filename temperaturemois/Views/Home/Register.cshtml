@@ -109,6 +109,9 @@
                             <input type="text" class="form-control" placeholder="İşletme Adı" required="" id="q6" />
                         </div>
                         <div>
+                            <input type="text" class="form-control" placeholder="Cihaz Adı" required="" id="q7" />
+                        </div>
+                        <div>
                             <a type="button" class="btn btn-success" href="#" id="Get">Kayıt Ol</a>
                         </div>
 
@@ -222,13 +225,14 @@
             email = $('#q4').val();
             pass = $('#q5').val();
             name = $('#q6').val();
+            dvcname = $('#q7').val();
 
             $.ajax({
                 type: 'POST',
                 url: '/Api/UserData_Create',
-                data: { 'username': user, 'password': pass, 'phoneNumber': phone, 'email': email, 'Name': name, 'macID': mac },
+                data: { 'username': user, 'password': pass, 'phoneNumber': phone, 'email': email, 'Name': name, 'macID': mac, 'devicename': dvcname },
                 success: function (result) {
-                    window.alert("Kayıt Başarılı")
+                    window.alert("Kayıt Başarılı");
                 }
                 ,
                 failure: function (response) {

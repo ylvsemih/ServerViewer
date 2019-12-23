@@ -130,70 +130,18 @@
                                 </div>
                             </li>
 
-                            <li role="presentation" class="nav-item dropdown open">
+                            <li role="presentation" class="nav-item dropdown open" >
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
+                                    <span id="msgcount" class="badge bg-green"></span>
                                 </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" id="msgBoxTop">
 
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
+                                   
                                 </ul>
+
                             </li>
+                            
                         </ul>
                     </nav>
                 </div>
@@ -840,15 +788,45 @@
                         data: { 'Macid': ids },
                         success: function (result) {
                             ids = result[0].macID;
-                            $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
-                            for (var i = 0; i < result.length; i++) {
-                                $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
+                            $('#renamer').append('<h3>Cihaz: ' + result[0].name + '</h3>');
+                            for (var i = 0; i < result.length; i++) {
+                                $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-name="' + result[i].name + '" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
                             }
+
+                            //message box append
+                            $.ajax({
+
+                                type: 'POST',
+                                url: '/Api/Select_Notify',
+                                dataType: 'json',
+                                data: { 'Macid': ids },
+                                success: function (result) {
+
+
+                                    for (var i = 0; i < result.length; i++) {
+                                       // $('#msgBoxTop').append(' <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1"><li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li></ul>');
+                                        $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name    + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+
+                                    }
+                                    $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>')
+
+                                    $('#msgcount').append(result.length);
+                                },
+                                failure: function (response) {
+                                    alert(response.responseText);
+                                },
+                                error: function (response) {
+                                    alert(response.responseText);
+                                }
+                            });
+
+
                             $(".deviceitem").on('click', function (event) {
                                 ids = $(this).data('macid');
+                                sname = $(this).data('name');
                                 $('#renamer h3').remove();
-                                $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
+                                $('#renamer').append('<h3>Cihaz: ' + sname + '</h3>');
                                 $.ajax({
                                     type: 'POST',
                                     url: '/Api/DeviceList_Eject',
@@ -866,8 +844,6 @@
 
                                 }
                                 );
-
-
                             });
 
                         },
@@ -879,23 +855,16 @@
                         }
 
                     });
-
-
-
                     var mydate = moment();
                     var weekDayName = moment(mydate).format('YYYYMMDD');
-                    var mySeconddate = moment().subtract(6, 'days');
+                    var mySeconddate = moment().subtract(1, 'days');
                     var weekDayName2 = moment(mySeconddate).format('YYYYMMDD');
                     var todaydate = moment().startOf('day').format('YYYYMMDD');
                     gaugeDraw();
                     setInterval(gaugeDraw, 4000);
-
-                    //daterange pickerdaki start ve end parametrelerine gidiyor. Bugünün dışında bir veri var ise formatın hh:mm den başka
-                    //birşeye geçmesi gerekiyor. onun ayarlanması muhtemelen #reportrangelerin initinde.
-                    //ve eğer gün 1 den büyük ise xaxis konfigrasyonunun değişmesi gerekiyor.
-                    init_flot_chart(todaydate, weekDayName);
+                    init_flot_chart(weekDayName2, weekDayName);
                     init_daterangepicker();
-                    init_flot_chart2(todaydate, weekDayName);
+                    init_flot_chart2(weekDayName2, weekDayName);
                     init_daterangepicker2();
                 },
                 failure: function (response) {
@@ -911,7 +880,7 @@
                 dataType: 'json',
                 data: { 'Macid': ids },
                 success: function (result) {
-                    $('#welcome h2').append("Hoşgeldin <br> " + result[0].name);
+                    $('#welcome h2').append(result[0].name + " " + result[0].surname);
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -972,7 +941,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (typeof ($.plot) === 'undefined') { return; }
-                    
+
                     console.log(result);
 
                     var chart_plot_03_data = [];
@@ -1060,7 +1029,7 @@
             };
 
             var optionSet1 = {
-                startDate: moment().startOf('day'),
+                startDate: moment().subtract(1, 'days'),
                 endDate: moment(),
                 minDate: '01/01/2012',
                 maxDate: '12/31/2019',
@@ -1073,7 +1042,6 @@
                 timePickerIncrement: 1,
                 timePicker12Hour: true,
                 ranges: {
-                    'Bugün': [moment(), moment()],
                     'Son 24 Saat': [moment().subtract(1, 'days'), moment()],
                     'Son 7 Gün': [moment().subtract(6, 'days'), moment()],
                     'Son 30 Gün': [moment().subtract(29, 'days'), moment()],
@@ -1219,7 +1187,7 @@
             };
 
             var optionSet1 = {
-                startDate: moment().startOf('day'),
+                startDate: moment().subtract(1, 'days'),
                 endDate: moment(),
                 minDate: '01/01/2012',
                 maxDate: '12/31/2019',
@@ -1232,7 +1200,6 @@
                 timePickerIncrement: 1,
                 timePicker12Hour: true,
                 ranges: {
-                    'Bugün': [moment(), moment()],
                     'Son 24 Saat': [moment().subtract(1, 'days'), moment()],
                     'Son 7 Gün': [moment().subtract(6, 'days'), moment()],
                     'Son 30 Gün': [moment().subtract(29, 'days'), moment()],

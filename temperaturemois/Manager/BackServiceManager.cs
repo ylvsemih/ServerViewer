@@ -46,6 +46,11 @@ namespace temperaturemois.Manager
         {
             public string phoneNumbers { get; set; }
         }
+
+        public class MailBring
+        {
+            public string Mails { get; set; }
+        }
         public static List<TEST> MailService()
         {
             List<TEST> obj = new List<TEST>();
@@ -119,6 +124,39 @@ namespace temperaturemois.Manager
                             PhoneBring _obj = new PhoneBring();
                             _obj.phoneNumbers = Convert.ToString(dataReader["Phones"]);
                             each.Add(_obj);
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return each;
+        }
+
+        public static List<MailBring> GetMail(string macid)
+        {
+            List<MailBring> each = new List<MailBring>();
+            string connectionString = "data source=SQL5;Database=ServerViewer;User ID=semih; Password=semih;";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = "SELECT [CustomerID],[EMail] FROM [ServerViewer].[dbo].[EmailList] WHERE DeviceMacID=@DeviceMacID";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.AddWithValue("@DeviceMacID", macid);
+                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            command.CommandType = CommandType.Text;
+                            MailBring _elm = new MailBring();
+                            _elm.Mails = Convert.ToString(dataReader["EMail"]);
+                            each.Add(_elm);
                         }
                     }
                     connection.Close();

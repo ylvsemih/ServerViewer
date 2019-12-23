@@ -21,7 +21,7 @@ namespace temperaturemois.Models
     {
         public static void MailSender()//string body
         {
-            string text = "";
+            
             try
             {
                 List<BackServiceManager.TEST> objList = BackServiceManager.MailService();
@@ -42,23 +42,29 @@ namespace temperaturemois.Models
                     bc.SendSms(item.DeviceMacID, item.Temperature, item.Moisture,item.DeviceName);
 
                     var fromAddress = new MailAddress("noreply@vodatech.com.tr");
-                    var toAddress = new MailAddress(item.email); //bilgi.islem@vodatech.com.tr
-                    const string subject = "Server Viewer Mail Bildirim";
-                    using (var smtp = new SmtpClient
+                    List<BackServiceManager.MailBring> listview = BackServiceManager.GetMail(item.DeviceMacID.ToString());
+                    foreach (BackServiceManager.MailBring list in listview)
                     {
-                        Host = "mail.vodatech.com.tr",
-                        Port = 587,
-                        EnableSsl = false,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(fromAddress.Address, "1qaz2wsxA")
-                    })
-                    {
-                        using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body.ToString(), IsBodyHtml = true })
+                        var toAddress = new MailAddress(list.Mails); //bilgi.islem@vodatech.com.tr
+                        const string subject = "Server Viewer Mail Bildirim";
+                        using (var smtp = new SmtpClient
                         {
-                            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                            smtp.Send(message);
+                            Host = "mail.vodatech.com.tr",
+                            Port = 587,
+                            EnableSsl = false,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Credentials = new NetworkCredential(fromAddress.Address, "1qaz2wsxA")
+
+                        })
+                        {
+                            using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body.ToString(), IsBodyHtml = true })
+                            {
+                                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                                smtp.Send(message);
+                            }
                         }
+
                     }
                 }
             }
