@@ -26,8 +26,11 @@ namespace TempMoisFinal.Controllers
     {
         public string Phones { get; set; }
     }
+
+    
     public class HomeController : Controller
     {
+        
         public string CreatePassword(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -48,8 +51,11 @@ namespace TempMoisFinal.Controllers
         {
             Configuration = configuration;
         }
+
+        [ClaimRequirement]
         public IActionResult Index()
         {
+           
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
 
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
@@ -118,6 +124,8 @@ namespace TempMoisFinal.Controllers
 
         }
 
+        
+
         [HttpGet, Route("Api/Charts")]
         public JsonResult Charts(string Macid)
         {
@@ -152,17 +160,20 @@ namespace TempMoisFinal.Controllers
             return Json(dataList);
         }
 
+        
         public class PostModelTest
         {
             public string startDate { get; set; }
             public string endDate { get; set; }
         }
+        
         public class Marker
         {
             public decimal position { get; set; }
             public int markerPosition { get; set; }
         }
 
+        
         [HttpPost, Route("Api/Charts_Line")]
         public JsonResult Charts_Line(string startDate, string endDate, string Macid)
         {
@@ -226,6 +237,8 @@ namespace TempMoisFinal.Controllers
             }
             return Json(dataList);
         }
+
+       
 
         [HttpPost, Route("Api/Arc_Value")]
         public JsonResult Arc_Value(int Position, string Type, string Macid)
@@ -423,12 +436,16 @@ namespace TempMoisFinal.Controllers
             }
             return Json(dataList);
         }
+        [ClaimRequirement]
         public IActionResult Create()
         {
+           
             return View();
         }
+        [ClaimRequirement]
         public IActionResult OptionsDashboad()
         {
+            
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
@@ -460,45 +477,54 @@ namespace TempMoisFinal.Controllers
             }
             return View();
         }
+        [ClaimRequirement]
         public IActionResult OptionsDashboard_Notification()
+        {
+          
+            return View();
+        }
+        [ClaimRequirement]
+        public IActionResult OptionsDashboard_Notification2()
+        {
+           
+            return View();
+        }
+        [ClaimRequirement]
+        public IActionResult Device_List()
+        {
+            
+            return View();
+        }
+        [ClaimRequirement]
+        public IActionResult Forget_pass()
+        {
+           
+            return View();
+        }
+        [ClaimRequirement]
+        public IActionResult Device_Logs()
+        {
+            
+            return View();
+        }
+        [ClaimRequirement]
+        public IActionResult New_Device()
+        {
+            
+            return View();
+        }
+        [ClaimRequirement]
+        public IActionResult Profile()
+        {
+            
+            return View();
+        }
+        public IActionResult MacID_Register_ByADMIN()
         {
             return View();
         }
 
-        public IActionResult OptionsDashboard_Notification2()
-        {
-            return View();
-        }
-        public IActionResult Device_List()
-        {
-            return View();
-        }
-        public IActionResult Forget_pass()
-        {
-            return View();
-        }
-        public IActionResult Device_Logs()
-        {
-            return View();
-        }
-        public IActionResult Register()
-        {
-            return View();
-        }
-        public IActionResult New_Device()
-        {
-            return View();
-        }
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            Response.Redirect("/Home/Register");
-            return View();
-        }
-        public IActionResult Profile()
-        {
-            return View();
-        }
+
         [HttpGet, Route("Api/LogServerStatus")]
         public ErrorViewModel Create([FromUri]string temp, [FromUri]string mois, [FromUri]string MacId)
         {
@@ -776,7 +802,18 @@ namespace TempMoisFinal.Controllers
             }
             //HttpContext.Session.SetString("MacAdress", Mac);
             HttpContext.Session.SetInt32("KullaniciEmail", Customer);
+            
             return Json(dataList);
+        }
+        public IActionResult Register()
+        {
+            return View();
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            Response.Redirect("/Home/Register");
+            return View();
         }
 
         //forgetmypassword
@@ -961,7 +998,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
 
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-            string UseSQL = "SELECT TOP 3 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID='" + email + "' ORDER BY CreateTime DESC";
+            string UseSQL = "SELECT TOP 3 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID='" + email + "' AND Type='general' ORDER BY CreateTime DESC";
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -997,7 +1034,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
             try
             {
-                string UseSQL = "SELECT [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
+                string UseSQL = "SELECT [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "' AND Type='general' ORDER BY CreateTime DESC";
 
                 string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
@@ -1029,7 +1066,7 @@ namespace TempMoisFinal.Controllers
         }
 
         [HttpPost, Route("Api/NewDevice_Create")]
-        public JsonResult New_Device(string macId, string DeviceName,string Emailaddr)
+        public JsonResult New_Device(string macId, string DeviceName)
         {
             ErrorViewModel data = new ErrorViewModel();
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
@@ -1045,7 +1082,6 @@ namespace TempMoisFinal.Controllers
                         cmd.Parameters.AddWithValue("@DeviceMacID", macId);
                         cmd.Parameters.AddWithValue("@CustomerID", email);
                         cmd.Parameters.AddWithValue("@DeviceName", DeviceName);
-                        cmd.Parameters.AddWithValue("@EMail", Emailaddr);
                         dataList.Add(data);
                         cn.Open();
                         cmd.ExecuteNonQuery();
@@ -1256,6 +1292,94 @@ namespace TempMoisFinal.Controllers
             return Json(dataList);
         }
 
+        //SET DELAY
+        [HttpPost, Route("Api/SetDelay")]
+        public JsonResult Set_Notification_Delay(string Macid, int delayValue,string type)
+        {
+            ErrorViewModel data = new ErrorViewModel();
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+            string connectionString = "data source=SQL5;Database=ServerViewer;User ID=semih; Password=semih;";
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
+             
+            using (SqlConnection cn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("UPDATE [ServerViewer].[dbo].[DeviceInfo] SET "+type+"=" + delayValue+" WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID", cn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                    cn.Close();
 
+                }
+            }
+            return Json(dataList);
+        }
+
+        [HttpPost, Route("Api/GetDelay")]
+        public JsonResult Get_Notification_Delay(string Macid)
+        {
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+
+            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                var email = HttpContext.Session.GetInt32("KullaniciEmail");
+                connection.Open();
+
+                string sql = "SELECT TOP 1 [DelayTempUp],[DelayTempDown],[DelayMoisUp],[DelayMoisDown] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                using (SqlDataReader dataReader = command.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
+                        command.CommandType = CommandType.Text;
+                        ErrorViewModel data = new ErrorViewModel();
+                        data.DelayTempUp = Convert.ToInt32(dataReader["DelayTempUp"]);
+                        data.DelayTempDown = Convert.ToInt32(dataReader["DelayTempDown"]);
+                        data.DelayMoisUp = Convert.ToInt32(dataReader["DelayMoisUp"]);
+                        data.DelayMoisDown = Convert.ToInt32(dataReader["DelayMoisDown"]);
+                        dataList.Add(data);
+
+                    }
+                }
+
+                connection.Close();
+            }
+            return Json(dataList);
+        }
+
+        [HttpPost, Route("Api/NewDevice_Create_ByAdmin")]
+        public JsonResult New_Device_ByAdmin(string macId, string code)
+        {
+            ErrorViewModel data = new ErrorViewModel();
+            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
+            try
+            {
+                using (SqlConnection cn = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO [ServerViewer].[dbo].[DeviceInfo](DeviceMacID,Code) VALUES(@DeviceMacID,@Code)", cn))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@DeviceMacID", macId);
+                        cmd.Parameters.AddWithValue("@Code", code);
+                        dataList.Add(data);
+                        cn.Open();
+                        cmd.ExecuteNonQuery();
+                        cn.Close();
+                    }
+                }
+                data.Msg = "Sunucu log kaydı başarıyla kaydedilmiştir.";
+                data.Result = true;
+            }
+            catch (Exception ex)
+            {
+                data.Msg = ex.Message;
+                data.Result = false;
+            }
+            return Json(dataList);
+        }
     }
 }

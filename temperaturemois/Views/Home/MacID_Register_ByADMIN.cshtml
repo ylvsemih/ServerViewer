@@ -73,7 +73,7 @@
                             <input type="text" class="form-control" placeholder="Ürün Anahtarı" required="" id="q1" />
                         </div>
                         <div>
-                            <input type="text" class="form-control" placeholder="Cihaz Adı" required="" id="q2" />
+                            <input type="text" class="form-control" placeholder="Cihaz Kod" required="" id="q2" />
                         </div>
 
                         <div>
@@ -159,27 +159,21 @@
     <script type="text/javascript">
 
         var mac;
-        var phone;
-        var email;
-        var name;
-        var user;
-        var pass;
-        var username;
-        var password;
+        var dcode;
+        
         $("#Get").click(function (event) {
 
 
             mac = $('#q1').val();
-            Dname = $('#q2').val();
+            dcode = $('#q2').val();
             $.ajax({
                 type: 'POST',
-                url: '/Api/NewDevice_Create',
-                data: { 'macID': mac, 'DeviceName': Dname },
+                url: '/Api/NewDevice_Create_ByAdmin',
+                data: { 'macID': mac, 'code': dcode },
                 success: function (result) {
                     if (result[0].result) {
-                        window.alert("Kayıt Başarılı");
-
-                        window.location.href = "/home/index";
+                        window.alert("Mac ID Kaydı Başarılı");
+                        
                     }
                     else {
                         window.alert(result[0].msg);

@@ -37,7 +37,11 @@ namespace temperaturemois.Models
 
                     //till
                     Generate_Notification gnr = new Generate_Notification();
-                    Generate_Notification.Notification_Log(Convert.ToInt32(item.CustomerID), body.ToString(), Convert.ToString(item.DeviceMacID), Convert.ToString(item.DeviceName));
+                    Generate_Notification.Notification_Log(Convert.ToInt32(item.CustomerID), body.ToString(), Convert.ToString(item.DeviceMacID), Convert.ToString(item.DeviceName), "mail");
+                    Generate_Notification.Notification_Log(Convert.ToInt32(item.CustomerID), body.ToString(), Convert.ToString(item.DeviceMacID), Convert.ToString(item.DeviceName), "sms");
+                    Generate_Notification.Notification_Log(Convert.ToInt32(item.CustomerID), body.ToString(), Convert.ToString(item.DeviceMacID), Convert.ToString(item.DeviceName), "general");
+
+
                     BackServiceManager bc = new BackServiceManager();
                     bc.SendSms(item.DeviceMacID, item.Temperature, item.Moisture,item.DeviceName);
 

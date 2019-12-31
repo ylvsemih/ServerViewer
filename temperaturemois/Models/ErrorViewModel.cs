@@ -71,5 +71,11 @@ namespace temperaturemois.Models
         public bool Call_MoisUp { get; set; }
         public bool Call_MoisDown { get; set; }
 
+        //delays
+        public int DelayTempUp { get; set; }
+        public int DelayTempDown { get; set; }
+        public int DelayMoisUp { get; set; }
+        public int DelayMoisDown { get; set; }
+
     }
 }

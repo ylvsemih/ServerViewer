@@ -20,13 +20,16 @@
     <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- PNotify -->
-    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="../vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
+
+    <!-- Ion.RangeSlider -->
+    <link href="../vendors/normalize-css/normalize.css" rel="stylesheet">
+    <link href="../vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
+    <link href="../vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+
 </head>
 
 <body class="nav-md">
@@ -213,25 +216,33 @@
                         <div class="title_left" id="renamer">
                             <h3></h3>
                         </div>
-
-
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                    <div class="">
-
-
                     </div>
                     <div class="clearfix"></div>
 
                     <div class="">
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="">
+                    </div>
 
+                    <!-- form grid slider -->
+                    <div class="x_panel" style="">
 
+                        <div class="x_content">
+                            <div class="row grid_slider">
 
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <p>Prevent one from dragging the labels</p>
+                                    <input type="text" id="range" value="" name="DelayTempUp" />
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <p>Prevent one from dragging the labels</p>
+                                    <input type="text" id="range2" value="" name="DelayTempDown" />
+                                </div>
 
+                            </div>
 
-
+                        </div>
                     </div>
 
 
@@ -329,6 +340,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- form grid slider -->
+                    <div class="x_panel" style="">
+
+                        <div class="x_content">
+                            <div class="row grid_slider">
+
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <p>Prevent one from dragging the labels</p>
+                                    <input type="text" id="range3" value="" name="DelayMoisUp" />
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <p>Prevent one from dragging the labels</p>
+                                    <input type="text" id="range4" value="" name="DelayMoisDown" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /form grid slider -->
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
@@ -456,15 +488,16 @@
     <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="../vendors/iCheck/icheck.min.js"></script>
-    <!-- PNotify -->
     <!-- Custom Theme Scripts -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../build/js/custom.min.js"></script>
-    <script>
+
+    <!-- Ion.RangeSlider -->
+    <script src="../vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+
+    <script type="text/javascript">
         var ids;
         $(document).ready(function () {
-
-
-            //edit
 
             $.ajax({
 
@@ -481,6 +514,105 @@
 
                     $('.deviceitem').on('click', function (event) {
                         ids = $(this).data('macid');
+
+                        $("#range").ionRangeSlider();
+                        var slider = $("#range").data("ionRangeSlider");
+                        $("#range2").ionRangeSlider();
+                        var slider2 = $("#range2").data("ionRangeSlider");
+                        $("#range3").ionRangeSlider();
+                        var slider3 = $("#range3").data("ionRangeSlider");
+                        $("#range4").ionRangeSlider();
+                        var slider4 = $("#range4").data("ionRangeSlider");
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Api/GetDelay',
+                            data: { 'Macid': ids },
+                            dataType: "json",
+                            success: function (result) {
+
+                                slider.update({
+                                    from: result[0].delayTempUp
+                                });
+
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+
+                        });
+                        slider.update();
+                        //slider 2 
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Api/GetDelay',
+                            data: { 'Macid': ids },
+                            dataType: "json",
+                            success: function (result) {
+
+                                slider2.update({
+                                    from: result[0].delayTempDown
+                                });
+
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+
+                        });
+                        slider.update();
+                        //slider 3
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Api/GetDelay',
+                            data: { 'Macid': ids },
+                            dataType: "json",
+                            success: function (result) {
+
+                                slider3.update({
+                                    from: result[0].delayMoisUp
+                                });
+
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+
+                        });
+                        slider3.update();
+                        //slider 4
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Api/GetDelay',
+                            data: { 'Macid': ids },
+                            dataType: "json",
+                            success: function (result) {
+
+                                slider4.update({
+                                    from: result[0].delayMoisDown
+                                });
+
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+
+                        });
+                        slider4.update();
+
+
+
 
                         $('#renamer h3').remove();
                         $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
@@ -609,31 +741,6 @@
                     });
 
                     $("#mnav :first-child").trigger('click');
-
-                    //$.ajax({
-
-                    //    type: 'POST',
-                    //    url: '/Api/Arc_Value',
-                    //    dataType: 'json',
-                    //    data: { 'Macid': ids },
-                    //    success: function (result) {
-                    //        $("#knob1").val(result[0].minTemp);
-                    //        $("#knob1").trigger('change');
-                    //        $("#knob2").val(result[0].maxTemp);
-                    //        $("#knob2").trigger('change');
-                    //        $("#knob3").val(result[0].minMois);
-                    //        $("#knob3").trigger('change');
-                    //        $("#knob4").val(result[0].maxMois);
-                    //        $("#knob4").trigger('change');
-                    //    },
-                    //    failure: function (response) {
-                    //        alert(response.responseText);
-                    //    },
-                    //    error: function (response) {
-                    //        alert(response.responseText);
-                    //    }
-
-                    //});
 
                 },
                 failure: function (response) {
@@ -774,10 +881,172 @@
         });
 
 
+        $("#range").ionRangeSlider({
 
-        //$('#e1').change(function () {
-        //    alert($(this).prop('checked'))
-        //})
+            type: "single",
+            min: 5,
+            max: 120,
+            step: 5,
+            grid: true,
+            max_postfix: "",
+            prefix: "Gecikme: ",
+            postfix: " Dakika",
+            onStart: function (data) {
+                // Called right after range slider instance initialised
+                //GetDelay
+                //data.min=10;
+
+
+            },
+            onChange: function (data) {
+                // Called every time handle position is changed
+                var nameofdd = $('#range').attr("name");
+                var position = data.from;
+                console.log("name:" + nameofdd);
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/SetDelay',
+                    data: { 'Macid': ids, 'delayValue': position, 'type': nameofdd },
+                    dataType: "json",
+                    success: function (result) { 
+
+                    }
+                    ,
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+
+                });
+
+            },
+            onUpdate: function (data) {
+                // Called then slider is changed using Update public method
+
+            },
+            onFinish: function (data) {
+
+            }
+
+        });
+
+        $("#range2").ionRangeSlider({
+
+            type: "single",
+            min: 5,
+            max: 120,
+            step: 5,
+            grid: true,
+            max_postfix: "",
+            prefix: "Gecikme: ",
+            postfix: " Dakika",
+            onStart: function (data) {
+                // Called right after range slider instance initialised
+            },
+            onChange: function (data) {
+                // Called every time handle position is changed
+                var nameofdd = $('#range2').attr("name");
+                var position = data.from;
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/SetDelay',
+                    data: { 'Macid': ids, 'delayValue': position, 'type': nameofdd },
+                    dataType: "json",
+                    success: function (result) {
+
+                    }
+                    ,
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+
+                });
+                console.log("what we need: " + data.from);
+            },
+
+        });
+        $("#range3").ionRangeSlider({
+
+            type: "single",
+            min: 5,
+            max: 120,
+            step: 5,
+            grid: true,
+            max_postfix: "",
+            prefix: "Gecikme: ",
+            postfix: " Dakika",
+            onStart: function (data) {
+                // Called right after range slider instance initialised
+            },
+            onChange: function (data) {
+                // Called every time handle position is changed
+                var nameofdd = $('#range3').attr("name");
+                var position = data.from;
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/SetDelay',
+                    data: { 'Macid': ids, 'delayValue': position, 'type': nameofdd },
+                    dataType: "json",
+                    success: function (result) {
+
+                    }
+                    ,
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+
+                });
+                console.log("what we need: " + data.from);
+            },
+
+        });
+        $("#range4").ionRangeSlider({
+
+            type: "single",
+            min: 5,
+            max: 120,
+            step: 5,
+            grid: true,
+            max_postfix: "",
+            prefix: "Gecikme: ",
+            postfix: " Dakika",
+            onStart: function (data) {
+                // Called right after range slider instance initialised
+            },
+            onChange: function (data) {
+                // Called every time handle position is changed
+                var nameofdd = $('#range4').attr("name");
+                var position = data.from;
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/SetDelay',
+                    data: { 'Macid': ids, 'delayValue': position, 'type': nameofdd },
+                    dataType: "json",
+                    success: function (result) {
+
+                    }
+                    ,
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+
+                });
+                console.log("what we need: " + data.from);
+            },
+
+        });
+
 
         $('#e1, #e2 ,#e3,#e4,#m1,#m2,#m3,#m4,#I1,#I2,#I3,#I4,#c1,#c2,#c3,#c4').change(function (event) {
 

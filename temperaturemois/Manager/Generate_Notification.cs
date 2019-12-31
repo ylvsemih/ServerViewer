@@ -13,7 +13,7 @@ namespace temperaturemois.Manager
 {
     public class Generate_Notification
     {
-        public static List<ErrorViewModel> Notification_Log(int CustomerID, string notification, string macId,string dName)
+        public static List<ErrorViewModel> Notification_Log(int CustomerID, string notification, string macId,string dName,string type)
         {
 
             ErrorViewModel data = new ErrorViewModel();
@@ -22,13 +22,14 @@ namespace temperaturemois.Manager
             {
                 using (SqlConnection cn = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO [ServerViewer].[dbo].[Notifications] ([CustomerID],[NotificationContent],[DeviceMacID],[DeviceName]) VALUES(@CustomerID,@NotificationContent,@DeviceMacID,@DeviceName)", cn))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO [ServerViewer].[dbo].[Notifications] ([CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[Type]) VALUES(@CustomerID,@NotificationContent,@DeviceMacID,@DeviceName,@Type)", cn))
                     {
                         cmd.CommandType = CommandType.Text;
                         cmd.Parameters.AddWithValue("@CustomerID", CustomerID);
                         cmd.Parameters.AddWithValue("@NotificationContent", notification);
                         cmd.Parameters.AddWithValue("@DeviceMacID", macId);
                         cmd.Parameters.AddWithValue("@DeviceName", dName);
+                        cmd.Parameters.AddWithValue("@Type", type);
                         dataList.Add(data);
                         cn.Open();
                         cmd.ExecuteNonQuery();

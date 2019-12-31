@@ -314,27 +314,6 @@
                 data: { 'Macid': ids },
                 success: function (result) {
                     ids = result[0].macID;
-                    //Show latest notification on page load
-                    //$.ajax({
-
-                    //    type: 'POST',
-                    //    url: '/Api/Select_Message',
-                    //    dataType: 'json',
-                    //    data: { 'Macid': ids },
-                    //    success: function (result) {
-                    //        var tempUpMessage = result[0].notificationMessage;
-                    //        $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
-                    //    },
-                    //    failure: function (response) {
-                    //        alert(response.responseText);
-                    //    },
-                    //    error: function (response) {
-                    //        alert(response.responseText);
-                    //    }
-
-
-                    //});
-
                     $.ajax({
 
                         type: 'POST',

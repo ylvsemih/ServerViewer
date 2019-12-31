@@ -14,6 +14,7 @@ using temperaturemois.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using temperaturemois.BackgroundService;
+using Shouldly;
 
 namespace temperaturemois
 {
@@ -55,7 +56,6 @@ namespace temperaturemois
             services.AddHostedService<MailSendService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-           
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }
@@ -83,9 +83,9 @@ namespace temperaturemois
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-           // ConfigureAuth(app);
-            
-            
+            // ConfigureAuth(app);
+           
+
         }
 
 

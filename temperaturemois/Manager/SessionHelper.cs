@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
+
 
 namespace temperaturemois.Manager
 {
@@ -27,10 +30,13 @@ namespace temperaturemois.Manager
             HttpContextAccessor.HttpContext.Session.SetString("KullaniciEmail", emailValue);
         }
 
-        public string GetEmail()
+        public  string GetEmail()
         {
             //Sessiondan Kullanıcın Mail adresini okuyalım
             return HttpContextAccessor.HttpContext.Session.GetString("KullaniciEmail");
         }
+
+        
+
     }
 }

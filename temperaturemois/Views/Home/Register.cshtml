@@ -34,7 +34,7 @@
             </div>
 
             <nav class="nav navbar-nav">
-               
+
             </nav>
         </div>
 
@@ -226,24 +226,38 @@
             pass = $('#q5').val();
             name = $('#q6').val();
             dvcname = $('#q7').val();
+            if (mac != null & user != null & phone != null & email != null & pass != null & name != null & dvcname != null) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/UserData_Create',
+                    data: { 'username': user, 'password': pass, 'phoneNumber': phone, 'email': email, 'Name': name, 'macID': mac, 'devicename': dvcname },
+                    success: function (result) {
+                        if (result[0].result) {
+                            window.alert("Kayıt Başarılı");
+                        }
+                        else {
+                            window.alert(result[0].msg);
+                        }
 
-            $.ajax({
-                type: 'POST',
-                url: '/Api/UserData_Create',
-                data: { 'username': user, 'password': pass, 'phoneNumber': phone, 'email': email, 'Name': name, 'macID': mac, 'devicename': dvcname },
-                success: function (result) {
-                    window.alert("Kayıt Başarılı");
-                }
-                ,
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
+                    }
+                    ,
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
 
+                });
             }
-            );
+            else {
+                window.alert("Bu alanlar boş geçilemez");
+            }
+
+
+
+
+
         });
 
         $("#Set").click(function (event) {
