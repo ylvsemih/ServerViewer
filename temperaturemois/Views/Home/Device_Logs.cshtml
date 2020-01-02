@@ -265,8 +265,7 @@
                         dataType: 'json',
                         data: { 'Macid': ids },
                         success: function (result) {
-                            //$('#DeviceName').val(result[0].macID);
-                            $('#renamer').append('<h3>Cihaz: ' + result[0].macID + '</h3>');
+                            $('#renamer').append('<h3>Cihaz: ' + result[0].name + '</h3>');
                             for (var i = 0; i < result.length; i++) {
                                 $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
@@ -308,7 +307,7 @@
                                         }
 
                                     }
-                                    
+
                                 }
                                 ,
                                 failure: function (response) {
@@ -322,27 +321,41 @@
 
                             $('.deviceitem').on('click', function (event) {
                                 ids = $(this).data('macid');
-                                $('#renamer h3').remove();
-                                $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
-                                
-                                // $("#DeviceName").val(ids);
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/Api/GetDelay',
+                                    data: { 'Macid': ids },
+                                    dataType: "json",
+                                    success: function (result) {
+                                        $('#renamer h3').remove();
+                                        $('#renamer').append('<h3>Cihaz: ' + result[0].deviceName + '</h3>');
+
+
+                                    },
+                                    failure: function (response) {
+                                        alert(response.responseText);
+                                    },
+                                    error: function (response) {
+                                        alert(response.responseText);
+                                    }
+
+                                });
+
                                 $.ajax({
                                     type: 'POST',
                                     url: '/Api/Select_Message',
                                     data: { 'Macid': ids },
                                     dataType: "json",
                                     success: function (result) {
-                                        
-                                            $('#Warnings').empty();
+
+                                        $('#Warnings').empty();
                                         if (result != null) {
                                             for (var i = 0; i < result.length; i++) {
                                                 $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
-
                                             }
-
                                         }
-                                    }
-                                    ,
+                                    },
                                     failure: function (response) {
                                         alert(response.responseText);
                                     },
@@ -353,8 +366,6 @@
                                 });
 
                             });
-
-
                         },
                         failure: function (response) {
                             alert(response.responseText);
@@ -378,63 +389,7 @@
 
 
         });
-
         $('#deviceitem:first-child').trigger('click');
-            //function select_Notify() {
-            //    $.ajax({
-
-            //        type: 'POST',
-            //        url: '/Api/Select_Message',
-            //        dataType: 'json',
-            //        data: { 'Macid': ids },
-            //        success: function (result) {
-            //            var tempUpMessage = result[0].notificationMessage;
-            //            //$('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
-
-            //            $.ajax({
-            //                type: 'POST',
-            //                url: '/Api/Select_Notify',
-            //                dataType: 'json',
-            //                data: { 'Macid': ids },
-
-            //                success: function (result) {
-            //                    if (result != null) {
-            //                        for (var i = 0; i < result.length; i++) {
-            //                            $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
-
-            //                        }
-
-            //                    }
-            //                    console.log(tempUpMessage);
-            //                },
-
-            //                failure: function (response) {
-            //                    alert(response.responseText);
-            //                },
-            //                error: function (response) {
-            //                    alert(response.responseText);
-            //                }
-
-
-            //            });
-
-            //        },
-            //        failure: function (response) {
-            //            alert(response.responseText);
-            //        },
-            //        error: function (response) {
-            //            alert(response.responseText);
-            //        }
-
-            //    });
-
-            //}
-
-
-
-
-
-
     </script>
 </body>
 </html>

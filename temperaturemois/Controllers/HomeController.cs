@@ -1332,7 +1332,7 @@ namespace TempMoisFinal.Controllers
                 var email = HttpContext.Session.GetInt32("KullaniciEmail");
                 connection.Open();
 
-                string sql = "SELECT TOP 1 [DelayTempUp],[DelayTempDown],[DelayMoisUp],[DelayMoisDown] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
+                string sql = "SELECT TOP 1 [DelayTempUp],[DelayTempDown],[DelayMoisUp],[DelayMoisDown],[DeviceName] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
                 SqlCommand command = new SqlCommand(sql, connection);
 
                 using (SqlDataReader dataReader = command.ExecuteReader())
@@ -1345,6 +1345,7 @@ namespace TempMoisFinal.Controllers
                         data.DelayTempDown = Convert.ToInt32(dataReader["DelayTempDown"]);
                         data.DelayMoisUp = Convert.ToInt32(dataReader["DelayMoisUp"]);
                         data.DelayMoisDown = Convert.ToInt32(dataReader["DelayMoisDown"]);
+                        data.DeviceName = Convert.ToString(dataReader["DeviceName"]);
                         dataList.Add(data);
 
                     }

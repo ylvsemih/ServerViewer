@@ -381,7 +381,7 @@
                 dataType: 'json',
                 data: { 'Macid': ids },
                 success: function (result) {
-                    $('#welcome h2').append("Hoşgeldin <br> "+result[0].name);
+                    $('#welcome h2').append(result[0].name +" "+ result[0].surname);
                     $('#CustomerName').val(result[0].name);
                     $('#CustomerSurname').val(result[0].surname);
                     $('#CustomerEmail').val(result[0].email);

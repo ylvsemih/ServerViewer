@@ -450,7 +450,7 @@
                 dataType: 'json',
                 data: { 'Macid': ids },
                 success: function (result) {
-                    $('#renamer').append('<h3>Cihaz: ' + result[0].macID + '</h3>');
+                    $('#renamer').append('<h3>Cihaz: ' + result[0].name + '</h3>');
                     for (var i = 0; i < result.length; i++) {
                         $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
@@ -481,6 +481,9 @@
 
                     $('.deviceitem').on('click', function (event) {
                         ids = $(this).data('macid');
+                        $('#renamer h3').remove();
+                        
+
 
                         $("#range").ionRangeSlider();
                         var slider = $("#range").data("ionRangeSlider");
@@ -490,13 +493,14 @@
                         var slider3 = $("#range3").data("ionRangeSlider");
                         $("#range4").ionRangeSlider();
                         var slider4 = $("#range4").data("ionRangeSlider");
+
                         $.ajax({
                             type: 'POST',
                             url: '/Api/GetDelay',
                             data: { 'Macid': ids },
                             dataType: "json",
                             success: function (result) {
-
+                                $('#renamer').append('<h3>Cihaz: ' + result[0].deviceName + '</h3>');
                                 slider.update({
                                     from: result[0].delayTempUp
                                 });
@@ -577,19 +581,13 @@
 
                         });
                         slider4.update();
-
-
-
-
-                        $('#renamer h3').remove();
-                        $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
+                        
                         $.ajax({
                             type: 'POST',
                             url: '/Api/Mails',
                             data: { 'Macid': ids },
                             dataType: "json",
                             success: function (result) {
-
                                 if (Number(result[0].email_TempUp) == 1) {
                                     $('#e1').prop('checked', true);
                                 }
