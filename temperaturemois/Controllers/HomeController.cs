@@ -495,7 +495,7 @@ namespace TempMoisFinal.Controllers
             
             return View();
         }
-        [ClaimRequirement]
+        
         public IActionResult Forget_pass()
         {
            
@@ -768,7 +768,7 @@ namespace TempMoisFinal.Controllers
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
             string UseSQL = "";
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-
+            //security error (when you enter ' character it brokes the sql)
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -790,18 +790,19 @@ namespace TempMoisFinal.Controllers
                             data.Username = Convert.ToString(dataReader["Username"]);
                             data.Password = Convert.ToString(dataReader["Password"]);
                             Customer = Convert.ToInt32(dataReader["CustomerID"]);
-                            //HttpContext.Session.Clear();
-
-                            // Mac = Convert.ToString(dataReader["DeviceMacID"]);
                             dataList.Add(data);
-
+                            HttpContext.Session.SetInt32("KullaniciEmail", Customer);
                         }
                     }
+                }
+                else
+                {
+                    HttpContext.Session.Clear();
                 }
                 connection.Close();
             }
             //HttpContext.Session.SetString("MacAdress", Mac);
-            HttpContext.Session.SetInt32("KullaniciEmail", Customer);
+            
             
             return Json(dataList);
         }
@@ -998,7 +999,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
 
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-            string UseSQL = "SELECT TOP 3 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE DeviceMacID='" + Macid + "' AND CustomerID='" + email + "' AND Type='general' ORDER BY CreateTime DESC";
+            string UseSQL = "SELECT TOP 3 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND Type='general' ORDER BY CreateTime DESC";
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -1034,7 +1035,7 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
             try
             {
-                string UseSQL = "SELECT [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "' AND Type='general' ORDER BY CreateTime DESC";
+                string UseSQL = "SELECT TOP 4 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "' AND Type='general' ORDER BY CreateTime DESC";
 
                 string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
@@ -1048,7 +1049,10 @@ namespace TempMoisFinal.Controllers
                         {
                             command.CommandType = CommandType.Text;
                             ErrorViewModel data = new ErrorViewModel();
+                            data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
                             data.NotificationMessage = Convert.ToString(dataReader["NotificationContent"]);
+                            data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
+                            data.Name = Convert.ToString(dataReader["DeviceName"]);
                             dataList.Add(data);
 
                         }

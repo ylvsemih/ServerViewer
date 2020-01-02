@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Server Viewer| </title>
+    <title>RedBip! </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +38,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0">
-                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>Server Viewer</span></a>
+                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>RedBip</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -50,34 +50,33 @@
 
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/home/index"><i class="fa fa-home"></i> Dashboard <span></span></a>
+                                    <a href="/home/index" data-langkeyword="menudashboard"><i class="fa fa-home"></i> Dashboard <span></span></a>
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
-                                            <a href="/home/Device_List">Cihaz Listesi</a>
+                                            <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
                                         </li>
 
                                         <li>
-                                            <a href="/home/device_logs">Cihaz Bildirimler</a>
+                                            <a href="/home/device_logs" data-langkeyword="submenudevicelogs">Cihaz Bildirimler</a>
                                         </li>
                                         <li>
-                                            <a href="/home/New_Device">Yeni Cihaz Kaydet</a>
+                                            <a href="/home/New_Device" data-langkeyword="submenunewdevice">Yeni Cihaz Kaydet</a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
-                                        <li><a href="/home/OptionsDashboad">Eşik Ayarları</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification">Bildirim Seçenekleri</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification2">Telefon Konfigrasyonu</a></li>
+                                        <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification2" data-langkeyword="submenuphoneconfig">Telefon Konfigrasyonu</a></li>
 
 
                                     </ul>
@@ -91,11 +90,11 @@
                     <!-- sidebar menu -->
                     <!-- menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
+                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register" data-langkeyword="leftmenulogin">
                             <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </a>
 
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout" data-langkeyword="leftmenulogout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -120,75 +119,20 @@
 
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+                                    <a class="dropdown-item" href="/home/profile" data-langkeyword="righttopprofile"> Kullanıcı Bilgilerim</a>
 
-                                    <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                                    <a class="dropdown-item" href="/home/logout" data-langkeyword="righttoplogout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
                                 </div>
                             </li>
 
                             <li role="presentation" class="nav-item dropdown open">
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
+                                    <span id="msgcount" class="badge bg-green"></span>
                                 </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" id="msgBoxTop">
                                 </ul>
+
                             </li>
                         </ul>
                     </nav>
@@ -199,7 +143,7 @@
                 <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-langkeyword="dropdowndevicelist">
                             Cihazlar
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" id="mnav">
@@ -225,7 +169,7 @@
                     </div>
                     <div class="clearfix"></div>
 
-                    
+
                     <div class="row">
                         <!--------Email-->
 
@@ -233,7 +177,7 @@
 
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Email Adresi <small>Konfigrasyon</small></h2>
+                                    <h2 data-langkeyword="emailaddressform">Email Adresi Konfigrasyonu</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
                                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -256,61 +200,61 @@
                                         <div class="form-group row ">
 
 
-                                            <label class="control-label col-md-3 col-sm-3 ">1.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">1.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr0" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">2.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">2.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr1">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">3.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">3.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr2">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">4.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">4.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr3">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">5.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">5.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr4">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">6.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">6.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr5">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">7.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">7.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr6">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">8.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">8.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr7">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">9.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">9.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr8">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">10.Email Adresi</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="emailaddress">10.Email Adresi</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="emailaddr9">
                                             </div>
@@ -320,7 +264,7 @@
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-9 col-sm-9  offset-md-3">
-                                                <button type="button" class="btn btn-success" id="SetEmail">Kaydet</button>
+                                                <button type="button" class="btn btn-success" id="SetEmail" data-langkeyword="savebutton">Kaydet</button>
                                             </div>
                                         </div>
 
@@ -336,7 +280,7 @@
                         <div class="col-md-6">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>SMS Yolla <small>Formdaki Telefon Numaralarına</small></h2>
+                                    <h2 data-langkeyword="phoneconfig">Telefon Numarası Konfigrasyonu</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
                                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -359,61 +303,61 @@
                                         <div class="form-group row ">
 
 
-                                            <label class="control-label col-md-3 col-sm-3 ">1. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">1. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber0" value="(___) ___ ____" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">2. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">2. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber1" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">3. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">3. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber2" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">4. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">4. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber3" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">5. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">5. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber4" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">6. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">6. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber5" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">7. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">7. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber6" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">8. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">8. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber7" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">9. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">9. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber8" value="(___) ___ ____">
                                             </div>
                                         </div>
                                         <div class="form-group row ">
-                                            <label class="control-label col-md-3 col-sm-3 ">10. Telefon Numarası</label>
+                                            <label class="control-label col-md-3 col-sm-3" data-langkeyword="phonenumber">10. Telefon Numarası</label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" id="textNumber9" value="(___) ___ ____">
                                             </div>
@@ -423,7 +367,7 @@
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-9 col-sm-9  offset-md-3">
-                                                <button type="button" class="btn btn-success" id="Get">Kaydet</button>
+                                                <button type="button" class="btn btn-success" id="Get" data-langkeyword="savebutton">Kaydet</button>
                                             </div>
                                         </div>
 
@@ -436,7 +380,7 @@
                         <div class="col-md-6">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>SMS <small>Bilgilendirmeler</small></h2>
+                                    <h2 data-langkeyword="tariffinfo">Ücretlendirme</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
                                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -455,7 +399,7 @@
 
 
                                         <div class="form-group row">
-                                            <label class="col-form-label col-md-3 col-sm-3 ">Kalan Kontör </label>
+                                            <label class="col-form-label col-md-3 col-sm-3" data-langkeyword="currentcredit">Kalan Kontör </label>
                                             <div class="col-md-9 col-sm-9 ">
                                                 <input type="text" class="form-control" disabled="disabled" placeholder="100">
                                             </div>
@@ -464,8 +408,8 @@
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-9 col-sm-9  offset-md-3">
-                                                <button type="button" class="btn btn-success">Kontör Yükle</button>
-                                                <button type="reset" class="btn btn-primary">Satın Al</button>
+                                                <button type="button" class="btn btn-success" data-langkeyword="addcreditbutton">Kontör Yükle</button>
+                                                <button type="reset" class="btn btn-primary" data-langkeyword="buycreditbutton">Satın Al</button>
 
                                             </div>
                                         </div>
@@ -538,10 +482,33 @@
                 data: { 'Macid': ids },
                 success: function (result) {
                     ids = result[0].macID;
-                    $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
+                    $('#renamer').append('<h3>Cihaz: ' + result[0].macID + '</h3>');
                     for (var i = 0; i < result.length; i++) {
                         $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
                     }
+
+                    //message box append
+                    $.ajax({
+
+                        type: 'POST',
+                        url: '/Api/Select_Notify',
+                        dataType: 'json',
+                        data: { 'Macid': ids },
+                        success: function (result) {
+                            for (var i = 0; i < result.length; i++) {
+                                $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+
+                            }
+                            $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
+                            $('#msgcount').append(result.length);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
 
 
                     $('.deviceitem').on('click', function (event) {

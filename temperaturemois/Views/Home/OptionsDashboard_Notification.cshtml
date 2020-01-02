@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Server Viewer| </title>
+    <title>RedBip! </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +38,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0">
-                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>Server Viewer</span></a>
+                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>RedBip</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -50,34 +50,33 @@
 
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/home/index"><i class="fa fa-home"></i> Dashboard <span></span></a>
+                                    <a href="/home/index" data-langkeyword="menudashboard"><i class="fa fa-home"></i> Dashboard <span></span></a>
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
-                                            <a href="/home/Device_List">Cihaz Listesi</a>
+                                            <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
                                         </li>
 
                                         <li>
-                                            <a href="/home/device_logs">Cihaz Bildirimler</a>
+                                            <a href="/home/device_logs" data-langkeyword="submenudevicelogs">Cihaz Bildirimler</a>
                                         </li>
                                         <li>
-                                            <a href="/home/New_Device">Yeni Cihaz Kaydet</a>
+                                            <a href="/home/New_Device" data-langkeyword="submenunewdevice">Yeni Cihaz Kaydet</a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
-                                        <li><a href="/home/OptionsDashboad">Eşik Ayarları</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification">Bildirim Seçenekleri</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification2">Telefon Konfigrasyonu</a></li>
+                                        <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification2" data-langkeyword="submenuphoneconfig">Telefon Konfigrasyonu</a></li>
 
 
                                     </ul>
@@ -91,11 +90,11 @@
                     <!-- sidebar menu -->
                     <!-- menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
+                        <a data-langkeyword="leftmenulogin" data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
                             <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </a>
 
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
+                        <a data-langkeyword="leftmenulogout" data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -120,75 +119,20 @@
 
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+                                    <a data-langkeyword="righttopprofile" class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
 
-                                    <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                                    <a data-langkeyword="righttoplogout" class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
                                 </div>
                             </li>
 
                             <li role="presentation" class="nav-item dropdown open">
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
+                                    <span id="msgcount" class="badge bg-green"></span>
                                 </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" id="msgBoxTop">
                                 </ul>
+
                             </li>
                         </ul>
                     </nav>
@@ -197,7 +141,7 @@
             <div class="row  justify-content-center">
                 <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
                     <div class="btn-group" role="group">
-                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
+                        <button data-langkeyword="dropdowndevicelist" id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Cihazlar
                         </button>
@@ -232,11 +176,11 @@
                             <div class="row grid_slider">
 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <p>Prevent one from dragging the labels</p>
+                                    <p data-langkeyword="delaytempup">Isı Yüksekliği Bildirim Sıklığı</p>
                                     <input type="text" id="range" value="" name="DelayTempUp" />
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <p>Prevent one from dragging the labels</p>
+                                    <p data-langkeyword="delaytempdown">Isı Düşüklüğü Bildirim Sıklığı</p>
                                     <input type="text" id="range2" value="" name="DelayTempDown" />
                                 </div>
 
@@ -251,7 +195,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Isı Yüksekliği <small>Aksiyonlar</small></h2>
+                                <h2 data-langkeyword="temprise">Isı Yüksekliği <small data-langkeyword="notificationactions">Aksiyonlar</small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
 
                                     <li>
@@ -271,22 +215,22 @@
                                     <ul class="to_do">
                                         <li>
                                             <p>
-                                                <input data-type="email1" type="checkbox" id="e1"> Email Bildirimi
+                                                <input data-type="email1" type="checkbox" id="e1" data-langkeyword="emailnotify"> Email Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="mesaj1" type="checkbox" id="m1"> Mesaj Bildirimi
+                                                <input data-type="mesaj1" type="checkbox" id="m1" data-langkeyword="messagenotify"> Mesaj Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="IVR1" type="checkbox" id="I1"> IVR desteği
+                                                <input data-type="IVR1" type="checkbox" id="I1" data-langkeyword="ivrnotify"> IVR desteği
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="CAGRI1" type="checkbox" id="c1"> Çağrı Merkezi Desteği
+                                                <input data-type="CAGRI1" type="checkbox" id="c1" data-langkeyword="callcenternotify"> Çağrı Merkezi Desteği
                                             </p>
                                         </li>
 
@@ -298,7 +242,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Isı Düşüklüğü <small>Aksiyonlar</small></h2>
+                                <h2 data-langkeyword="tempfall">Isı Düşüklüğü <small data-langkeyword="notificationactions">Aksiyonlar</small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -316,22 +260,22 @@
                                     <ul class="to_do">
                                         <li>
                                             <p>
-                                                <input data-type="email2" type="checkbox" id="e2"> Email Bildirimi
+                                                <input data-type="email2" type="checkbox" id="e2" data-langkeyword="emailnotify"> Email Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="mesaj2" type="checkbox" id="m2"> Mesaj Bildirimi
+                                                <input data-type="mesaj2" type="checkbox" id="m2" data-langkeyword="messagenotify"> Mesaj Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="IVR2" type="checkbox" id="I2"> IVR desteği
+                                                <input data-type="IVR2" type="checkbox" id="I2" data-langkeyword="ivrnotify"> IVR desteği
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="CAGRI2" type="checkbox" id="c2"> Çağrı Merkezi Desteği
+                                                <input data-type="CAGRI2" type="checkbox" id="c2" data-langkeyword="callcenternotify"> Çağrı Merkezi Desteği
                                             </p>
                                         </li>
 
@@ -348,11 +292,11 @@
                             <div class="row grid_slider">
 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <p>Prevent one from dragging the labels</p>
+                                    <p data-langkeyword="delaymoisup">Nem Yüksekliği Bildirim Sıklığı</p>
                                     <input type="text" id="range3" value="" name="DelayMoisUp" />
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <p>Prevent one from dragging the labels</p>
+                                    <p data-langkeyword="delaymoisdown">Nem Düşüklüğü Bildirim Sıklığı</p>
                                     <input type="text" id="range4" value="" name="DelayMoisDown" />
                                 </div>
 
@@ -364,7 +308,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Nem Yüksekliği <small>Aksiyonlar</small></h2>
+                                <h2 data-langkeyword="moisrise">Nem Yüksekliği <small data-langkeyword="notificationactions">Aksiyonlar</small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -382,23 +326,23 @@
                                     <ul class="to_do">
                                         <li>
                                             <p>
-                                                <input data-type="email3" type="checkbox" id="e3"> Email Bildirimi
+                                                <input data-type="email3" type="checkbox" id="e3" data-langkeyword="emailnotify"> Email Bildirimi
                                             </p>
                                         </li>
 
                                         <li>
                                             <p>
-                                                <input data-type="mesaj3" type="checkbox" id="m3"> Mesaj Bildirimi
+                                                <input data-type="mesaj3" type="checkbox" id="m3" data-langkeyword="messagenotify"> Mesaj Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="IVR3" type="checkbox" id="I3"> IVR desteği
+                                                <input data-type="IVR3" type="checkbox" id="I3" data-langkeyword="ivrnotify"> IVR desteği
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="CAGRI3" type="checkbox" id="c3"> Çağrı Merkezi Desteği
+                                                <input data-type="CAGRI3" type="checkbox" id="c3" data-langkeyword="callcenternotify"> Çağrı Merkezi Desteği
                                             </p>
                                         </li>
 
@@ -410,7 +354,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Nem Düşüklüğü <small>Aksiyonlar</small></h2>
+                                <h2 data-langkeyword="moisfall">Nem Düşüklüğü <small data-langkeyword="notificationactions">Aksiyonlar</small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -428,22 +372,22 @@
                                     <ul class="to_do">
                                         <li>
                                             <p>
-                                                <input data-type="email4" type="checkbox" id="e4"> Email Bildirimi
+                                                <input data-type="email4" type="checkbox" id="e4" data-langkeyword="emailnotify"> Email Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="mesaj4" type="checkbox" id="m4"> Mesaj Bildirimi
+                                                <input data-type="mesaj4" type="checkbox" id="m4" data-langkeyword="messagenotify"> Mesaj Bildirimi
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="IVR4" type="checkbox" id="I4"> IVR desteği
+                                                <input data-type="IVR4" type="checkbox" id="I4" data-langkeyword="ivrnotify"> IVR desteği
                                             </p>
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="CAGRI4" type="checkbox" id="c4"> Çağrı Merkezi Desteği
+                                                <input data-type="CAGRI4" type="checkbox" id="c4" data-langkeyword="callcenternotify"> Çağrı Merkezi Desteği
                                             </p>
                                         </li>
 
@@ -506,11 +450,34 @@
                 dataType: 'json',
                 data: { 'Macid': ids },
                 success: function (result) {
-                    $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
+                    $('#renamer').append('<h3>Cihaz: ' + result[0].macID + '</h3>');
                     for (var i = 0; i < result.length; i++) {
                         $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
                     }
+
+                    //message box append
+                    $.ajax({
+
+                        type: 'POST',
+                        url: '/Api/Select_Notify',
+                        dataType: 'json',
+                        data: { 'Macid': ids },
+                        success: function (result) {
+                            for (var i = 0; i < result.length; i++) {
+                                $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+
+                            }
+                            $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
+                            $('#msgcount').append(result.length);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
 
                     $('.deviceitem').on('click', function (event) {
                         ids = $(this).data('macid');
@@ -544,7 +511,7 @@
 
                         });
                         slider.update();
-                        //slider 2 
+                        //slider 2
                         $.ajax({
                             type: 'POST',
                             url: '/Api/GetDelay',
@@ -908,7 +875,7 @@
                     url: '/Api/SetDelay',
                     data: { 'Macid': ids, 'delayValue': position, 'type': nameofdd },
                     dataType: "json",
-                    success: function (result) { 
+                    success: function (result) {
 
                     }
                     ,

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Server Viewer | </title>
+    <title>RedBip! </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +32,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0">
-                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>Server Viewer</span></a>
+                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>RedBip</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -44,34 +44,33 @@
 
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/home/index"><i class="fa fa-home"></i> Dashboard <span></span></a>
+                                    <a href="/home/index" data-langkeyword="menudashboard"><i class="fa fa-home"></i> Dashboard <span></span></a>
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menudevices"><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
-                                            <a href="/home/Device_List">Cihaz Listesi</a>
+                                            <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
                                         </li>
 
                                         <li>
-                                            <a href="/home/device_logs">Cihaz Bildirimler</a>
+                                            <a href="/home/device_logs" data-langkeyword="submenudevicelogs">Cihaz Bildirimler</a>
                                         </li>
                                         <li>
-                                            <a href="/home/New_Device">Yeni Cihaz Kaydet</a>
+                                            <a href="/home/New_Device" data-langkeyword="submenunewdevice">Yeni Cihaz Kaydet</a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menusettings"><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
-                                        <li><a href="/home/OptionsDashboad">Eşik Ayarları</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification">Bildirim Seçenekleri</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification2">Telefon Konfigrasyonu</a></li>
+                                        <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification2" data-langkeyword="submenuphoneconfig">Telefon Konfigrasyonu</a></li>
 
 
                                     </ul>
@@ -85,11 +84,11 @@
                     <!-- sidebar menu -->
                     <!-- menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
+                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register" data-langkeyword="leftmenulogin">
                             <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </a>
 
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout" data-langkeyword="leftmenulogout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -115,75 +114,20 @@
 
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+                                    <a class="dropdown-item" href="/home/profile" data-langkeyword="righttopprofile"> Kullanıcı Bilgilerim</a>
 
-                                    <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                                    <a class="dropdown-item" href="/home/logout" data-langkeyword="righttoplogout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
                                 </div>
                             </li>
 
                             <li role="presentation" class="nav-item dropdown open">
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
+                                    <span id="msgcount" class="badge bg-green"></span>
                                 </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                           
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" id="msgBoxTop">
                                 </ul>
+
                             </li>
                         </ul>
                     </nav>
@@ -199,12 +143,12 @@
                     <div class="col-md-12 col-sm-12 ">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Görüntüleme <small>Cihaz Özelleştirme</small></h2>
+                                <h2 data-langkeyword="deviceedit">Cihaz Özelleştirme</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
-                                    
+
                                     <li>
                                         <a class="close-link"><i class="fa fa-close"></i></a>
                                     </li>
@@ -222,9 +166,9 @@
                                             <input type="text" id="DeviceMac" name="last-name" class="form-control" disabled="disabled">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="item form-group">
-                                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">
+                                        <label data-langkeyword="devicename" class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">
                                             Cihaz Adı
                                         </label>
                                         <div class="col-md-6 col-sm-6 ">
@@ -235,7 +179,7 @@
                                     <div class="item form-group">
                                         <div class="col-md-6 col-sm-6 offset-md-5">
 
-                                            <button type="submit" class="btn btn-success" id="save">Kaydet</button>
+                                            <button type="submit" class="btn btn-success" id="save" data-langkeyword="savebutton">Kaydet</button>
                                         </div>
                                     </div>
 
@@ -249,12 +193,12 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Cihazlar <small>Tablolama</small></h2>
+                                <h2 data-langkeyword="xpaneldevices">Cihazlar</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
-                                   
+
                                     <li>
                                         <a class="close-link"><i class="fa fa-close"></i></a>
                                     </li>
@@ -271,13 +215,13 @@
                                         <thead>
                                             <tr class="headings">
 
-                                                <th class="column-title">Cihaz ID </th>
-                                                <th class="column-title">Cihaz Adı </th>
-                                                <th class="column-title">Oluşturma Tarihi </th>
-                                                <th class="column-title">Mac ID </th>
+                                                <th class="column-title" data-langkeyword="tabledeviceid">Cihaz ID </th>
+                                                <th class="column-title" data-langkeyword="tabledevicename">Cihaz Adı </th>
+                                                <th class="column-title" data-langkeyword="tablecreatetime">Oluşturma Tarihi </th>
+                                                <th class="column-title" data-langkeyword="tablemacid">Mac ID </th>
 
                                                 <th class="column-title no-link last">
-                                                    <span class="nobr">Action</span>
+                                                    <span class="nobr" data-langkeyword="tableaction">Aksiyon</span>
                                                 </th>
                                                 <th class="bulk-actions" colspan="7">
                                                     <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -286,7 +230,6 @@
                                         </thead>
 
                                         <tbody id="TBdata">
-                                          
                                         </tbody>
                                     </table>
                                 </div>
@@ -365,13 +308,34 @@
 
                     //APPEND HTML
                     for (var i = 0; i < result.length; i++) {
-                        $('#TBdata').append('<tr><td class=" ">' + result[i].id + '</td> <td class=" ">' + result[i].name + '</td> <td class=" ">' + result[i].createTime + '</td> <td class=" ">' + result[i].macID + '</td> <td class="last deviceviewlink" data-link="'+result[i].macID+'"> <a href="#"  ">Düzenle</a></td> </tr>');
+                        $('#TBdata').append('<tr><td class=" ">' + result[i].id + '</td> <td class=" ">' + result[i].name + '</td> <td class=" ">' + result[i].createTime + '</td> <td class=" ">' + result[i].macID + '</td> <td class="last deviceviewlink" data-link="' + result[i].macID + '"> <a href="#"  ">Düzenle</a></td> </tr>');
 
                     }
+                    //message box append
+                    $.ajax({
 
+                        type: 'POST',
+                        url: '/Api/Select_Notify',
+                        dataType: 'json',
+                        data: { 'Macid': ids },
+                        success: function (result) {
+                            for (var i = 0; i < result.length; i++) {
+                                $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+
+                            }
+                            $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
+                            $('#msgcount').append(result.length);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
                     //view actions
                     //tablodaki mac ID yi back end e gönderebiliyoruz. Diğer servislerde sorguya Macid düzgün atılabilidği zaman SQl sorgusuna macId KONtrolü ekle.
-                    $(".deviceviewlink").on('click',function (event) {
+                    $(".deviceviewlink").on('click', function (event) {
                         ids = $(this).data('link');
                         $.ajax({
                             type: 'POST',
@@ -420,37 +384,37 @@
         $("#save").click(function (event) {
             var data = $("#DeviceName").val();
             var mac = $("#DeviceMac").val();
-            ids = 
+            ids =
 
-            $.ajax({
-                type: 'POST',
-                url: '/Api/Devices',
-                data: { 'CihazAd': data, 'Macid': mac },
-                success: function (result) {
-                    window.alert("Kayıt Başarılı")
-                }
-                ,
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/Api/Devices',
+                    data: { 'CihazAd': data, 'Macid': mac },
+                    success: function (result) {
+                        window.alert("Kayıt Başarılı")
+                    }
+                    ,
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
 
-            }
-            );
+                }
+                );
 
 
         });
 
-        //menu toggler changer trigger.
-        //$("#menu_toggle").on("click", function (event) {
-        //    console.log("heree");
-        //    $('#menu_toggle').removeClass('fa fa-bars').addClass('fa fa-arrows');
-        //    //$('#menu_toggle').attr("fa fa-bars","fa fa-arrows")
+            //menu toggler changer trigger.
+            //$("#menu_toggle").on("click", function (event) {
+            //    console.log("heree");
+            //    $('#menu_toggle').removeClass('fa fa-bars').addClass('fa fa-arrows');
+            //    //$('#menu_toggle').attr("fa fa-bars","fa fa-arrows")
 
 
-        //});
+            //});
 
 
 

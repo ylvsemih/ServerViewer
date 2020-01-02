@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Server Viewer | </title>
+    <title>RedBip! </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +38,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0">
-                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>Server Viewer</span></a>
+                        <a href="/home/index" class="site_title"><i class="fa fa-pie-chart"></i> <span>RedBip</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -50,34 +50,33 @@
 
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/home/index"><i class="fa fa-home"></i> Dashboard <span></span></a>
+                                    <a href="/home/index" data-langkeyword="menudashboard"><i class="fa fa-home"></i> Dashboard <span></span></a>
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
-                                            <a href="/home/Device_List">Cihaz Listesi</a>
+                                            <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
                                         </li>
 
                                         <li>
-                                            <a href="/home/device_logs">Cihaz Bildirimler</a>
+                                            <a href="/home/device_logs" data-langkeyword="submenudevicelogs">Cihaz Bildirimler</a>
                                         </li>
                                         <li>
-                                            <a href="/home/New_Device">Yeni Cihaz Kaydet</a>
+                                            <a href="/home/New_Device" data-langkeyword="submenunewdevice">Yeni Cihaz Kaydet</a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
-                                        <li><a href="/home/OptionsDashboad">Eşik Ayarları</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification">Bildirim Seçenekleri</a></li>
-                                        <li><a href="/home/OptionsDashboard_Notification2">Telefon Konfigrasyonu</a></li>
+                                        <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
+                                        <li><a href="/home/OptionsDashboard_Notification2" data-langkeyword="submenuphoneconfig">Telefon Konfigrasyonu</a></li>
 
 
                                     </ul>
@@ -91,11 +90,11 @@
                     <!-- sidebar menu -->
                     <!-- menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
+                        <a data-langkeyword="leftmenulogin" data-toggle="tooltip" data-placement="top" title="Login" href="/home/Register">
                             <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </a>
 
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
+                        <a data-langkeyword="leftmenulogout" data-toggle="tooltip" data-placement="top" title="Logout" href="/home/logout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -121,75 +120,20 @@
 
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+                                    <a data-langkeyword="righttopprofile" class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
 
-                                    <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                                    <a class="dropdown-item" href="/home/logout" data-langkeyword="righttoplogout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
                                 </div>
                             </li>
 
                             <li role="presentation" class="nav-item dropdown open">
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
+                                    <span id="msgcount" class="badge bg-green"></span>
                                 </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" id="msgBoxTop">
                                 </ul>
+
                             </li>
                         </ul>
                     </nav>
@@ -200,7 +144,7 @@
                 <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-langkeyword="dropdowndevicelist">
                             Cihazlar
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" id="mnav">
@@ -228,7 +172,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Aktif Bildirimler</h2>
+                                <h2 data-langkeyword="activenotifications">Aktif Bildirimler</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -293,14 +237,14 @@
     <script src="../vendors/cropper/dist/cropper.min.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>  Opening this line will fix the brokeness of html
+    <script src="../build/js/custom.min.js"></script> @*Opening this line will fix the brokeness of html*@
 
     <!-- Initialize datetimepicker -->
     <script type="text/javascript">
         var NotifyMessage = "Warning server temperature over limit";
         var ids;
         $(document).ready(function () {
-            setInterval(select_Notify, 10000);
+            //setInterval(select_Notify, 10000);
 
             //backward notifications
 
@@ -322,26 +266,81 @@
                         data: { 'Macid': ids },
                         success: function (result) {
                             //$('#DeviceName').val(result[0].macID);
-                            $('#renamer').append('<h3>Cihaz Mac ID: ' + result[0].macID + '</h3>');
+                            $('#renamer').append('<h3>Cihaz: ' + result[0].macID + '</h3>');
                             for (var i = 0; i < result.length; i++) {
                                 $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
                             }
-
                             ids = result[0].macID;
+
+                            //message box append
+                            $.ajax({
+
+                                type: 'POST',
+                                url: '/Api/Select_Notify',
+                                dataType: 'json',
+                                data: { 'Macid': ids },
+                                success: function (result) {
+                                    for (var i = 0; i < result.length; i++) {
+                                        $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+
+                                    }
+                                    $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
+                                    $('#msgcount').append(result.length);
+                                },
+                                failure: function (response) {
+                                    alert(response.responseText);
+                                },
+                                error: function (response) {
+                                    alert(response.responseText);
+                                }
+                            });
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Api/Select_Message',
+                                data: { 'Macid': ids },
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result != null) {
+                                        for (var i = 0; i < result.length; i++) {
+                                            $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div></div></div></li>');
+
+                                        }
+
+                                    }
+                                    
+                                }
+                                ,
+                                failure: function (response) {
+                                    alert(response.responseText);
+                                },
+                                error: function (response) {
+                                    alert(response.responseText);
+                                }
+
+                            });
+
                             $('.deviceitem').on('click', function (event) {
                                 ids = $(this).data('macid');
                                 $('#renamer h3').remove();
                                 $('#renamer').append('<h3>Cihaz Mac ID: ' + ids + '</h3>');
-
+                                
                                 // $("#DeviceName").val(ids);
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/Api/Select_Notify',
+                                    url: '/Api/Select_Message',
                                     data: { 'Macid': ids },
                                     dataType: "json",
                                     success: function (result) {
+                                        
+                                            $('#Warnings').empty();
+                                        if (result != null) {
+                                            for (var i = 0; i < result.length; i++) {
+                                                $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
 
+                                            }
+
+                                        }
                                     }
                                     ,
                                     failure: function (response) {
@@ -351,8 +350,7 @@
                                         alert(response.responseText);
                                     }
 
-                                }
-                                );
+                                });
 
                             });
 
@@ -382,52 +380,55 @@
         });
 
         $('#deviceitem:first-child').trigger('click');
-        function select_Notify() {
-            $.ajax({
+            //function select_Notify() {
+            //    $.ajax({
 
-                type: 'POST',
-                url: '/Api/Select_Message',
-                dataType: 'json',
-                data: { 'Macid': ids },
-                success: function (result) {
-                    var tempUpMessage = result[0].notificationMessage;
-                    //$('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
+            //        type: 'POST',
+            //        url: '/Api/Select_Message',
+            //        dataType: 'json',
+            //        data: { 'Macid': ids },
+            //        success: function (result) {
+            //            var tempUpMessage = result[0].notificationMessage;
+            //            //$('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Api/Select_Notify',
-                        dataType: 'json',
-                        data: { 'Macid': ids },
+            //            $.ajax({
+            //                type: 'POST',
+            //                url: '/Api/Select_Notify',
+            //                dataType: 'json',
+            //                data: { 'Macid': ids },
 
-                        success: function (result) {
-                            if (result != null) {
-                                $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
+            //                success: function (result) {
+            //                    if (result != null) {
+            //                        for (var i = 0; i < result.length; i++) {
+            //                            $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + tempUpMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
 
-                            }
-                            console.log(tempUpMessage);
-                        },
+            //                        }
 
-                        failure: function (response) {
-                            alert(response.responseText);
-                        },
-                        error: function (response) {
-                            alert(response.responseText);
-                        }
+            //                    }
+            //                    console.log(tempUpMessage);
+            //                },
+
+            //                failure: function (response) {
+            //                    alert(response.responseText);
+            //                },
+            //                error: function (response) {
+            //                    alert(response.responseText);
+            //                }
 
 
-                    });
+            //            });
 
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
+            //        },
+            //        failure: function (response) {
+            //            alert(response.responseText);
+            //        },
+            //        error: function (response) {
+            //            alert(response.responseText);
+            //        }
 
-            });
+            //    });
 
-        }
+            //}
 
 
 
