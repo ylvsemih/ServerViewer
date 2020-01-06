@@ -281,7 +281,7 @@
                                 data: { 'Macid': ids },
                                 success: function (result) {
                                     for (var i = 0; i < result.length; i++) {
-                                        $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+                                        $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time"> <br>' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
 
                                     }
                                     $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
@@ -302,7 +302,7 @@
                                 success: function (result) {
                                     if (result != null) {
                                         for (var i = 0; i < result.length; i++) {
-                                            $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div></div></div></li>');
+                                            $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[i].createTime + '</span></div></div></div></li>');
 
                                         }
 
@@ -352,7 +352,7 @@
                                         $('#Warnings').empty();
                                         if (result != null) {
                                             for (var i = 0; i < result.length; i++) {
-                                                $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[0].createTime + '</span> by <a>Jane Smith</a></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
+                                                $('#Warnings').append('<ul class="list-unstyled timeline"><li><div class="block"><div class="tags"><a href="" class="tag"><span>Uyarı</span></a></div><div class="block_content"><h2 class="title"><a>' + result[i].notificationMessage + '.</a></h2><div class="byline"><span>' + result[i].createTime + '</span></div><p class="excerpt"> <a>Read&nbsp;More</a></p> </div></div></li>');
                                             }
                                         }
                                     },

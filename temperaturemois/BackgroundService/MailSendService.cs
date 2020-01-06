@@ -27,7 +27,7 @@ namespace temperaturemois.BackgroundService
             {
                 Mail.MailSender();
                 TimeSpan NextDate = new TimeSpan();
-                var value = DateTime.Now.AddSeconds(900);
+                var value = DateTime.Now.AddSeconds(30);
                 NextDate = value.Subtract(DateTime.Now);
                 await Task.Delay(NextDate, stoppingToken);
             }

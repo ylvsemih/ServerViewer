@@ -566,6 +566,8 @@
         var ids;
 
         $(document).ready(function () {
+            
+           
 
             //gauges
             if ($('#GaugeTemp').length) {
@@ -818,6 +820,16 @@
                             $(".deviceitem").on('click', function (event) {
                                 ids = $(this).data('macid');
                                 sname = $(this).data('name');
+                                var mydate = moment();
+                                var weekDayName = moment(mydate).format('YYYYMMDD');
+                                var mySeconddate = moment().subtract(1, 'days');
+                                var weekDayName2 = moment(mySeconddate).format('YYYYMMDD');
+                                var todaydate = moment().startOf('day').format('YYYYMMDD');
+
+                                init_flot_chart(weekDayName2, weekDayName);
+                                init_daterangepicker();
+                                init_flot_chart2(weekDayName2, weekDayName);
+                                init_daterangepicker2();
                                 $('#renamer h3').remove();
                                 $('#renamer').append('<h3>Cihaz: ' + sname + '</h3>');
                                 $.ajax({
@@ -859,6 +871,9 @@
                     init_daterangepicker();
                     init_flot_chart2(weekDayName2, weekDayName);
                     init_daterangepicker2();
+
+
+
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -886,9 +901,6 @@
         });
 
         function gaugeDraw(IDcustomer) {
-
-            console.log("mac id : " + ids);
-
             $.ajax({
                 type: 'Get',
                 url: '/Api/Charts',
