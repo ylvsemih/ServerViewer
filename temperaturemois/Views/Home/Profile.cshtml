@@ -39,7 +39,7 @@
 
                         </div>
                         <div class="profile_info" id="welcome">
-                           
+
                             <h2></h2>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menudevices"><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
                                             <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
@@ -72,7 +72,7 @@
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menusettings"><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
                                         <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
                                         <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
@@ -148,7 +148,7 @@
                                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" data-langkeyword="formname">
-                                                Adı: 
+                                                Adı:
                                             </label>
                                             <div class="col-md-6 col-sm-6 ">
                                                 <input type="text" id="CustomerName" class="form-control">
@@ -157,7 +157,7 @@
 
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" data-langkeyword="formsurname">
-                                                Soyadı: 
+                                                Soyadı:
                                             </label>
                                             <div class="col-md-6 col-sm-6 ">
                                                 <input type="text" id="CustomerSurname" class="form-control">
@@ -165,7 +165,7 @@
                                         </div>
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" data-langkeyword="formemail">
-                                                E-Mail: 
+                                                E-Mail:
                                             </label>
                                             <div class="col-md-6 col-sm-6 ">
                                                 <input type="text" id="CustomerEmail" class="form-control">
@@ -173,7 +173,7 @@
                                         </div>
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" data-langkeyword="formphonenumber">
-                                                Telefon Numarası: 
+                                                Telefon Numarası:
                                             </label>
                                             <div class="col-md-6 col-sm-6 ">
                                                 <input type="text" id="CustomerPhone" class="form-control">
@@ -181,7 +181,7 @@
                                         </div>
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" data-langkeyword="formcompany">
-                                                Kurum Adı: 
+                                                Kurum Adı:
                                             </label>
                                             <div class="col-md-6 col-sm-6 ">
                                                 <input type="text" id="CustomerCompany" class="form-control">
@@ -262,7 +262,7 @@
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-
+    <script src="../language.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.js"></script>
 
@@ -270,8 +270,52 @@
         var morrisData = [{ 'device': null, 'geekbench': null }];
         var morrisData2 = [{ 'device': null, 'geekbench': null }];
         var ids = '7069692D3032';
+        var lng = "ENG";
+       
+        var SetLang = function () {
+            return function () {
 
+
+                 //<---- master page content
+                $("*[data-langkeyword='dropdowndevicelist']").html(lang["dropdowndevicelist"][lng]);
+                $("*[data-langkeyword='menudashboard']").html(lang["menudashboard"][lng]);
+                $("*[data-langkeyword='menudevices']").html(lang["menudevices"][lng]);
+                $("*[data-langkeyword='submenudevicelist']").html(lang["submenudevicelist"][lng]);
+                $("*[data-langkeyword='submenudevicelogs']").html(lang["submenudevicelogs"][lng]);
+                $("*[data-langkeyword='submenunewdevice']").html(lang["submenunewdevice"][lng]);
+                $("*[data-langkeyword='menusettings']").html(lang["menusettings"][lng]);
+                $("*[data-langkeyword='submenuthreshold']").html(lang["submenuthreshold"][lng]);
+                $("*[data-langkeyword='submenunotifications']").html(lang["submenunotifications"][lng]);
+                $("*[data-langkeyword='submenuphoneconfig']").html(lang["submenuphoneconfig"][lng]);
+                $("*[data-langkeyword='leftmenulogin']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogin"][lng])
+                    $(this).attr("data-toggle", "tooltip");
+                    $(this).attr("data-placement", "top");
+                });
+                $("*[data-langkeyword='leftmenulogout']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogout"][lng])
+                });
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                //--!> master page content
+
+                //---<Kullanıcı Profili
+                $("*[data-langkeyword='userprofile']").html(lang["userprofile"][lng]);
+                $("*[data-langkeyword='formname']").html(lang["formname"][lng]);
+                $("*[data-langkeyword='formsurname']").html(lang["formsurname"][lng]);
+                $("*[data-langkeyword='formemail']").html(lang["formemail"][lng]);
+                $("*[data-langkeyword='formphonenumber']").html(lang["formphonenumber"][lng]);
+                $("*[data-langkeyword='formcompany']").html(lang["formcompany"][lng]);
+                $("*[data-langkeyword='overviewtemp']").html(lang["overviewtemp"][lng]);
+                $("*[data-langkeyword='overviewmois']").html(lang["overviewmois"][lng]);
+                $("*[data-langkeyword='savebutton']").html(lang["savebutton"][lng]);
+                //--!Kullanıcı Profili
+
+
+            };
+        }();
         $(document).ready(function () {
+            SetLang();
             init_morris_charts();
             init_morris_charts2();
             setInterval(init_morris_charts, 5000);
@@ -381,7 +425,7 @@
                 dataType: 'json',
                 data: { 'Macid': ids },
                 success: function (result) {
-                    $('#welcome h2').append(result[0].name +" "+ result[0].surname);
+                    $('#welcome h2').append(result[0].name + " " + result[0].surname);
                     $('#CustomerName').val(result[0].name);
                     $('#CustomerSurname').val(result[0].surname);
                     $('#CustomerEmail').val(result[0].email);

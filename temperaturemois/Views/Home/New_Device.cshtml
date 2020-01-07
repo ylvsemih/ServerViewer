@@ -155,12 +155,30 @@
     <script src="../vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-
+    <script src="../language.js"></script>
     <script type="text/javascript">
 
         var mac;
         var Dname;
-        
+        var lng = "ENG";
+        var SetLang = function () {
+            return function () {
+
+
+                $("*[data-langkeyword='addnewdevice']").html(lang["addnewdevice"][lng]);
+                $("*[data-langkeyword='activationkey']").html(lang["activationkey"][lng]);
+                $("*[data-langkeyword='savebutton']").html(lang["savebutton"][lng]);
+                $("*[data-langkeyword='devicename']").html(lang["devicename"][lng]);
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+            };
+        }();
+        $(document).ready(function () {
+            SetLang();
+
+
+        });
+
         $("#Get").click(function (event) {
 
 

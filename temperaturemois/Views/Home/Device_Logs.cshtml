@@ -56,7 +56,7 @@
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menudevices"><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
                                             <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
@@ -72,7 +72,7 @@
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menusettings"><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
                                         <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
                                         <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
@@ -238,14 +238,45 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script> @*Opening this line will fix the brokeness of html*@
-
+    <script src="../language.js"></script>
     <!-- Initialize datetimepicker -->
     <script type="text/javascript">
         var NotifyMessage = "Warning server temperature over limit";
         var ids;
+        var lng = "ENG";
+
+
+        var SetLang = function () {
+            return function () {
+
+
+                $("*[data-langkeyword='dropdowndevicelist']").html(lang["dropdowndevicelist"][lng]);
+                $("*[data-langkeyword='menudashboard']").html(lang["menudashboard"][lng]);
+                $("*[data-langkeyword='menudevices']").html(lang["menudevices"][lng]);
+                $("*[data-langkeyword='submenudevicelist']").html(lang["submenudevicelist"][lng]);
+                $("*[data-langkeyword='submenudevicelogs']").html(lang["submenudevicelogs"][lng]);
+                $("*[data-langkeyword='submenunewdevice']").html(lang["submenunewdevice"][lng]);
+                $("*[data-langkeyword='menusettings']").html(lang["menusettings"][lng]);
+                $("*[data-langkeyword='submenuthreshold']").html(lang["submenuthreshold"][lng]);
+                $("*[data-langkeyword='submenunotifications']").html(lang["submenunotifications"][lng]);
+                $("*[data-langkeyword='submenuphoneconfig']").html(lang["submenuphoneconfig"][lng]);
+                $("*[data-langkeyword='leftmenulogin']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogin"][lng])
+                    $(this).attr("data-toggle", "tooltip");
+                    $(this).attr("data-placement", "top");
+                });
+                $("*[data-langkeyword='leftmenulogout']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogout"][lng])
+                });
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                //--!> master page content
+                $("*[data-langkeyword='activenotifications']").html(lang["activenotifications"][lng]);
+            };
+        }();
         $(document).ready(function () {
             //setInterval(select_Notify, 10000);
-
+            SetLang();
             //backward notifications
 
 
@@ -258,6 +289,7 @@
                 data: { 'Macid': ids },
                 success: function (result) {
                     ids = result[0].macID;
+                    $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + result[0].name + '</h3>');
                     $.ajax({
 
                         type: 'POST',
@@ -265,7 +297,7 @@
                         dataType: 'json',
                         data: { 'Macid': ids },
                         success: function (result) {
-                            $('#renamer').append('<h3>Cihaz: ' + result[0].name + '</h3>');
+                            
                             for (var i = 0; i < result.length; i++) {
                                 $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
@@ -286,6 +318,7 @@
                                     }
                                     $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
                                     $('#msgcount').append(result.length);
+                                    
                                 },
                                 failure: function (response) {
                                     alert(response.responseText);
@@ -329,8 +362,7 @@
                                     dataType: "json",
                                     success: function (result) {
                                         $('#renamer h3').remove();
-                                        $('#renamer').append('<h3>Cihaz: ' + result[0].deviceName + '</h3>');
-
+                                        $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + result[0].deviceName + '</h3>');
 
                                     },
                                     failure: function (response) {

@@ -36,7 +36,7 @@
             <nav class="nav navbar-nav">
                 <ul class=" navbar-right">
                     <li class="nav-item dropdown open" style="padding-left: 15px;">
-                        
+
                     </li>
 
 
@@ -61,7 +61,7 @@
                 <form>
                     <h1 data-langkeyword="forgotmypass">Forgot My Password</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Kullanıcı Adı" required="" id="da1" data-langkeyword="username"/>
+                        <input type="text" class="form-control" placeholder="Kullanıcı Adı" required="" id="da1" data-langkeyword="username" />
                     </div>
                     <div>
                         <input type="text" class="form-control" placeholder="Email" required="" id="da2" data-langkeyword="formemail" />
@@ -156,11 +156,35 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
+    <script src="../language.js"></script>
     <script type="text/javascript">
 
         var username;
         var email;
         var mac;
+        var lng = "ENG";
+        var SetLang = function () {
+
+            return function () {
+
+                //--<Forget My Pass
+                $("*[data-langkeyword='productkeyinput']").html(lang["productkeyinput"][lng]);
+                $("*[data-langkeyword='requestbutton']").html(lang["requestbutton"][lng]);
+                $("*[data-langkeyword='forgotmypass']").html(lang["forgotmypass"][lng]);
+                $("*[data-langkeyword='username']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["username"][lng])
+                });
+                //---!Forget MY Pass
+
+
+            };
+        }();
+
+        $(document).ready(function () {
+            SetLang();
+        });
+
         $("#Set").click(function (event) {
             mac = 'mms223354ss';
             console.log("ssssgood");

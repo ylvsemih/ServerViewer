@@ -286,14 +286,68 @@
     <script src="../vendors/jszip/dist/jszip.min.js"></script>
     <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-
+    <script src="../language.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
     <!-- Initialize datetimepicker -->
     <script type="text/javascript">
         var ids;
+        var lng = "ENG";
+        //var lang = {
+        //    "deviceedit": { "TR": "Cihaz Özelleştirme", "ENG": "Edit Device" },
+        //    "devicename": { "TR": "Cihaz Adı", "ENG": "Device Name" },
+        //    "savebutton": { "TR": "Kaydet", "ENG": "Save" },
+        //    "xpaneldevices": { "TR": "Cihazlar", "ENG": "Devices" },
+        //    "tabledeviceid": { "TR": "Cihaz ID", "ENG": "Device ID" },
+        //    "tabledevicename": { "TR": "Cihaz Adı", "ENG": "Device Name" },
+        //    "tablecreatetime": { "TR": "Oluşturma Tarihi", "ENG": "Create Time" },
+        //    "tablemacid": { "TR": "Mac ID", "ENG": "Mac ID" },
+        //    "tableaction": { "TR": "Aksiyon", "ENG": "Action" },
+        //};
+        var SetLang = function () {
+
+            return function () {
+                //<---- master page content
+                $("*[data-langkeyword='dropdowndevicelist']").html(lang["dropdowndevicelist"][lng]);
+                $("*[data-langkeyword='menudashboard']").html(lang["menudashboard"][lng]);
+                $("*[data-langkeyword='menudevices']").html(lang["menudevices"][lng]);
+                $("*[data-langkeyword='submenudevicelist']").html(lang["submenudevicelist"][lng]);
+                $("*[data-langkeyword='submenudevicelogs']").html(lang["submenudevicelogs"][lng]);
+                $("*[data-langkeyword='submenunewdevice']").html(lang["submenunewdevice"][lng]);
+                $("*[data-langkeyword='menusettings']").html(lang["menusettings"][lng]);
+                $("*[data-langkeyword='submenuthreshold']").html(lang["submenuthreshold"][lng]);
+                $("*[data-langkeyword='submenunotifications']").html(lang["submenunotifications"][lng]);
+                $("*[data-langkeyword='submenuphoneconfig']").html(lang["submenuphoneconfig"][lng]);
+                $("*[data-langkeyword='leftmenulogin']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogin"][lng])
+                    $(this).attr("data-toggle", "tooltip");
+                    $(this).attr("data-placement", "top");
+                });
+                $("*[data-langkeyword='leftmenulogout']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogout"][lng])
+                });
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                //--!> master page content
+                $("*[data-langkeyword='deviceedit']").html(lang["deviceedit"][lng]);
+                $("*[data-langkeyword='devicename']").html(lang["devicename"][lng]);
+                $("*[data-langkeyword='savebutton']").html(lang["savebutton"][lng]);
+                $("*[data-langkeyword='xpaneldevices']").html(lang["xpaneldevices"][lng]);
+                $("*[data-langkeyword='tabledeviceid']").html(lang["tabledeviceid"][lng]);
+                $("*[data-langkeyword='tabledevicename']").html(lang["tabledevicename"][lng]);
+                $("*[data-langkeyword='tablecreatetime']").html(lang["tablecreatetime"][lng]);
+                $("*[data-langkeyword='tablemacid']").html(lang["tablemacid"][lng]);
+                $("*[data-langkeyword='tableaction']").html(lang["tableaction"][lng]);
+
+                //---<DEVİCE LİST
+
+            };
+        }();
+
         $(document).ready(function () {
+            SetLang();
+
             var a = document.getElementById("DeviceName").value;
             //deviceName
             $.ajax({
@@ -407,14 +461,14 @@
 
         });
 
-            //menu toggler changer trigger.
-            //$("#menu_toggle").on("click", function (event) {
-            //    console.log("heree");
-            //    $('#menu_toggle').removeClass('fa fa-bars').addClass('fa fa-arrows');
-            //    //$('#menu_toggle').attr("fa fa-bars","fa fa-arrows")
+                //menu toggler changer trigger.
+                //$("#menu_toggle").on("click", function (event) {
+                //    console.log("heree");
+                //    $('#menu_toggle').removeClass('fa fa-bars').addClass('fa fa-arrows');
+                //    //$('#menu_toggle').attr("fa fa-bars","fa fa-arrows")
 
 
-            //});
+                //});
 
 
 

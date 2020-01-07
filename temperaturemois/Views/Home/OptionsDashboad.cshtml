@@ -52,11 +52,11 @@
                         <div class="menu_section">
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/home/index"><i class="fa fa-home" data-langkeyword="menudashboard"></i> Dashboard <span></span></a>
+                                    <a href="/home/index"><i class="fa fa-home"></i> Dashboard <span></span></a>
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menudevices"><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
                                             <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
@@ -72,7 +72,7 @@
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menudashboard"><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
                                         <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
                                         <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
@@ -328,7 +328,7 @@
     <script src="../vendors/jquery-knob/dist/jquery.knob.min.js"></script>
     <!-- Cropper -->
     <script src="../vendors/cropper/dist/cropper.min.js"></script>
-
+    <script src="../language.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 
@@ -336,8 +336,54 @@
     <script type="text/javascript">
         var ids;
         var selectedC1;
+        var lng = "ENG";
+        var SetLang = function () {
+            return function () {
+
+
+                 //<---- master page content
+                $("*[data-langkeyword='dropdowndevicelist']").html(lang["dropdowndevicelist"][lng]);
+                $("*[data-langkeyword='menudashboard']").html(lang["menudashboard"][lng]);
+                $("*[data-langkeyword='menudevices']").html(lang["menudevices"][lng]);
+                $("*[data-langkeyword='submenudevicelist']").html(lang["submenudevicelist"][lng]);
+                $("*[data-langkeyword='submenudevicelogs']").html(lang["submenudevicelogs"][lng]);
+                $("*[data-langkeyword='submenunewdevice']").html(lang["submenunewdevice"][lng]);
+                $("*[data-langkeyword='menusettings']").html(lang["menusettings"][lng]);
+                $("*[data-langkeyword='submenuthreshold']").html(lang["submenuthreshold"][lng]);
+                $("*[data-langkeyword='submenunotifications']").html(lang["submenunotifications"][lng]);
+                $("*[data-langkeyword='submenuphoneconfig']").html(lang["submenuphoneconfig"][lng]);
+                $("*[data-langkeyword='leftmenulogin']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogin"][lng])
+                    $(this).attr("data-toggle", "tooltip");
+                    $(this).attr("data-placement", "top");
+                });
+                $("*[data-langkeyword='leftmenulogout']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogout"][lng])
+                });
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                //--!> master page content
+
+                //---<Threshold
+                $("*[data-langkeyword='tempmoisthreshholdset']").html(lang["tempmoisthreshholdset"][lng]);
+                $("*[data-langkeyword='tempthreshholdset']").html(lang["tempthreshholdset"][lng]);
+                $("*[data-langkeyword='mintemp']").html(lang["mintemp"][lng]);
+                $("*[data-langkeyword='maxtemp']").html(lang["maxtemp"][lng]);
+                $("*[data-langkeyword='moisthreshholdset']").html(lang["moisthreshholdset"][lng]);
+                $("*[data-langkeyword='minmois']").html(lang["minmois"][lng]);
+                $("*[data-langkeyword='maxmois']").html(lang["maxmois"][lng]);
+
+                //---<!Threshold
+
+            };
+        }();
+
+
+
 
         $(document).ready(function () {
+            SetLang();
+
 
             //deviceName
             $.ajax({
@@ -389,7 +435,7 @@
 
                             $('.deviceitem').on('click', function (event) {
                                 ids = $(this).data('macid');
-                                
+
 
                                 $.ajax({
                                     type: 'POST',

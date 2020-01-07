@@ -56,7 +56,7 @@
 
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-sitemap" data-langkeyword="menudevices"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menudevices"><i class="fa fa-sitemap"></i> Cihazlarım <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
                                             <a href="/home/Device_List" data-langkeyword="submenudevicelist">Cihaz Listesi</a>
@@ -72,7 +72,7 @@
                                 </li>
 
                                 <li class="">
-                                    <a><i class="fa fa-edit" data-langkeyword="menusettings"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
+                                    <a data-langkeyword="menusettings"><i class="fa fa-edit"></i> Ayarlar <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none;">
                                         <li><a href="/home/OptionsDashboad" data-langkeyword="submenuthreshold">Eşik Ayarları</a></li>
                                         <li><a href="/home/OptionsDashboard_Notification" data-langkeyword="submenunotifications">Bildirim Seçenekleri</a></li>
@@ -215,7 +215,7 @@
                                     <ul class="to_do">
                                         <li>
                                             <p>
-                                                <input data-type="email1" type="checkbox" id="e1" data-langkeyword="emailnotify"> Email Bildirimi
+                                                <input data-type="email1" type="checkbox" id="e1" data-langkeyword="emailnotify" > Email Bildirimi
                                             </p>
                                         </li>
                                         <li>
@@ -225,7 +225,7 @@
                                         </li>
                                         <li>
                                             <p>
-                                                <input data-type="IVR1" type="checkbox" id="I1" data-langkeyword="ivrnotify"> IVR desteği
+                                                <input data-type="IVR1" type="checkbox" id="I1" data-langkeyword="ivrnotify" /> IVR desteği
                                             </p>
                                         </li>
                                         <li>
@@ -372,7 +372,8 @@
                                     <ul class="to_do">
                                         <li>
                                             <p>
-                                                <input data-type="email4" type="checkbox" id="e4" data-langkeyword="emailnotify"> Email Bildirimi
+                                                <input data-type="email4" type="checkbox" id="e4" data-langkeyword="emailnotify" /> Email Bildirimi
+
                                             </p>
                                         </li>
                                         <li>
@@ -435,14 +436,65 @@
     <!-- Custom Theme Scripts -->
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../build/js/custom.min.js"></script>
-
+    <script src="../language.js"></script>
     <!-- Ion.RangeSlider -->
     <script src="../vendors/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
 
     <script type="text/javascript">
         var ids;
-        $(document).ready(function () {
+        var lng = "ENG";
 
+        var SetLang = function () {
+            return function () {
+
+
+                //<---- master page content
+                $("*[data-langkeyword='dropdowndevicelist']").html(lang["dropdowndevicelist"][lng]);
+                $("*[data-langkeyword='menudashboard']").html(lang["menudashboard"][lng]);
+                $("*[data-langkeyword='menudevices']").html(lang["menudevices"][lng]);
+                $("*[data-langkeyword='submenudevicelist']").html(lang["submenudevicelist"][lng]);
+                $("*[data-langkeyword='submenudevicelogs']").html(lang["submenudevicelogs"][lng]);
+                $("*[data-langkeyword='submenunewdevice']").html(lang["submenunewdevice"][lng]);
+                $("*[data-langkeyword='menusettings']").html(lang["menusettings"][lng]);
+                $("*[data-langkeyword='submenuthreshold']").html(lang["submenuthreshold"][lng]);
+                $("*[data-langkeyword='submenunotifications']").html(lang["submenunotifications"][lng]);
+                $("*[data-langkeyword='submenuphoneconfig']").html(lang["submenuphoneconfig"][lng]);
+                $("*[data-langkeyword='leftmenulogin']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogin"][lng])
+                    $(this).attr("data-toggle", "tooltip");
+                    $(this).attr("data-placement", "top");
+                });
+                $("*[data-langkeyword='leftmenulogout']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogout"][lng])
+                });
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                //--!> master page content
+
+                //---<Notifications
+                $("*[data-langkeyword='delaytempup']").html(lang["delaytempup"][lng]);
+                $("*[data-langkeyword='delaytempdown']").html(lang["delaytempdown"][lng]);
+                $("*[data-langkeyword='delaymoisup']").html(lang["delaymoisup"][lng]);
+                $("*[data-langkeyword='delaymoisdown']").html(lang["delaymoisdown"][lng]);
+                $("*[data-langkeyword='temprise']").html(lang["temprise"][lng]);
+                $("*[data-langkeyword='tempfall']").html(lang["tempfall"][lng]);
+                $("*[data-langkeyword='moisrise']").html(lang["moisrise"][lng]);
+                $("*[data-langkeyword='moisfall']").html(lang["moisfall"][lng]);
+                $("*[data-langkeyword='notificationactions']").html(lang["notificationactions"][lng]);
+               
+                $("*[data-langkeyword='emailnotify']").html(lang["emailnotify"][lng]);
+                $("*[data-langkeyword='messagenotify']").html(lang["messagenotify"][lng]);
+                $("*[data-langkeyword='ivrnotify']").html(lang["ivrnotify"][lng]);
+                $("*[data-langkeyword='callcenternotify']").html(lang["callcenternotify"][lng]);
+                //---!Notifications
+
+
+            };
+        }();
+
+
+        $(document).ready(function () {
+            SetLang();
             $.ajax({
 
                 type: 'POST',
@@ -450,7 +502,7 @@
                 dataType: 'json',
                 data: { 'Macid': ids },
                 success: function (result) {
-                    $('#renamer').append('<h3>Cihaz: ' + result[0].name + '</h3>');
+                    $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + result[0].name + '</h3>');
                     for (var i = 0; i < result.length; i++) {
                         $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
 
@@ -482,7 +534,8 @@
                     $('.deviceitem').on('click', function (event) {
                         ids = $(this).data('macid');
                         $('#renamer h3').remove();
-                        
+                        $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + result[0].name + '</h3>');
+
 
 
                         $("#range").ionRangeSlider();
@@ -500,7 +553,7 @@
                             data: { 'Macid': ids },
                             dataType: "json",
                             success: function (result) {
-                                $('#renamer').append('<h3>Cihaz: ' + result[0].deviceName + '</h3>');
+
                                 slider.update({
                                     from: result[0].delayTempUp
                                 });
@@ -581,7 +634,7 @@
 
                         });
                         slider4.update();
-                        
+
                         $.ajax({
                             type: 'POST',
                             url: '/Api/Mails',
@@ -716,135 +769,7 @@
                 }
 
             });
-
-
-            $.ajax({
-                type: 'POST',
-                url: '/Api/Mails',
-                data: { 'Macid': ids },
-                dataType: "json",
-                success: function (result) {
-
-                    if (Number(result[0].email_TempUp) == 1) {
-                        $('#e1').prop('checked', true);
-                    }
-                    else {
-                        $('#e1').prop('checked', false);
-                    }
-                    if (Number(result[0].email_TempDown) == 1) {
-                        $('#e2').prop('checked', true);
-                    }
-                    else {
-                        $('#e2').prop('checked', false);
-                    }
-                    if (Number(result[0].email_MoisUp) == 1) {
-                        $('#e3').prop('checked', true);
-                    }
-                    else {
-                        $('#e3').prop('checked', false);
-                    }
-                    if (Number(result[0].email_MoisDown) == 1) {
-                        $('#e4').prop('checked', true);
-                    }
-                    else {
-                        $('#e4').prop('checked', false);
-                    }
-
-                    //msg
-                    if (Number(result[0].msg_TempUp) == 1) {
-                        $('#m1').prop('checked', true);
-                    }
-                    else {
-                        $('#m1').prop('checked', false);
-                    }
-                    if (Number(result[0].msg_TempDown) == 1) {
-                        $('#m2').prop('checked', true);
-                    }
-                    else {
-                        $('#m1').prop('checked', false);
-                    }
-                    if (Number(result[0].msg_MoisUp) == 1) {
-                        $('#m3').prop('checked', true);
-                    }
-                    else {
-                        $('#m1').prop('checked', false);
-                    }
-                    if (Number(result[0].msg_MoisDown) == 1) {
-                        $('#m4').prop('checked', true);
-                    }
-                    else {
-                        $('#m4').prop('checked', false);
-                    }
-                    //
-
-                    if (Number(result[0].ivR_TempUp) == 1) {
-                        $('#I1').prop('checked', true);
-                    }
-                    else {
-                        $('#I1').prop('checked', false);
-                    }
-                    if (Number(result[0].ivR_TempDown) == 1) {
-                        $('#I2').prop('checked', true);
-                    }
-                    else {
-                        $('#I2').prop('checked', false);
-                    }
-                    if (Number(result[0].ivR_MoisUp) == 1) {
-                        $('#I3').prop('checked', true);
-                    }
-                    else {
-                        $('#I3').prop('checked', false);
-                    }
-                    if (Number(result[0].ivR_MoisDown) == 1) {
-                        $('#I4').prop('checked', true);
-                    }
-                    else {
-                        $('#I4').prop('checked', false);
-                    }
-                    //call
-                    if (Number(result[0].call_TempUp) == 1) {
-                        $('#c1').prop('checked', true);
-                    }
-                    else {
-                        $('#c1').prop('checked', false);
-                    }
-                    if (Number(result[0].call_TempDown) == 1) {
-                        $('#c2').prop('checked', true);
-                    }
-                    else {
-                        $('#c2').prop('checked', false);
-                    }
-                    if (Number(result[0].call_MoisUp) == 1) {
-                        $('#c3').prop('checked', true);
-                    }
-                    else {
-                        $('#c3').prop('checked', false);
-                    }
-                    if (Number(result[0].call_MoisDown) == 1) {
-                        $('#c4').prop('checked', true);
-                    }
-                    else {
-                        $('#c4').prop('checked', false);
-                    }
-
-
-
-
-                }
-                ,
-                failure: function (response) {
-                    alert(response.responseText);
-
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-
-            }
-            );
-
         });
-
 
         $("#range").ionRangeSlider({
 
@@ -896,7 +821,6 @@
             }
 
         });
-
         $("#range2").ionRangeSlider({
 
             type: "single",

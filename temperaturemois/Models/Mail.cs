@@ -131,14 +131,16 @@ namespace temperaturemois.Models
 
 
                     }
-                    else if (difference >= 15)
-                    {
-                        type = "Offline";
-                        body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüz " + item.LastActivityDiff + " Dakikadır Offline Durumda! <br> Son Alınan Sıcaklık: " + item.Temperature + " <br> Son Alınan Nem: " + item.Moisture + "%");
-                        setrequest(body.ToString(), type);
-                        smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + "  Sensörünüz " + item.LastActivityDiff + " Dakikadır Offline Durumda! \n Son Alınan Sıcaklık: " + item.Temperature + " \n Son Alınan Nem: " + item.Moisture + "%");
-                        setrequestsms(smsbody.ToString());
-                    }
+                    
+                    //send notification if device is offline last 15 min
+                    //else if (difference >= 15)
+                    //{
+                    //    type = "Offline";
+                    //    body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüz " + item.LastActivityDiff + " Dakikadır Offline Durumda! <br> Son Alınan Sıcaklık: " + item.Temperature + " <br> Son Alınan Nem: " + item.Moisture + "%");
+                    //    setrequest(body.ToString(), type);
+                    //    smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + "  Sensörünüz " + item.LastActivityDiff + " Dakikadır Offline Durumda! \n Son Alınan Sıcaklık: " + item.Temperature + " \n Son Alınan Nem: " + item.Moisture + "%");
+                    //    setrequestsms(smsbody.ToString());
+                    //}
                     //till
 
                     if (delaycheck == true)

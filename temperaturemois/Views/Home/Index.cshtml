@@ -59,7 +59,7 @@
                         <div class="menu_section">
                             <ul class="nav side-menu">
                                 <li>
-                                    <a href="/home/index" data-langkeyword="menudashboard"><i class="fa fa-home"></i> Dashboard <span></span></a>
+                                    <a href="/home/index" data-langkeyword="menudashboard"><i class="fa fa-home"></i> Arayüz <span></span></a>
 
                                 </li>
                                 <li>
@@ -123,9 +123,9 @@
 
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/home/profile"> Kullanıcı Bilgilerim</a>
+                                    <a class="dropdown-item" href="/home/profile" data-langkeyword="righttopprofile"> Kullanıcı Bilgilerim</a>
 
-                                    <a class="dropdown-item" href="/home/logout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
+                                    <a class="dropdown-item" href="/home/logout" data-langkeyword="righttoplogout"><i class="fa fa-sign-out pull-right"></i> Çıkış</a>
                                 </div>
                             </li>
 
@@ -245,7 +245,7 @@
                                 <div class="dashboard_graph x_panel">
 
                                     <div class="col-md-6">
-                                        <h3 data-langkeyword="tempdatatemplate">Sıcaklık Veri Grafiği <small>Online Data</small></h3>
+                                        <h2 data-langkeyword="tempdatatemplate">Sıcaklık Veri Grafiği</h2>
                                     </div>
                                     <div class="col-md-6">
                                         <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
@@ -276,7 +276,7 @@
                                 <div class="dashboard_graph x_panel">
 
                                     <div class="col-md-6">
-                                        <h3 data-langkeyword="moisdatatemplate">Nem Veri Grafiği <small>Online Data</small></h3>
+                                        <h2 data-langkeyword="moisdatatemplate">Nem Veri Grafiği</h2>
                                     </div>
                                     <div class="col-md-6">
                                         <div id="reportrange2" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
@@ -346,6 +346,8 @@
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <!-- DateJS -->
     <script src="../vendors/DateJS/build/date.js"></script>
+
+    <script src="../language.js"></script>
     <script type="text/javascript">
 
         var theme = {
@@ -564,10 +566,47 @@
         var GaugeMois;
         var GaugeTotalData;
         var ids;
+        var sname;
+        var lng = "ENG";
+
+        var SetLang = function () {
+
+            return function () {
+
+                $("*[data-langkeyword='tempgauge']").html(lang["tempgauge"][lng]);
+                $("*[data-langkeyword='moisgauge']").html(lang["moisgauge"][lng]);
+                $("*[data-langkeyword='tempdatatemplate']").html(lang["tempdatatemplate"][lng]);
+                $("*[data-langkeyword='moisdatatemplate']").html(lang["moisdatatemplate"][lng]);
+                $("*[data-langkeyword='device']").html(lang["device"][lng]);
+                //<---- master page content
+                $("*[data-langkeyword='dropdowndevicelist']").html(lang["dropdowndevicelist"][lng]);
+                $("*[data-langkeyword='menudashboard']").html(lang["menudashboard"][lng]);
+                $("*[data-langkeyword='menudevices']").html(lang["menudevices"][lng]);
+                $("*[data-langkeyword='submenudevicelist']").html(lang["submenudevicelist"][lng]);
+                $("*[data-langkeyword='submenudevicelogs']").html(lang["submenudevicelogs"][lng]);
+                $("*[data-langkeyword='submenunewdevice']").html(lang["submenunewdevice"][lng]);
+                $("*[data-langkeyword='menusettings']").html(lang["menusettings"][lng]);
+                $("*[data-langkeyword='submenuthreshold']").html(lang["submenuthreshold"][lng]);
+                $("*[data-langkeyword='submenunotifications']").html(lang["submenunotifications"][lng]);
+                $("*[data-langkeyword='submenuphoneconfig']").html(lang["submenuphoneconfig"][lng]);
+                $("*[data-langkeyword='leftmenulogin']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogin"][lng])
+                    $(this).attr("data-toggle", "tooltip");
+                    $(this).attr("data-placement", "top");
+                });
+                $("*[data-langkeyword='leftmenulogout']").each(function (ev) {
+                    $(this).attr("title", lang["leftmenulogout"][lng])
+                });
+                $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
+                $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                //--!> master page content
+
+            };
+        }();
 
         $(document).ready(function () {
-            
-           
+            //language option
+            SetLang();
 
             //gauges
             if ($('#GaugeTemp').length) {
@@ -787,8 +826,8 @@
                         data: { 'Macid': ids },
                         success: function (result) {
                             ids = result[0].macID;
-
-                            $('#renamer').append('<h3>Cihaz: ' + result[0].name + '</h3>');
+                            sname = result[0].name;
+                            $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + sname + '</h3>');
                             for (var i = 0; i < result.length; i++) {
                                 $("#mnav").append('<a class="dropdown-item deviceitem" href="#" data-name="' + result[i].name + '" data-macid="' + result[i].macID + '" id="Device' + (i + 1) + '">' + result[i].name + ': ' + result[i].macID + '</a>');
                             }
@@ -831,7 +870,7 @@
                                 init_flot_chart2(weekDayName2, weekDayName);
                                 init_daterangepicker2();
                                 $('#renamer h3').remove();
-                                $('#renamer').append('<h3>Cihaz: ' + sname + '</h3>');
+                                $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + sname + '</h3>');
                                 $.ajax({
                                     type: 'POST',
                                     url: '/Api/DeviceList_Eject',
@@ -906,21 +945,29 @@
                 url: '/Api/Charts',
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
-                data: { 'Macid': ids }
-                ,
-
+                data: { 'Macid': ids },
                 success: function (result) {
+                    var A = moment().format("H:mm");
+                    var B = result[0].createTime
+
+                    //if (A == B) {
+                    //    GaugeTemp.setOption({ series: [{ data: [{ value: result[0].temp, name: 'Sıcaklık' }] }] });
+                    //    GaugeMois.setOption({ series: [{ data: [{ value: result[0].mois, name: 'Nem' }] }] });
+                    //}
+                    //else {
+                    //    GaugeTemp.setOption({ series: [{ data: [{ value: 0, name: 'Sıcaklık' }] }] });
+                    //    GaugeMois.setOption({ series: [{ data: [{ value: 0, name: 'Nem' }] }] });
+                    //}
+
                     if (result[0] == null) {
-                        GaugeTemp.setOption({ series: [{ data: [{ value: 0, name: 'Sıcaklık' }] }] });
-                        GaugeMois.setOption({ series: [{ data: [{ value: 0, name: 'Nem' }] }] });
+                        GaugeTemp.setOption({ series: [{ data: [{ value: 0, name: '' }] }] });
+                        GaugeMois.setOption({ series: [{ data: [{ value: 0, name: '' }] }] });
                     }
                     else {
-                        GaugeTemp.setOption({ series: [{ data: [{ value: result[0].temp, name: 'Sıcaklık' }] }] });
-                        GaugeMois.setOption({ series: [{ data: [{ value: result[0].mois, name: 'Nem' }] }] });
+                        GaugeTemp.setOption({ series: [{ data: [{ value: result[0].temp, name: '' }] }] });
+                        GaugeMois.setOption({ series: [{ data: [{ value: result[0].mois, name: '' }] }] });
                     }
-
                 },
-
                 failure: function (response) {
                     alert(response.responseText);
                 },
@@ -946,10 +993,14 @@
                     console.log(result);
 
                     var chart_plot_03_data = [];
+                    var namelabel = [];
+                    
                     for (var i = 0; i < result.length; i++) {
                         chart_plot_03_data.push([new Date(result[result.length - 1 - i].createTime), result[result.length - 1 - i].temp]);
+                        
                     }
-
+                    namelabel.push([lang["tempgraph_label"][lng]]);
+                    
                     var chart_plot_03_settings = {
                         xaxis: {
                             mode: "time",
@@ -983,7 +1034,7 @@
                     };
                     if ($("#chart_plot_03").length) {
                         $.plot($("#chart_plot_03"), [{
-                            label: "Sıcaklık",
+                            label: namelabel,
                             data: chart_plot_03_data,
                             lines: {
                                 fillColor: "rgba(150, 202, 89, 0.12)"
@@ -1105,11 +1156,13 @@
                     if (typeof ($.plot) === 'undefined') { return; }
 
                     var chart_plot_04_data = [];
+                    var namelabel2 = [];
+                    
                     console.log(result);
                     for (var i = 0; i < result.length; i++) {
                         chart_plot_04_data.push([new Date(result[result.length - 1 - i].createTime), result[result.length - 1 - i].mois]);
                     }
-
+                    namelabel2.push([lang["moisgraph_label"][lng]]);
                     var chart_plot_04_settings = {
                         xaxis: {
                             mode: "time",
@@ -1143,7 +1196,7 @@
                     };
                     if ($("#chart_plot_04").length) {
                         $.plot($("#chart_plot_04"), [{
-                            label: "Sıcaklık",
+                            label: namelabel2,
                             data: chart_plot_04_data,
                             lines: {
                                 fillColor: "rgba(150, 202, 89, 0.12)"

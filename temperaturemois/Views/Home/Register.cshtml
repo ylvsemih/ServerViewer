@@ -61,7 +61,7 @@
                             <input data-langkeyword="password" type="password" class="form-control" placeholder="Parola" required="" id="cr2" />
                         </div>
                         <div>
-                            <a type="button" class="btn btn-success" href="#" id="Set" data-langkeyword="Loginbutton">Oturum Aç</a>
+                            <a type="button" class="btn btn-success" href="#" id="Set" data-langkeyword="gologinbutton">Oturum Aç</a>
                             <a class="reset_pass" href="/home/Forget_pass" id="reset1" data-langkeyword="forgotmypassbutton">Parolamı Unuttum</a>
                         </div>
 
@@ -70,17 +70,19 @@
                         <div class="separator">
                             <p class="change_link" data-langkeyword="areyounew">
                                 Sitede Yeni misin?
-                                <a href="#signup" class="to_register" data-langkeyword="createnewaccount"> Yeni Hesap Oluştur </a>
                             </p>
 
-                            <div class="clearfix"></div>
-                            <br />
+                        </div>
+                        <a href="#signup" class="to_register" data-langkeyword="createnewaccount"> Yeni Hesap Oluştur </a>
 
+                        <div class="separator">
                             <div>
                                 <h1> Red Bip</h1>
                                 <p>Fosoft © 2019 All Rights Reserved.</p>
                             </div>
                         </div>
+
+
                     </form>
                 </section>
             </div>
@@ -96,7 +98,7 @@
                             <input data-langkeyword="username" type="text" class="form-control" placeholder="Kullanıcı Adı" required="" id="q2" />
                         </div>
                         <div>
-                            <input data-langkeyword="formphonenumber" type="text" class="form-control" placeholder="Telefon Numarası" required="" id="PhoneNumber" />
+                            <input data-langkeyword="phonenumber" type="text" class="form-control" placeholder="Telefon Numarası" required="" id="PhoneNumber" />
                         </div>
 
                         <div>
@@ -120,12 +122,13 @@
                         <div class="separator">
                             <p class="change_link" data-langkeyword="areyouamember">
                                 Siteye Üye misin ?
-                                <a href="#signin" class="to_register" data-langkeyword="gologinbutton"> Giriş Yap </a>
+
                             </p>
 
-                            <div class="clearfix"></div>
-                            <br />
 
+                        </div>
+                        <a href="#signin" class="to_register" data-langkeyword="gologinbutton"> Giriş Yap </a>
+                        <div class="separator">
                             <div>
                                 <h1> Red Bip!</h1>
                                 <p>Fosoft © 2019 All Rights Reserved.</p>
@@ -205,7 +208,7 @@
     <script src="../vendors/starrr/dist/starrr.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-
+    <script src="../language.js"></script>
     <script type="text/javascript">
 
         var mac;
@@ -216,6 +219,61 @@
         var pass;
         var username;
         var password;
+        var lng = "ENG";
+        var SetLang = function () {
+
+            return function () {
+
+
+
+                //--<Login
+                //$("*[data-langkeyword='username']").html(lang["username"][lng]);
+                $("*[data-langkeyword='username']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["username"][lng])
+                });
+                $("*[data-langkeyword='password']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["password"][lng])
+                });
+                $("*[data-langkeyword='logintext']").html(lang["logintext"][lng]);
+                $("*[data-langkeyword='forgotmypassbutton']").html(lang["forgotmypassbutton"][lng]);
+                $("*[data-langkeyword='areyounew']").html(lang["areyounew"][lng]);
+                $("*[data-langkeyword='createnewaccount']").html(lang["createnewaccount"][lng]);
+                $("*[data-langkeyword='gologinbutton']").html(lang["gologinbutton"][lng]);
+                //---!Login
+                //---<Create Account
+                $("*[data-langkeyword='createaccountview']").html(lang["createaccountview"][lng]);
+                $("*[data-langkeyword='devicenameinput']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["devicenameinput"][lng])
+                });
+                $("*[data-langkeyword='formcompany']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["formcompany"][lng])
+                });
+                $("*[data-langkeyword='phonenumber']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["phonenumber"][lng])
+                });
+                $("*[data-langkeyword='productkeyinput']").each(function (ev) {
+                   // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["productkeyinput"][lng])
+                });
+                
+                $("*[data-langkeyword='registerbutton']").html(lang["registerbutton"][lng]);
+                $("*[data-langkeyword='areyouamember']").html(lang["areyouamember"][lng]);
+                $("*[data-langkeyword='gologinbutton']").html(lang["gologinbutton"][lng]);
+                //--!Create Account
+
+
+            };
+        }();
+
+        $(document).ready(function () {
+            SetLang();
+        });
+
         $("#Get").click(function (event) {
 
 
