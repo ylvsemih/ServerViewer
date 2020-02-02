@@ -120,6 +120,14 @@
         "TR": "Aksiyon",
         "ENG": "Action"
     },
+    "gecikmetext": {
+        "TR": " Gecikme: ",
+        "ENG": " Delay: "
+    },
+    "timeticker": {
+        "TR": " Dakika ",
+        "ENG": " Minute "
+    },
     "activenotifications": {
         "TR": "Aktif Bildirimler",
         "ENG": "Active Notifications"
@@ -161,16 +169,16 @@
         "ENG": "Maximum Moisture Value"
     },
     "delaytempup": {
-        "TR": "Isı Yüksekliği Bildirim Sıklığı",
-        "ENG": "Frequency of Temperature Rise Case Notification"
+        "TR": "Bir Sonraki Email Bildirimi İçin Geçen Süre",
+        "ENG": "Delay Span for The Next Email Notification"
     },
     "delaytempdown": {
-        "TR": "Isı Düşüklüğü Bildirim Sıklığı",
-        "ENG": "Frequency of Temperature Fall Case Notification"
+        "TR": "Bir Sonraki SMS Bildirimi İçin Geçen Süre",
+        "ENG": "Delay Span for The Next SMS Notification"
     },
     "delaymoisup": {
-        "TR": "Nem Yüksekliği Bildirim Sıklığı",
-        "ENG": "Frequency of Moisture Rise Case Notification"
+        "TR": "Bir Sonraki IVR Bildirimi İçin Geçen Süre",
+        "ENG": "Delay Span for The Next IVR Notification"
     },
     "delaymoisdown": {
         "TR": "Nem Düşüklüğü Bildirim Sıklığı",

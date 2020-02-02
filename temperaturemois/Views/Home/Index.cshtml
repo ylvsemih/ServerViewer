@@ -110,6 +110,7 @@
             <!-- top navigation -->
             <div class="top_nav">
                 <div class="nav_menu">
+
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
 
@@ -117,11 +118,16 @@
                     </div>
 
                     <nav class="nav navbar-nav">
+
                         <ul class=" navbar-right">
+
+                            <li style="padding-left: 22px;"> <span><a class="text-primary" style="color:black;font-family:'Times New Roman';font-weight:bold" href="#" id="ENG">ENG</a>&nbsp;&nbsp;<a class="text-info" style="color:black;font-family:'Times New Roman';font-weight:bold" href="#" id="TR">TR</a></span></li>
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
+
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
 
                                 </a>
+
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="/home/profile" data-langkeyword="righttopprofile"> Kullanıcı Bilgilerim</a>
 
@@ -180,12 +186,8 @@
                                 <div class="x_title">
                                     <h2 data-langkeyword="tempgauge">Sıcaklık Göstergesi</h2>
                                     <ul class="nav navbar-right panel_toolbox">
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="home/OptionsDashboad">Eşik Ayarları</a>
-                                                <a class="dropdown-item" href="home/OptionsDashboard_Notification">Bildirim Seçenekleri</a>
-                                            </div>
+                                        <li>
+                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                         </li>
                                         <li>
                                             <a class="close-link"><i class="fa fa-close" align="right"></i></a>
@@ -208,12 +210,8 @@
                                 <div class="x_title">
                                     <h2 data-langkeyword="moisgauge">Nem Göstergesi</h2>
                                     <ul class="nav navbar-right panel_toolbox">
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="home/OptionsDashboad">Eşik Ayarları</a>
-                                                <a class="dropdown-item" href="home/OptionsDashboard_Notification">Bildirim Ayarları</a>
-                                            </div>
+                                        <li>
+                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                         </li>
                                         <li>
                                             <a class="close-link"><i class="fa fa-close"></i></a>
@@ -567,9 +565,21 @@
         var GaugeTotalData;
         var ids;
         var sname;
-        var lng = "ENG";
-
+        var lng;
+        var tcase = "temp";
+        var hcase = "mois";
+        var vallang = getCookie("langoption");
         var SetLang = function () {
+           //NEEDS TO CLONE TO OTHERS
+            lng = "TR";
+            if (vallang == "ENG") {
+                lng = "ENG";
+                console.log("notundefined");
+            }
+            if (vallang == "TR") {
+                lng = "TR";
+                console.log("TRSS");
+            }
 
             return function () {
 
@@ -600,13 +610,24 @@
                 $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
                 $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
                 //--!> master page content
-
             };
         }();
 
         $(document).ready(function () {
             //language option
             SetLang();
+
+            $("#TR").click(function (e) {
+                var value = (e.target.id);
+                setCookie("langoption", value, 30);
+                location.reload();
+            });
+            $("#ENG").click(function (e) {
+                var value = (e.target.id);
+                setCookie("langoption", value, 30);
+                location.reload();
+                console.log("worked");
+            });
 
             //gauges
             if ($('#GaugeTemp').length) {
@@ -627,7 +648,7 @@
                         }
                     },
                     series: [{
-                        name: 'Sıcaklık',
+                        name: '',
                         type: 'gauge',
                         center: ['50%', '50%'],
                         startAngle: 140,
@@ -703,7 +724,7 @@
                         },
                         data: [{
                             value: null,
-                            name: 'Temperature'
+                            name: ''
                         }]
                     }]
                 });
@@ -727,7 +748,7 @@
                         }
                     },
                     series: [{
-                        name: 'Nem',
+                        name: '',
                         type: 'gauge',
                         center: ['50%', '50%'],
                         startAngle: 140,
@@ -803,7 +824,7 @@
                         },
                         data: [{
                             value: [],
-                            name: 'Moisture'
+                            name: ''
                         }]
                     }]
                 });
@@ -841,7 +862,7 @@
                                 data: { 'Macid': ids },
                                 success: function (result) {
                                     for (var i = 0; i < result.length; i++) {
-                                        $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+                                        $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span class="time">' + result[i].createTime + '</span><br><span>' + result[i].name + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
 
                                     }
                                     $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
@@ -864,10 +885,10 @@
                                 var mySeconddate = moment().subtract(1, 'days');
                                 var weekDayName2 = moment(mySeconddate).format('YYYYMMDD');
                                 var todaydate = moment().startOf('day').format('YYYYMMDD');
-
-                                init_flot_chart(weekDayName2, weekDayName);
+                                
+                                init_flot_chart(weekDayName2, weekDayName, tcase);
                                 init_daterangepicker();
-                                init_flot_chart2(weekDayName2, weekDayName);
+                                init_flot_chart2(weekDayName2, weekDayName, hcase);
                                 init_daterangepicker2();
                                 $('#renamer h3').remove();
                                 $('#renamer').append('<h3>' + lang["device"][lng] + ' : ' + sname + '</h3>');
@@ -904,11 +925,12 @@
                     var mySeconddate = moment().subtract(1, 'days');
                     var weekDayName2 = moment(mySeconddate).format('YYYYMMDD');
                     var todaydate = moment().startOf('day').format('YYYYMMDD');
+                    
                     gaugeDraw();
                     setInterval(gaugeDraw, 4000);
-                    init_flot_chart(weekDayName2, weekDayName);
+                    init_flot_chart(weekDayName2, weekDayName, tcase);
                     init_daterangepicker();
-                    init_flot_chart2(weekDayName2, weekDayName);
+                    init_flot_chart2(weekDayName2, weekDayName, hcase);
                     init_daterangepicker2();
 
 
@@ -939,6 +961,29 @@
 
         });
 
+        
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
         function gaugeDraw(IDcustomer) {
             $.ajax({
                 type: 'Get',
@@ -964,8 +1009,8 @@
                         GaugeMois.setOption({ series: [{ data: [{ value: 0, name: '' }] }] });
                     }
                     else {
-                        GaugeTemp.setOption({ series: [{ data: [{ value: result[0].temp, name: '' }] }] });
-                        GaugeMois.setOption({ series: [{ data: [{ value: result[0].mois, name: '' }] }] });
+                        GaugeTemp.setOption({ series: [{ data: [{ value: result[0].temp, name: lang["tempgraph_label"][lng] }] }] });
+                        GaugeMois.setOption({ series: [{ data: [{ value: result[1].mois, name: lang["moisgraph_label"][lng] }] }] });
                     }
                 },
                 failure: function (response) {
@@ -980,12 +1025,12 @@
 
         };
 
-        function init_flot_chart(StartDate, EndDate) {
+        function init_flot_chart(StartDate, EndDate,tcase) {
 
             $.ajax({
                 type: 'POST',
                 url: '/Api/Charts_Line',
-                data: { 'startDate': StartDate, 'endDate': EndDate, 'MacID': ids },
+                data: { 'startDate': StartDate, 'endDate': EndDate, 'MacID': ids,'cases':tcase },
                 dataType: "json",
                 success: function (result) {
                     if (typeof ($.plot) === 'undefined') { return; }
@@ -994,13 +1039,13 @@
 
                     var chart_plot_03_data = [];
                     var namelabel = [];
-                    
+
                     for (var i = 0; i < result.length; i++) {
                         chart_plot_03_data.push([new Date(result[result.length - 1 - i].createTime), result[result.length - 1 - i].temp]);
-                        
+
                     }
                     namelabel.push([lang["tempgraph_label"][lng]]);
-                    
+
                     var chart_plot_03_settings = {
                         xaxis: {
                             mode: "time",
@@ -1070,11 +1115,11 @@
 
         function init_daterangepicker(start, end) {
             if (typeof ($.fn.daterangepicker) === 'undefined') { return; }
-
+            
             var cb = function (start, end, label) {
                 //2 Line below uncommented. (s)
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                init_flot_chart(start.format('YYYYMMDD'), end.format('YYYYMMDD')); //hhmmss //'MM/DD/YYYY'
+                init_flot_chart(start.format('YYYYMMDD'), end.format('YYYYMMDD'), "temp"); //hhmmss //'MM/DD/YYYY'
 
 
 
@@ -1084,7 +1129,7 @@
                 startDate: moment().subtract(1, 'days'),
                 endDate: moment(),
                 minDate: '01/01/2012',
-                maxDate: '12/31/2019',
+                maxDate: '12/31/2020',
                 dateLimit: {
                     days: 60
                 },
@@ -1145,19 +1190,19 @@
 
 
         //flot chart2
-        function init_flot_chart2(StartDate, EndDate) {
+        function init_flot_chart2(StartDate, EndDate,hcase) {
 
             $.ajax({
                 type: 'POST',
                 url: '/Api/Charts_Line',
-                data: { 'startDate': StartDate, 'endDate': EndDate, 'MacID': ids },
+                data: { 'startDate': StartDate, 'endDate': EndDate, 'MacID': ids, 'cases': hcase },
                 dataType: "json",
                 success: function (result) {
                     if (typeof ($.plot) === 'undefined') { return; }
 
                     var chart_plot_04_data = [];
                     var namelabel2 = [];
-                    
+
                     console.log(result);
                     for (var i = 0; i < result.length; i++) {
                         chart_plot_04_data.push([new Date(result[result.length - 1 - i].createTime), result[result.length - 1 - i].mois]);
@@ -1236,7 +1281,7 @@
                 //2 Line below uncommented. (s)
                 console.log(start.toISOString(), end.toISOString(), label);
                 $('#reportrange2 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                init_flot_chart2(start.format('YYYYMMDD'), end.format('YYYYMMDD')); //hhmmss //'MM/DD/YYYY'
+                init_flot_chart2(start.format('YYYYMMDD'), end.format('YYYYMMDD'),"mois"); //hhmmss //'MM/DD/YYYY'
 
             };
 
@@ -1244,7 +1289,7 @@
                 startDate: moment().subtract(1, 'days'),
                 endDate: moment(),
                 minDate: '01/01/2012',
-                maxDate: '12/31/2019',
+                maxDate: '12/31/2020',
                 dateLimit: {
                     days: 60
                 },

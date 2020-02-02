@@ -267,12 +267,26 @@
     <script src="../build/js/custom.js"></script>
 
     <script type="text/javascript">
+        var morrisLabelTemp = [];
+        var morrisLabelMois = [];
         var morrisData = [{ 'device': null, 'geekbench': null }];
         var morrisData2 = [{ 'device': null, 'geekbench': null }];
         var ids = '7069692D3032';
-        var lng = "ENG";
-       
+        var lng;
+       var tcase = "temp";
+        var hcase = "mois";
+        var vallang = getCookie("langoption");
         var SetLang = function () {
+            lng = "TR";
+            if (vallang == "ENG") {
+                lng = "ENG";
+                console.log("notundefined");
+            }
+            if (vallang == "TR") {
+                lng = "TR";
+                console.log("TRSS");
+            }
+
             return function () {
 
 
@@ -321,10 +335,26 @@
             setInterval(init_morris_charts, 5000);
             setInterval(init_morris_charts2, 5000);
             setProfileData();
-
-
         });
 
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        morrisLabelTemp.push(lang["tempgraph_label"][lng]);
+        morrisLabelMois.push(lang["moisgraph_label"][lng]);
         function init_morris_charts() {
 
             if (typeof (Morris) === 'undefined') { return; }
@@ -337,10 +367,11 @@
                 success: function (result) {
                     console.log(result);
                     morrisData = [];
+                    
                     for (var i = 0; i < result.length; i++) {
-                        morrisData.push({ 'geekbench': result[i].temp, 'device': result[i].macID });
-
+                        morrisData.push({ 'geekbench': result[i].temp, 'device': result[i].macID});
                     }
+                    
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -354,13 +385,13 @@
 
             if ($('#graph_bar').length) {
                 barchart = init_charts(document.getElementById('#graph_bar'));
-
+                
                 Morris.Bar({
                     element: 'graph_bar',
                     data: morrisData,
                     xkey: 'device',
                     ykeys: ['geekbench'],
-                    labels: ['Isı'],
+                    labels: [morrisLabelTemp],
                     barRatio: 0.4,
                     barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
                     xLabelAngle: 0,
@@ -407,7 +438,7 @@
                     data: morrisData2,
                     xkey: 'device',
                     ykeys: ['geekbench'],
-                    labels: ['Nem'],
+                    labels: [morrisLabelMois],
                     barRatio: 0.4,
                     barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
                     xLabelAngle: 0,
@@ -492,15 +523,13 @@
             }
             return input;
         }
+
         document.getElementById('CustomerPhone').addEventListener('keyup', function (evt) {
 
             var CustomerPhone = document.getElementById('CustomerPhone');
             var charCode = (evt.which) ? evt.which : evt.keyCode;
             CustomerPhone.value = phoneFormat(CustomerPhone.value);
         });
-
-
-
 
     </script>
 </body>

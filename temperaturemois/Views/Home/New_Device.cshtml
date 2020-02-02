@@ -160,8 +160,21 @@
 
         var mac;
         var Dname;
-        var lng = "ENG";
+        var lng;
+        var tcase = "temp";
+        var hcase = "mois";
+        var vallang = getCookie("langoption");
         var SetLang = function () {
+
+             lng = "TR";
+            if (vallang == "ENG") {
+                lng = "ENG";
+                console.log("notundefined");
+            }
+            if (vallang == "TR") {
+                lng = "TR";
+                console.log("TRSS");
+            }
             return function () {
 
 
@@ -171,13 +184,36 @@
                 $("*[data-langkeyword='devicename']").html(lang["devicename"][lng]);
                 $("*[data-langkeyword='righttopprofile']").html(lang["righttopprofile"][lng]);
                 $("*[data-langkeyword='righttoplogout']").html(lang["righttoplogout"][lng]);
+                $("*[data-langkeyword='activationkey']").each(function (ev) {
+                    // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["activationkey"][lng])
+                });
+                $("*[data-langkeyword='devicename']").each(function (ev) {
+                    // html(lang["username"][lng]).
+                    $(this).attr("placeholder", lang["devicename"][lng])
+                });
             };
         }();
+
         $(document).ready(function () {
             SetLang();
-
-
         });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
         $("#Get").click(function (event) {
 

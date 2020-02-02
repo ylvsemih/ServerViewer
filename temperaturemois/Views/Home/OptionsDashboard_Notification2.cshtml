@@ -475,8 +475,21 @@
     <script type="text/javascript">
         var ids;
         var ddname;
-        var lng = "ENG";
+        var lng;
+        var tcase = "temp";
+        var hcase = "mois";
+        var vallang = getCookie("langoption");
         var SetLang = function () {
+            lng = "TR";
+            if (vallang == "ENG") {
+                lng = "ENG";
+                console.log("notundefined");
+            }
+            if (vallang == "TR") {
+                lng = "TR";
+                console.log("TRSS");
+            }
+
             return function () {
 
                 //<---- master page content
@@ -542,7 +555,7 @@
                         data: { 'Macid': ids },
                         success: function (result) {
                             for (var i = 0; i < result.length; i++) {
-                                $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span>' + result[i].name + '</span><span class="time">' + result[i].createTime + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
+                                $('#msgBoxTop').append(' <li class="nav-item"><a class="dropdown-item"><span><span class="time">' + result[i].createTime + '</span><br><span>' + result[i].name + '</span></span><span  class="message">' + result[i].notificationMessage + '</span></a></li>');
 
                             }
                             $('#msgBoxTop').append('<li class="nav-item"><div class="text-center"><a class="dropdown-item" href="/home/Device_Logs"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
@@ -610,6 +623,7 @@
                             dataType: 'json',
                             data: { 'Macid': ids },
                             success: function (result) {
+                                console.log(result);
                                 for (var i = 0; i < 10; i++) {
                                     document.getElementById("emailaddr" + i).value = ' ';
                                 }
@@ -642,32 +656,45 @@
 
             });
 
+            //get phones ( breaks the query for ongoing null macid)
+            //$.ajax({
+            //    type: 'POST',
+            //    url: '/Api/SetText',
+            //    dataType: 'json',
+            //    data: { 'Macid': ids },
+            //    success: function (result) {
+            //        for (var i = 0; i < result.length; i++) {
+            //            document.getElementById("textNumber" + i).value = result[i].phoneNumber;
+            //        }
 
-            //get phones
-            $.ajax({
-                type: 'POST',
-                url: '/Api/SetText',
-                dataType: 'json',
-                data: { 'Macid': ids },
-                success: function (result) {
-                    for (var i = 0; i < result.length; i++) {
-                        document.getElementById("textNumber" + i).value = result[i].phoneNumber;
-                    }
+            //    },
+            //    failure: function (response) {
+            //        alert(response.responseText);
+            //    },
+            //    error: function (response) {
+            //        alert(response.responseText);
+            //    }
 
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-
-            });
+            //});
 
 
         });
 
-
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
         //phone save
         $("#Get").click(function (event) {

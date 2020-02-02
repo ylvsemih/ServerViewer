@@ -162,9 +162,20 @@
         var username;
         var email;
         var mac;
-        var lng = "ENG";
+        var lng;
+        var tcase = "temp";
+        var hcase = "mois";
+        var vallang = getCookie("langoption");
         var SetLang = function () {
-
+             lng = "TR";
+            if (vallang == "ENG") {
+                lng = "ENG";
+                console.log("notundefined");
+            }
+            if (vallang == "TR") {
+                lng = "TR";
+                console.log("TRSS");
+            }
             return function () {
 
                 //--<Forget My Pass
@@ -172,7 +183,7 @@
                 $("*[data-langkeyword='requestbutton']").html(lang["requestbutton"][lng]);
                 $("*[data-langkeyword='forgotmypass']").html(lang["forgotmypass"][lng]);
                 $("*[data-langkeyword='username']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["username"][lng])
                 });
                 //---!Forget MY Pass
@@ -184,6 +195,22 @@
         $(document).ready(function () {
             SetLang();
         });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
         $("#Set").click(function (event) {
             mac = 'mms223354ss';

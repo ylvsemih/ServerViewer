@@ -28,7 +28,7 @@ namespace temperaturemois.Models
                 //new code with dynamic value
                 foreach (BackServiceManager.TEST item in objList)
                 {
-                    
+
                     //mail body
                     bool email = false;
                     bool sms = false;
@@ -40,98 +40,83 @@ namespace temperaturemois.Models
                     var smsbody = new StringBuilder();
                     DateTime dtm = DateTime.Now;
                     DateTime date = item.LastNotificationCreateTime;
-                    double difference = (dtm-date).Minutes;
-                    
-                    if (item.Temperature > item.MaxTemp)
-                    {
-                        
-                        if (difference > item.DelayTempUp)
-                        {
-                            delaycheck = true;
-                        }
+                    double difference = (dtm - date).Minutes;
+                    //delay temp up = email delay
+                    //delay temp down = sms delay
+                    //delay mois up = IVR delay
 
-                        if (item.EmailNotification_TempUp == true)
+
+                    if (difference>item.DelayTempUp || date == null)
+                    {
+                        if (item.Temperature > item.MaxTemp && item.EmailNotification_TempUp == true)
                         {
                             type = "TempUp";
                             body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Sıcaklık Yüksekliği Tespit Edildi! <br> Mevcut Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture + "%");
-                            delaycheck = true;
                             email = true;
-                        }
-                        if (item.SmsNotification_TempUp == true)
-                        {
-                            smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Sıcaklık Yüksekliği Tespit Edildi! \n Mevcut Sıcaklık: " + item.Temperature + " \n Nem: " + item.Moisture + "%");
-                            delaycheck = true;
-                            sms = true;
-                        }
-
-                    }
-                    else if (item.Temperature < item.MinTemp)
-                    {
-                        if (difference > item.DelayTempDown)
-                        {
                             delaycheck = true;
                         }
-                        if (item.EmailNotification_TempDown == true)
+                        if (item.Temperature < item.MinTemp && item.EmailNotification_TempDown == true)
                         {
                             type = "TempDown";
                             body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Sıcaklık Düşüklüğü Tespit Edildi! <br> Mevcut Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture + "%");
-                            delaycheck = true;
                             email = true;
-                        }
-                        if (item.SmsNotification_TempDown == true)
-                        {
-                            smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Sıcaklık Düşüklüğü Tespit Edildi! \n Mevcut Sıcaklık: " + item.Temperature + " \n Nem: " + item.Moisture + "%");
-                            delaycheck = true;
-                            sms = true;
-                        }
-
-                    }
-                    else if (item.Moisture > item.MaxMois)
-                    {
-                        if (difference > item.DelayMoisUp)
-                        {
                             delaycheck = true;
                         }
-
-                        if (item.EmailNotification_MoisUp == true)
+                        if (item.Moisture > item.MaxMois && item.EmailNotification_MoisUp == true)
                         {
                             type = "MoisUp";
                             body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Nem Yüksekliği Tespit Edildi! <br> Mevcut Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture + "%");
-                            delaycheck = true;
                             email = true;
+                            delaycheck = true;
                         }
-                        if (item.SmsNotification_MoisUp == true)
+                        if (item.Moisture < item.MinMois && item.EmailNotification_MoisDown == true)
+                        {
+                            type = "MoisDown";
+                            body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Nem Düşüklüğü Tespit Edildi! <br> Mevcut Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture + "%");
+                            email = true;
+                            delaycheck = true;
+                        }
+                    }
+
+
+                    if (difference > item.DelayTempDown || date == null) // delaytempdown = delay for SMS
+                    {
+                        
+                        if (item.Temperature > item.MaxTemp && item.SmsNotification_TempUp == true)
+                        {
+                            smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Sıcaklık Yüksekliği Tespit Edildi! \n Mevcut Sıcaklık: " + item.Temperature + " \n Nem: " + item.Moisture + "%");
+                            sms = true;
+                            delaycheck = true;
+                        }
+                        if (item.Temperature < item.MinTemp && item.SmsNotification_TempDown == true)
+                        {
+                            smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Sıcaklık Düşüklüğü Tespit Edildi! \n Mevcut Sıcaklık: " + item.Temperature + " \n Nem: " + item.Moisture + "%");
+                            sms = true;
+                            delaycheck = true;
+                        }
+                        if (item.Moisture > item.MaxMois && item.SmsNotification_MoisUp == true)
                         {
                             smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Nem Yüksekliği Tespit Edildi! \n Mevcut Sıcaklık: " + item.Temperature + " \n Nem: " + item.Moisture + "%");
                             sms = true;
                             delaycheck = true;
                         }
-
-                    }
-                    else if (item.Moisture < item.MinMois)
-                    {
-                        if (difference > item.DelayMoisDown)
-                        {
-                            delaycheck = true;
-                        }
-                        if (item.EmailNotification_MoisDown == true)
-                        {
-                            type = "MoisDown";
-                            body.AppendLine("Dikkat! <br>" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Nem Düşüklüğü Tespit Edildi! <br> Mevcut Sıcaklık: " + item.Temperature + " <br> Nem: " + item.Moisture + "%");
-                            delaycheck = true;
-                            email = true;
-                        }
-                        if (item.SmsNotification_MoisDown == true)
+                        if (item.Moisture < item.MinMois && item.SmsNotification_MoisDown == true)
                         {
                             smsbody.AppendLine("Dikkat! \n" + item.DeviceName + ":" + item.DeviceMacID + " Sensörünüzde Nem Düşüklüğü Tespit Edildi! \n Mevcut Sıcaklık: " + item.Temperature + " \n Nem: " + item.Moisture + "%");
                             sms = true;
                             delaycheck = true;
                         }
-
-
-
                     }
-                    
+
+
+                    //IVR delay check it will be 
+                    //if (difference > item.DelayMoisUp)  // delaymoisup = delay for IVR
+                    //{
+                    //    delaycheck = true;
+                    //}
+
+
+
                     //send notification if device is offline last 15 min
                     //else if (difference >= 15)
                     //{

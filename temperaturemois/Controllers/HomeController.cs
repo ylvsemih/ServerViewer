@@ -27,10 +27,10 @@ namespace TempMoisFinal.Controllers
         public string Phones { get; set; }
     }
 
-    
+
     public class HomeController : Controller
     {
-        
+
         public string CreatePassword(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -51,80 +51,13 @@ namespace TempMoisFinal.Controllers
         {
             Configuration = configuration;
         }
-
+        
         [ClaimRequirement]
         public IActionResult Index()
         {
-           
-            List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-
-            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                //SqlDataReader
-                connection.Open();
-
-                string sql = "SELECT TOP 10 [ID], [DeviceID], [Temp], [Mois], [CreateTime] FROM[ServerViewer].[dbo].[ServerStatus] ORDER BY CreateTime DESC";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        ErrorViewModel data = new ErrorViewModel();
-                        data.ID = Convert.ToInt32(dataReader["ID"]);
-                        data.DeviceID = Convert.ToInt32(dataReader["DeviceID"]);
-                        data.Temp = float.Parse(dataReader["Temp"].ToString());
-                        data.Mois = float.Parse(dataReader["Mois"].ToString());
-                        data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
-                        dataList.Add(data);
-                        float meanData = data.Temp = float.Parse(dataReader["Temp"].ToString());
-
-                    }
-                }
-
-                //connection2 
-                string sql2 = "SELECT TOP (1) [CreateTime] FROM [ServerViewer].[dbo].[ServerStatus] Order by CreateTime asc";
-                SqlCommand command2 = new SqlCommand(sql2, connection);
-
-                using (SqlDataReader dataReader = command2.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        ErrorViewModel data = new ErrorViewModel();
-
-                        data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
-                        ViewData["Uptime"] = data.CreateTime;
-
-                    }
-                }
-                //till
-
-                //connection3 
-                string sql3 = "SELECT [ID],[Code],[DeviceMacID],[CustomerID] FROM [ServerViewer].[dbo].[DeviceInfo]";
-                SqlCommand command3 = new SqlCommand(sql3, connection);
-
-                using (SqlDataReader dataReader = command3.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        ErrorViewModel data = new ErrorViewModel();
-
-                        data.DeviceCode = Convert.ToString(dataReader["Code"]);
-                        ViewData["DeviceCode"] = data.DeviceCode;
-
-                    }
-                }
-                //till
-
-                connection.Close();
-            }
-            return View(dataList);
-
-
+            return View();
         }
 
-        
 
         [HttpGet, Route("Api/Charts")]
         public JsonResult Charts(string Macid)
@@ -134,48 +67,74 @@ namespace TempMoisFinal.Controllers
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                //SqlDataReader
                 connection.Open();
-
-                string sql = "SELECT TOP 1 [ID], [DeviceID], [Temp], [Mois], [CreateTime],[MacID] FROM[ServerViewer].[dbo].[ServerStatus] WHERE MacID='" + Macid + "'ORDER BY CreateTime DESC";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                //string sql = "SELECT TOP 1 [ID], [DeviceID], [Temp], [Mois], [CreateTime],[MacID] FROM[ServerViewer].[dbo].[ServerStatus] WHERE MacID='" + Macid + "'ORDER BY CreateTime DESC";
+              
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 [ID], [DeviceID], [Value], [Key], [CreateTime],[MacID] FROM[ServerViewer].[dbo].[ServerStatusTemp] WHERE MacID=@DeviceMacID AND Value=@Value+'/t' ORDER BY CreateTime DESC", connection))
                 {
+                    
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    cmd.Parameters.AddWithValue("@Value", Macid);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
                     while (dataReader.Read())
                     {
                         ErrorViewModel data = new ErrorViewModel();
-                        float meanData = data.Temp = float.Parse(dataReader["Temp"].ToString());
-                        data.Mois = float.Parse(dataReader["Mois"].ToString());
+                        data.Temp = float.Parse(dataReader["Key"].ToString());
                         data.CreateTime = Convert.ToDateTime(dataReader["CreateTime"]).ToShortTimeString();
                         data.ID = Convert.ToInt32(dataReader["ID"]);
                         data.DeviceID = Convert.ToInt32(dataReader["DeviceID"]);
                         dataList.Add(data);
 
                     }
+                    connection.Close();
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
                 }
+                
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 [ID], [DeviceID], [Value], [Key], [CreateTime],[MacID] FROM[ServerViewer].[dbo].[ServerStatusTemp] WHERE MacID=@DeviceMacID AND Value=@Value+'/h' ORDER BY CreateTime DESC", connection))
+                {
+                    
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    cmd.Parameters.AddWithValue("@Value", Macid);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        ErrorViewModel data = new ErrorViewModel();
+                        data.Mois = float.Parse(dataReader["Key"].ToString());
+                        data.CreateTime = Convert.ToDateTime(dataReader["CreateTime"]).ToShortTimeString();
+                        data.ID = Convert.ToInt32(dataReader["ID"]);
+                        data.DeviceID = Convert.ToInt32(dataReader["DeviceID"]);
+                        dataList.Add(data);
 
+                    }
+                    connection.Close();
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                
                 connection.Close();
             }
             return Json(dataList);
         }
 
-        
+
         public class PostModelTest
         {
             public string startDate { get; set; }
             public string endDate { get; set; }
         }
-        
+
         public class Marker
         {
             public decimal position { get; set; }
             public int markerPosition { get; set; }
         }
 
-        
+
         [HttpPost, Route("Api/Charts_Line")]
-        public JsonResult Charts_Line(string startDate, string endDate, string Macid)
+        public JsonResult Charts_Line(string startDate, string endDate, string Macid,string cases)
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
             string sql = null;
@@ -189,35 +148,58 @@ namespace TempMoisFinal.Controllers
                     connection.Open();
                     DateTime d1 = DateTime.ParseExact(startDate, "yyyyMMdd", CultureInfo.InvariantCulture);
                     DateTime d2 = DateTime.ParseExact(endDate, "yyyyMMdd", CultureInfo.InvariantCulture);
-
-                    if ((d1 - d2).TotalDays == 0)
+                    if(cases == "temp")
                     {
-                        d2 = d2.AddDays(1);
-
-                        //sql = "SELECT FORMAT ([CreateTime], 'hh.') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '"+d1 +"' and '"+ d2 + "' GROUP BY FORMAT([CreateTime], 'hh.') ORDER BY CreateTime DESC";
-                        sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
+                        if ((d1 - d2).TotalDays == 0)
+                        {
+                            d2 = d2.AddDays(1);
+                            sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime], ROUND(AVG([Key]),2)[Key] FROM [ServerViewer].[dbo].[ServerStatusTemp]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "' AND Value='" + Macid + "/t' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
+                        }
+                        if ((d1 - d2).TotalDays == -1)
+                        {
+                            sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Key]),2) [Key] FROM[ServerViewer].[dbo].[ServerStatusTemp]   WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "' AND Value='" + Macid + "/t' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
+                        }
+                        else
+                        {
+                            sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd') [CreateTime],ROUND(AVG([Key]),2) [Key] FROM[ServerViewer].[dbo].[ServerStatusTemp]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd") + "' and '" + d2.ToString("yyyy-MM-dd") + "' AND MacID='" + Macid + "' AND Value='" + Macid + "/t' GROUP BY FORMAT([CreateTime], 'yyyy-MM-dd') ORDER BY min(CreateTime) asc";
+                        }
                     }
-                    else if ((d1 - d2).TotalDays == -1)
+                    if(cases == "mois")
                     {
-                        sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois]  FROM[ServerViewer].[dbo].[ServerStatus]   WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "'GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
-                    }
-                    else
-                    {
-                        sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd') [CreateTime],ROUND(AVG([Temp]),2) [Temp],ROUND(AVG([Mois]),2) [Mois] FROM[ServerViewer].[dbo].[ServerStatus]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd") + "' and '" + d2.ToString("yyyy-MM-dd") + "' AND MacID='" + Macid + "' GROUP BY FORMAT([CreateTime], 'yyyy-MM-dd') ORDER BY min(CreateTime) asc";
+                        if ((d1 - d2).TotalDays == 0)
+                        {
+                            d2 = d2.AddDays(1);
+                            sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime], ROUND(AVG([Key]),2)[Key] FROM [ServerViewer].[dbo].[ServerStatusTemp]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "' AND Value='" + Macid + "/h' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
+                        }
+                        else if ((d1 - d2).TotalDays == -1)
+                        {
+                            sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') [CreateTime],ROUND(AVG([Key]),2) [Key] FROM[ServerViewer].[dbo].[ServerStatusTemp]   WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd hh:mm:ss") + "' and '" + d2.ToString("yyyy-MM-dd hh:mm:ss") + "' AND MacID='" + Macid + "' AND Value='" + Macid + "/h' GROUP BY FORMAT ([CreateTime], 'yyyy-MM-dd HH:mm:ss') ORDER by min(CreateTime) asc";
+                        }
+                        else
+                        {
+                            sql = "SELECT FORMAT ([CreateTime], 'yyyy-MM-dd') [CreateTime],ROUND(AVG([Key]),2) [Key] FROM[ServerViewer].[dbo].[ServerStatusTemp]  WHERE CreateTime between '" + d1.ToString("yyyy-MM-dd") + "' and '" + d2.ToString("yyyy-MM-dd") + "' AND MacID='" + Macid + "' AND Value='" + Macid + "/h' GROUP BY FORMAT([CreateTime], 'yyyy-MM-dd') ORDER BY min(CreateTime) asc";
+                        }
+
                     }
 
                     SqlCommand command = new SqlCommand(sql, connection);
-
+                    
                     using (SqlDataReader dataReader = command.ExecuteReader())
                     {
                         while (dataReader.Read())
                         {
                             command.CommandType = CommandType.Text;
                             ErrorViewModel data = new ErrorViewModel();
-
-                            data.Temp = float.Parse(dataReader["Temp"].ToString());
-                            data.Mois = float.Parse(dataReader["Mois"].ToString());
-                            data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
+                            if(cases == "temp")
+                            {
+                                data.Temp = float.Parse(dataReader["Key"].ToString());
+                                data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
+                            }
+                            else if (cases =="mois" )
+                            {
+                                data.Mois = float.Parse(dataReader["Key"].ToString());
+                                data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
+                            }
                             data.Msg = sql;
                             dataList.Add(data);
                         }
@@ -237,8 +219,6 @@ namespace TempMoisFinal.Controllers
             }
             return Json(dataList);
         }
-
-       
 
         [HttpPost, Route("Api/Arc_Value")]
         public JsonResult Arc_Value(int Position, string Type, string Macid)
@@ -439,13 +419,13 @@ namespace TempMoisFinal.Controllers
         [ClaimRequirement]
         public IActionResult Create()
         {
-           
+
             return View();
         }
         [ClaimRequirement]
         public IActionResult OptionsDashboad()
         {
-            
+
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
@@ -480,43 +460,42 @@ namespace TempMoisFinal.Controllers
         [ClaimRequirement]
         public IActionResult OptionsDashboard_Notification()
         {
-          
+
             return View();
         }
         [ClaimRequirement]
         public IActionResult OptionsDashboard_Notification2()
         {
-           
+
             return View();
         }
         [ClaimRequirement]
         public IActionResult Device_List()
         {
-            
+
             return View();
         }
-        
+
         public IActionResult Forget_pass()
         {
-           
+
             return View();
         }
         [ClaimRequirement]
         public IActionResult Device_Logs()
         {
-            
+
             return View();
         }
         [ClaimRequirement]
         public IActionResult New_Device()
         {
-            
             return View();
         }
         [ClaimRequirement]
         public IActionResult Profile()
         {
-            
+
             return View();
         }
         public IActionResult MacID_Register_ByADMIN()
@@ -614,32 +593,35 @@ namespace TempMoisFinal.Controllers
 
         }
 
-
         [HttpPost, Route("Api/SetText")]
         public JsonResult Set_Text(string Macid, string CihazAd)
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
 
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var email = HttpContext.Session.GetInt32("KullaniciEmail");
                 connection.Open();
-
-                string sql = "SELECT [CustomerID],[Phones],[DeviceMacID] FROM [ServerViewer].[dbo].[PhoneList] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                using (SqlCommand cmd = new SqlCommand("SELECT[CustomerID],[Phones],[DeviceMacID] FROM[ServerViewer].[dbo].[PhoneList] WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID",connection))
                 {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+
                     while (dataReader.Read())
                     {
-                        command.CommandType = CommandType.Text;
                         ErrorViewModel data = new ErrorViewModel();
                         data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
                         data.PhoneNumber = Convert.ToString(dataReader["Phones"]);
                         dataList.Add(data);
 
                     }
+                    connection.Close();
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    
                 }
 
                 connection.Close();
@@ -692,14 +674,16 @@ namespace TempMoisFinal.Controllers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string sql = "UPDATE [ServerViewer].[dbo].[DeviceInfo] SET DeviceName='" + CihazAd + "' WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                using (SqlCommand cmd = new SqlCommand("UPDATE [ServerViewer].[dbo].[DeviceInfo] SET DeviceName=@DeviceName WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID",connection))
                 {
+                    
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@DeviceName", CihazAd);
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        command.CommandType = CommandType.Text;
                         ErrorViewModel data = new ErrorViewModel();
                         data.Name = Convert.ToString(dataReader["Name"]);
                         data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
@@ -709,7 +693,11 @@ namespace TempMoisFinal.Controllers
                         dataList.Add(data);
 
                     }
+                    connection.Close();
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
                 }
+
 
                 connection.Close();
             }
@@ -775,23 +763,35 @@ namespace TempMoisFinal.Controllers
                 if (username != null && password != null)
                 {
                     UseSQL = "SELECT TOP 1 [CustomerID],[Username],[Password],[Name],[Surname],[Company] FROM [ServerViewer].[dbo].[Customers] Where Username='" + username + "' And Password='" + password + "'";
-
-                    //string sql = "SELECT [CustomerID],[Username],[Password],[DeviceMacID],[Name],[Surname],[Company] FROM [ServerViewer].[dbo].[Customers] Where Username='" + username+"' And Password='"+password+"'";
+                    ErrorViewModel data = new ErrorViewModel();
                     SqlCommand command = new SqlCommand(UseSQL, connection);
-
-                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    using (SqlConnection cn = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
                     {
-                        while (dataReader.Read())
+                        using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 [CustomerID],[Username],[Password],[Name],[Surname],[Company] FROM [ServerViewer].[dbo].[Customers] Where Username=@username And Password=@password", cn))
                         {
+                            cn.Open();
+
+                            cmd.CommandType = CommandType.Text;
                             command.CommandType = CommandType.Text;
-                            ErrorViewModel data = new ErrorViewModel();
-                            data.Name = Convert.ToString(dataReader["Name"]);
-                            data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
-                            data.Username = Convert.ToString(dataReader["Username"]);
-                            data.Password = Convert.ToString(dataReader["Password"]);
-                            Customer = Convert.ToInt32(dataReader["CustomerID"]);
-                            dataList.Add(data);
+
+                            cmd.Parameters.AddWithValue("@username", username);
+                            cmd.Parameters.AddWithValue("@password", password);
+                            SqlDataReader ssr = cmd.ExecuteReader();
+                            while (ssr.Read())
+                            {
+                                Customer = Convert.ToInt32(ssr["CustomerID"]);
+                                data.Name = Convert.ToString(ssr["Name"]);
+                                data.CustomerId = Convert.ToInt32(ssr["CustomerID"]);
+                                data.Username = Convert.ToString(ssr["Username"]);
+                                data.Password = Convert.ToString(ssr["Password"]);
+                            }
+                            cn.Close();
                             HttpContext.Session.SetInt32("KullaniciEmail", Customer);
+                            dataList.Add(data);
+                            cn.Open();
+                            cmd.ExecuteNonQuery();
+                            cn.Close();
+
                         }
                     }
                 }
@@ -801,9 +801,6 @@ namespace TempMoisFinal.Controllers
                 }
                 connection.Close();
             }
-            //HttpContext.Session.SetString("MacAdress", Mac);
-            
-            
             return Json(dataList);
         }
         public IActionResult Register()
@@ -816,105 +813,91 @@ namespace TempMoisFinal.Controllers
             Response.Redirect("/Home/Register");
             return View();
         }
-
+        
         //forgetmypassword
         [HttpPost, Route("Api/Reset_Password")]
         public JsonResult Reset_Password(string username, string email, string mac)
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-            string UseSQL = "UPDATE [ServerViewer].[dbo].[Customers] SET Password='" + CreatePassword(8) + "' WHERE EMail='" + email + "' AND Username='" + username + "'";
-            string UseSQL2 = "SELECT [CustomerID],[Username],[EMail] FROM [ServerViewer].[dbo].[Customers] WHERE DeviceMacID='mms223354ss'";
 
             //mail send
-
-            try
-            {
-                var body = new StringBuilder();
-                body.AppendLine("Uyarı: ");
-                body.AppendLine("Sıcaklık değeri normalin dışında : ");
-                body.AppendLine("Anlık Sıcaklık: ");
-                body.AppendLine("10 saniyede bir güncellenmektedir.:");
-                var fromAddress = new MailAddress("noreply@vodatech.com.tr");
-                var toAddress = new MailAddress(email); //bilgi.islem@vodatech.com.tr
-                const string subject = "Server Viewer Mail Bildirim";
-                using (var smtp = new SmtpClient
-                {
-                    Host = "mail.vodatech.com.tr",
-                    Port = 587,
-                    EnableSsl = false,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, "1qaz2wsxA")
-                })
-                {
-                    using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body.ToString() })
-                    {
-                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        smtp.Send(message);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            string newpass = CreatePassword(8);
+            ErrorViewModel data = new ErrorViewModel();
+ 
             //till
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection cn = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
             {
-                connection.Open();
-                //string sql = "SELECT [CustomerID],[Username],[Password],[DeviceMacID],[Name],[Surname],[Company] FROM [ServerViewer].[dbo].[Customers] Where Username='" + username+"' And Password='"+password+"'";
-                //temperaturemois.Manager.MailManager msc = new temperaturemois.Manager.MailManager();
-                //msc.Mailsend(email);
-                SqlCommand command = new SqlCommand(UseSQL, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 [CustomerID],[Username],[Password],[EMail],[Name],[Surname],[Company] FROM [ServerViewer].[dbo].[Customers] Where Username=@username And EMail=@email", cn))
                 {
-                    while (dataReader.Read())
+                    cn.Open();
+
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    SqlDataReader ssr = cmd.ExecuteReader();
+                    while (ssr.Read())
                     {
-                        command.CommandType = CommandType.Text;
-                        ErrorViewModel data = new ErrorViewModel();
-                        data.Email = Convert.ToString(dataReader["EMail"]);
-                        data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
-                        data.Username = Convert.ToString(dataReader["Username"]);
-                        data.Password = Convert.ToString(dataReader["Password"]);
+                        data.Username = Convert.ToString(ssr["Username"]);
+                        data.Email = Convert.ToString(ssr["EMail"]);
+                    }
+                    cn.Close();
+                    dataList.Add(data);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                    cn.Close();
+                    if (data.Username == username && data.Email == email)
+                    {
+                        try
+                        {
+                            var body = new StringBuilder();
+                            body.AppendLine("Şifreniz Sıfırlanmıştır: ");
+                            body.AppendLine("Yeni Şifreniz : " + newpass);
+                            var fromAddress = new MailAddress("noreply@vodatech.com.tr");
+                            var toAddress = new MailAddress(email); //bilgi.islem@vodatech.com.tr
+                            const string subject = "Server Viewer Mail Bildirim";
+                            using (var smtp = new SmtpClient
+                            {
+                                Host = "mail.vodatech.com.tr",
+                                Port = 587,
+                                EnableSsl = false,
+                                DeliveryMethod = SmtpDeliveryMethod.Network,
+                                UseDefaultCredentials = false,
+                                Credentials = new NetworkCredential(fromAddress.Address, "1qaz2wsxA")
+                            })
+                            {
+                                using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body.ToString() })
+                                {
+                                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                                    smtp.Send(message);
+                                }
+                            }
 
+                        }
+                        catch (Exception ex)
+                        {
 
-                        dataList.Add(data);
+                            throw;
+                        }
 
+                        using (SqlCommand comm = new SqlCommand("UPDATE [ServerViewer].[dbo].[Customers] SET Password='" + newpass + "' WHERE EMail=@email AND Username=@username", cn))
+                        {
+                            comm.CommandType = CommandType.Text;
+                            comm.Parameters.AddWithValue("@username", username);
+                            comm.Parameters.AddWithValue("@email", email);
+                            cn.Open();
+                            comm.ExecuteNonQuery();
+                            cn.Close();
+                        }
+                    }
+                    else
+                    {
+                        data.Msg = "No such account";
                     }
                 }
-
-                connection.Close();
             }
 
-            //read stuff
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                //string sql = "SELECT [CustomerID],[Username],[Password],[DeviceMacID],[Name],[Surname],[Company] FROM [ServerViewer].[dbo].[Customers] Where Username='" + username+"' And Password='"+password+"'";
-
-                SqlCommand command2 = new SqlCommand(UseSQL2, connection);
-
-                using (SqlDataReader dataReader = command2.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        command2.CommandType = CommandType.Text;
-                        ErrorViewModel data = new ErrorViewModel();
-                        data.Email = Convert.ToString(dataReader["EMail"]);
-                        data.Username = Convert.ToString(dataReader["Username"]);
-                        int customerid = data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
-                        dataList.Add(data);
-                    }
-                }
-
-                connection.Close();
-            }
 
             return Json(dataList);
         }
@@ -925,18 +908,19 @@ namespace TempMoisFinal.Controllers
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
 
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var email = HttpContext.Session.GetInt32("KullaniciEmail");
                 connection.Open();
-                string sql = "SELECT [Code],[DeviceMacID],[CustomerID],[DeviceName] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                using (SqlCommand cmd = new SqlCommand("SELECT [Code],[DeviceMacID],[CustomerID],[DeviceName] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID",connection))
                 {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+
                     while (dataReader.Read())
                     {
-                        command.CommandType = CommandType.Text;
                         ErrorViewModel data = new ErrorViewModel();
                         data.Name = Convert.ToString(dataReader["DeviceName"]);
                         data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
@@ -944,6 +928,9 @@ namespace TempMoisFinal.Controllers
                         data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
                         dataList.Add(data);
                     }
+                    connection.Close();
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
                 }
 
                 connection.Close();
@@ -1035,27 +1022,32 @@ namespace TempMoisFinal.Controllers
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
             try
             {
-                string UseSQL = "SELECT TOP 4 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "' AND Type='general' ORDER BY CreateTime DESC";
-
                 string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand(UseSQL, connection);
-                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    using (SqlCommand cmd = new SqlCommand("SELECT TOP 4 [CustomerID],[NotificationContent],[DeviceMacID],[DeviceName],[CreateTime] FROM [ServerViewer].[dbo].[Notifications] WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID AND Type='general' ORDER BY CreateTime DESC",connection))
                     {
+                        
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@CustomerID", email);
+                        cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                        SqlDataReader dataReader = cmd.ExecuteReader();
                         while (dataReader.Read())
                         {
-                            command.CommandType = CommandType.Text;
+                            
                             ErrorViewModel data = new ErrorViewModel();
                             data.CustomerId = Convert.ToInt32(dataReader["CustomerID"]);
                             data.NotificationMessage = Convert.ToString(dataReader["NotificationContent"]);
                             data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
                             data.Name = Convert.ToString(dataReader["DeviceName"]);
+                            data.CreateTime = Convert.ToString(dataReader["CreateTime"]);
                             dataList.Add(data);
 
                         }
+                        connection.Close();
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
                     }
 
                     connection.Close();
@@ -1112,7 +1104,7 @@ namespace TempMoisFinal.Controllers
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string UseSQL = "Select ISNULL([Temp],0) [Temp],ISNULL([Mois],0) [Mois],[CustomerID],[DeviceMacID] FROM [ServerViewer].[dbo].[DeviceInfo] AS t2 LEFT JOIN (SELECT DISTINCT t.DeviceID,t.MacID, t.CreateTime, t.Temp, t.Mois FROM ServerStatus t INNER JOIN (SELECT MacID, MAX(CreateTime) CreateTime FROM ServerStatus GROUP BY MacID) tm ON t.MacID = tm.MacID and t.CreateTime = tm.CreateTime) AS t1 ON t2.DeviceMacID= t1.MacID  WHERE t2.CustomerID='"+email+"'";
+                string UseSQL = "Select t1.[Key] Temp,t1.[Value] tempkey,t2.[Key] Mois,t2.[Value] moiskey,[CustomerID],[DeviceMacID] FROM [ServerViewer].[dbo].[DeviceInfo] AS tbl LEFT JOIN (SELECT DISTINCT t.[DeviceID],t.[MacID], t.[CreateTime], t.[Key], t.[Value]  FROM ServerStatusTemp t INNER JOIN (SELECT MacID, MAX(CreateTime) CreateTime FROM ServerStatusTemp  WHERE [Value]=MacID+'/t' GROUP BY MacID) tm ON t.MacID = tm.MacID and t.CreateTime = tm.CreateTime ) AS t1 ON tbl.DeviceMacID= t1.MacID LEFT JOIN (SELECT DISTINCT t.[DeviceID],t.[MacID], t.[CreateTime], t.[Key], t.[Value] FROM ServerStatusTemp t INNER JOIN (SELECT MacID, MAX(CreateTime) CreateTime FROM ServerStatusTemp WHERE [Value]=MacID+'/h' GROUP BY MacID) tm ON t.MacID = tm.MacID and t.CreateTime = tm.CreateTime ) AS t2 ON tbl.DeviceMacID= t2.MacID  WHERE tbl.CustomerID='" + email + "'";
                 SqlCommand command = new SqlCommand(UseSQL, connection);
                 using (SqlDataReader dataReader = command.ExecuteReader())
                 {
@@ -1214,30 +1206,35 @@ namespace TempMoisFinal.Controllers
         public JsonResult Get_Emails(string Macid)
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-
+            
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var email = HttpContext.Session.GetInt32("KullaniciEmail");
                 connection.Open();
-
-                string sql = "SELECT [CustomerID],[DeviceMacID],[EMail] FROM [ServerViewer].[dbo].[EmailList] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                using (SqlCommand cmd = new SqlCommand("SELECT [CustomerID],[DeviceMacID],[EMail] FROM [ServerViewer].[dbo].[EmailList] WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID",connection))
                 {
+                    cmd.CommandType = CommandType.Text;
+                    
+                    
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        command.CommandType = CommandType.Text;
-                        ErrorViewModel data = new ErrorViewModel();
+                    ErrorViewModel data = new ErrorViewModel();
                         data.MacID = Convert.ToString(dataReader["DeviceMacID"]);
                         data.Email = Convert.ToString(dataReader["EMail"]);
                         dataList.Add(data);
-
                     }
+                    connection.Close();
+                    
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                    connection.Close();
+                   
                 }
 
-                connection.Close();
             }
             return Json(dataList);
         }
@@ -1298,16 +1295,16 @@ namespace TempMoisFinal.Controllers
 
         //SET DELAY
         [HttpPost, Route("Api/SetDelay")]
-        public JsonResult Set_Notification_Delay(string Macid, int delayValue,string type)
+        public JsonResult Set_Notification_Delay(string Macid, int delayValue, string type)
         {
             ErrorViewModel data = new ErrorViewModel();
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
             string connectionString = "data source=SQL5;Database=ServerViewer;User ID=semih; Password=semih;";
             var email = HttpContext.Session.GetInt32("KullaniciEmail");
-             
+
             using (SqlConnection cn = new SqlConnection(connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("UPDATE [ServerViewer].[dbo].[DeviceInfo] SET "+type+"=" + delayValue+" WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID", cn))
+                using (SqlCommand cmd = new SqlCommand("UPDATE [ServerViewer].[dbo].[DeviceInfo] SET " + type + "=" + delayValue + " WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@CustomerID", email);
@@ -1325,37 +1322,41 @@ namespace TempMoisFinal.Controllers
         public JsonResult Get_Notification_Delay(string Macid)
         {
             List<ErrorViewModel> dataList = new List<ErrorViewModel>();
-
-            string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            ErrorViewModel data = new ErrorViewModel();
+            var email = HttpContext.Session.GetInt32("KullaniciEmail");
+            using (SqlConnection connection = new SqlConnection("data source=SQL5;Database=ServerViewer;uid=semih;pwd=semih;"))
             {
-                var email = HttpContext.Session.GetInt32("KullaniciEmail");
-                connection.Open();
-
-                string sql = "SELECT TOP 1 [DelayTempUp],[DelayTempDown],[DelayMoisUp],[DelayMoisDown],[DeviceName] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID='" + email + "' AND DeviceMacID='" + Macid + "'";
-                SqlCommand command = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = command.ExecuteReader())
+                
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 1 [DelayTempUp],[DelayTempDown],[DelayMoisUp],[DelayMoisDown],[DeviceName] FROM [ServerViewer].[dbo].[DeviceInfo] WHERE CustomerID=@CustomerID AND DeviceMacID=@DeviceMacID",connection))
                 {
+                    connection.Open();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@DeviceMacID", Macid);
+                    cmd.Parameters.AddWithValue("@CustomerID", email);
+                    SqlDataReader dataReader = cmd.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        command.CommandType = CommandType.Text;
-                        ErrorViewModel data = new ErrorViewModel();
+
+                        
                         data.DelayTempUp = Convert.ToInt32(dataReader["DelayTempUp"]);
                         data.DelayTempDown = Convert.ToInt32(dataReader["DelayTempDown"]);
                         data.DelayMoisUp = Convert.ToInt32(dataReader["DelayMoisUp"]);
                         data.DelayMoisDown = Convert.ToInt32(dataReader["DelayMoisDown"]);
                         data.DeviceName = Convert.ToString(dataReader["DeviceName"]);
-                        dataList.Add(data);
-
+                        
                     }
+                    connection.Close();
+                    dataList.Add(data);
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+
                 }
 
                 connection.Close();
             }
             return Json(dataList);
         }
-
+        
         [HttpPost, Route("Api/NewDevice_Create_ByAdmin")]
         public JsonResult New_Device_ByAdmin(string macId, string code)
         {

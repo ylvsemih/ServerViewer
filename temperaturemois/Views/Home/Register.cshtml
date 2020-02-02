@@ -219,9 +219,21 @@
         var pass;
         var username;
         var password;
-        var lng = "ENG";
+        var lng;
+         var tcase = "temp";
+        var hcase = "mois";
+        var vallang = getCookie("langoption");
         var SetLang = function () {
 
+            lng = "TR";
+            if (vallang == "ENG") {
+                lng = "ENG";
+                console.log("notundefined");
+            }
+            if (vallang == "TR") {
+                lng = "TR";
+                console.log("TRSS");
+            }
             return function () {
 
 
@@ -229,11 +241,11 @@
                 //--<Login
                 //$("*[data-langkeyword='username']").html(lang["username"][lng]);
                 $("*[data-langkeyword='username']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["username"][lng])
                 });
                 $("*[data-langkeyword='password']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["password"][lng])
                 });
                 $("*[data-langkeyword='logintext']").html(lang["logintext"][lng]);
@@ -245,22 +257,22 @@
                 //---<Create Account
                 $("*[data-langkeyword='createaccountview']").html(lang["createaccountview"][lng]);
                 $("*[data-langkeyword='devicenameinput']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["devicenameinput"][lng])
                 });
                 $("*[data-langkeyword='formcompany']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["formcompany"][lng])
                 });
                 $("*[data-langkeyword='phonenumber']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["phonenumber"][lng])
                 });
                 $("*[data-langkeyword='productkeyinput']").each(function (ev) {
-                   // html(lang["username"][lng]).
+                    // html(lang["username"][lng]).
                     $(this).attr("placeholder", lang["productkeyinput"][lng])
                 });
-                
+
                 $("*[data-langkeyword='registerbutton']").html(lang["registerbutton"][lng]);
                 $("*[data-langkeyword='areyouamember']").html(lang["areyouamember"][lng]);
                 $("*[data-langkeyword='gologinbutton']").html(lang["gologinbutton"][lng]);
@@ -273,6 +285,22 @@
         $(document).ready(function () {
             SetLang();
         });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
         $("#Get").click(function (event) {
 
